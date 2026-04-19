@@ -1,15 +1,15 @@
-@extends('admin.layout')
+﻿@extends('admin.layout')
 
 @section('content')
 
 <div class="page-content active">
 
-    <!-- Header -->
+    
     <div class="page-header">
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.patients.index') }}" class="action-btn back-btn">
-                    ←
+                    â†
                 </a>
                 <h1>New Patient</h1>
             </div>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <!-- Card -->
+    
    <div class="form-card">
     <form action="{{ route('admin.patients.store') }}" method="POST">
         @csrf
@@ -101,3 +101,5 @@
 </div>
 
 @endsection
+
+

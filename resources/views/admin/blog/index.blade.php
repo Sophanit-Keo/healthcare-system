@@ -1,9 +1,7 @@
-  @extends('admin.layout')
+﻿  @extends('admin.layout')
   @section('title', 'Blog / News')
   @section('content')
-  <!-- ══════════════════════
-       PAGE: BLOG
-  ══════════════════════ -->
+  
   <div class="page-content active" id="page-blog">
     <div class="page-header">
       <div class="page-header-left">
@@ -24,7 +22,7 @@
       <div class="search-bar">
         <div class="search-input-wrap">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input type="text" placeholder="Search posts by title or category…">
+          <input type="text" placeholder="Search posts by title or categoryâ€¦">
         </div>
         <div class="status-filter">
           <button class="status-tab active">All</button>
@@ -56,7 +54,7 @@
           <tr>
             <td>
               <div class="user-cell">
-                <div class="post-thumb-wrap">🌍</div>
+                <div class="post-thumb-wrap">ðŸŒ</div>
                 <div><div class="user-name">List of Countries without Coronavirus Case</div><div class="user-email">5 min read</div></div>
               </div>
             </td>
@@ -70,7 +68,7 @@
           <tr>
             <td>
               <div class="user-cell">
-                <div class="post-thumb-wrap">📰</div>
+                <div class="post-thumb-wrap">ðŸ“°</div>
                 <div><div class="user-name">Recovery Room: News beyond the Pandemic</div><div class="user-email">8 min read</div></div>
               </div>
             </td>
@@ -84,7 +82,7 @@
           <tr>
             <td>
               <div class="user-cell">
-                <div class="post-thumb-wrap">🍭</div>
+                <div class="post-thumb-wrap">ðŸ­</div>
                 <div><div class="user-name">What is the Impact of Eating Too Much Sugar?</div><div class="user-email">6 min read</div></div>
               </div>
             </td>
@@ -98,29 +96,31 @@
           <tr>
             <td>
               <div class="user-cell">
-                <div class="post-thumb-wrap">🧠</div>
-                <div><div class="user-name">Managing Anxiety in Post-Pandemic Life</div><div class="user-email">Draft — not yet published</div></div>
+                <div class="post-thumb-wrap">ðŸ§ </div>
+                <div><div class="user-name">Managing Anxiety in Post-Pandemic Life</div><div class="user-email">Draft â€” not yet published</div></div>
               </div>
             </td>
             <td><span class="badge badge-purple">Mental Health</span></td>
             <td style="color:var(--text-secondary)">Dr. Pham Nguyen</td>
-            <td style="color:var(--text-muted);font-size:0.83rem">—</td>
-            <td style="color:var(--text-muted)">—</td>
+            <td style="color:var(--text-muted);font-size:0.83rem">â€”</td>
+            <td style="color:var(--text-muted)">â€”</td>
             <td><span class="badge badge-gray">Draft</span></td>
             <td><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn danger"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></td>
           </tr>
         </tbody>
       </table>
       <div class="pagination">
-        <span class="pagination-info">Showing 1–4 of 28 posts</span>
+        <span class="pagination-info">Showing 1â€“4 of 28 posts</span>
         <div class="pagination-btns">
-          <button class="pg-btn">‹</button>
+          <button class="pg-btn">â€¹</button>
           <button class="pg-btn active">1</button>
           <button class="pg-btn">2</button>
           <button class="pg-btn">3</button>
-          <button class="pg-btn">›</button>
+          <button class="pg-btn">â€º</button>
         </div>
       </div>
     </div>
-  </div><!-- /page-blog -->
+  </div>
   @endsection
+
+

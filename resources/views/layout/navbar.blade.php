@@ -1,12 +1,11 @@
-<!-- TOPBAR -->
-<div class="topbar">
+﻿<div class="topbar">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-sm-8 text-sm">
         <div class="site-info">
-          <a href="#">📞 +00 123 4455 6666</a>
+          <a href="#">ðŸ“ž +00 123 4455 6666</a>
           <span class="divider">|</span>
-          <a href="#">✉️ mail@example.com</a>
+          <a href="#">âœ‰ï¸ mail@example.com</a>
         </div>
       </div>
       <div class="col-sm-4 text-right text-sm">
@@ -21,14 +20,14 @@
   </div>
 </div>
 
-<!-- NAVBAR -->
+
 <nav class="navbar" id="mainNav">
   <div class="container">
     <a class="navbar-brand" href="#">
       <span class="text-primary">One</span>-Health
     </a>
     <div class="input-navbar" style="flex:0 0 auto">
-      <div class="input-group-text">🔍</div>
+      <div class="input-group-text">ðŸ”</div>
       <input type="text" class="form-control" placeholder="Enter keyword..">
     </div>
     <button class="navbar-toggler" onclick="document.getElementById('nav').classList.toggle('show')">
@@ -50,7 +49,7 @@
         <nav class="nav-item">
           @auth
           <a
-            href="{{ url('/admin.layout') }}"
+            href="{{ url('/dashboard') }}"
             class="nav-link">
             Dashboard
           </a>
@@ -70,8 +69,10 @@
           @endif
           @endauth
         </nav>
-        @endif>
+        @endif
       </ul>
     </div>
   </div>
 </nav>
+
+

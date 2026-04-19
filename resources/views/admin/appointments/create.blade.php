@@ -1,15 +1,15 @@
-@extends('admin.layout')
+﻿@extends('admin.layout')
 
 @section('content')
 
 <div class="page-content active">
 
-    <!-- Header -->
+    
     <div class="page-header">
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.appointments.index') }}" class="action-btn back-btn">
-                    ←
+                    â†
                 </a>
                 <div>
                     <h1>Book Appointment</h1>
@@ -19,24 +19,24 @@
         </div>
     </div>
 
-    <!-- Modal Style Card -->
+    
     <div class="modal-like small">
 
-        <form action="#" method="POST">
+        <form action="{{ route('admin.appointments.store') }}" method="POST">
             @csrf
 
             <div class="form-grid col1">
 
-                <!-- Patient -->
+                
                 <div class="form-group">
                     <label class="form-label">Patient Name<span>*</span></label>
-                    <input type="text" name="patient_name" class="form-input" placeholder="Full name" required>
+                    <input type="text" name="patient_name" class="form-input" placeholder="Full name" value="{{ old('patient_name') }}" required>
                 </div>
 
-                <!-- Doctor -->
+                
                 <div class="form-group">
                     <label class="form-label">Doctor<span>*</span></label>
-                    <select name="doctor_id" class="form-select" required>
+                    <select name="doctor" class="form-select" required>
                         <option value="">Select doctor</option>
                         <option>Dr. Stein Albert</option>
                         <option>Dr. Alexa Melvin</option>
@@ -46,7 +46,7 @@
                     </select>
                 </div>
 
-                <!-- Department -->
+                
                 <div class="form-group">
                     <label class="form-label">Department<span>*</span></label>
                     <select name="department" class="form-select" required>
@@ -59,7 +59,7 @@
                     </select>
                 </div>
 
-                <!-- Date & Time -->
+                
                 <div class="form-row-2">
                     <div class="form-group">
                         <label class="form-label">Date<span>*</span></label>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
 
-                <!-- Status -->
+                
                 <div class="form-group">
                     <label class="form-label">Status</label>
                     <select name="status" class="form-select">
@@ -83,15 +83,15 @@
                     </select>
                 </div>
 
-                <!-- Notes -->
+                
                 <div class="form-group">
                     <label class="form-label">Notes</label>
-                    <textarea name="notes" class="form-textarea" placeholder="Reason for visit or notes…"></textarea>
+                    <textarea name="notes" class="form-textarea" placeholder="Reason for visit or notesâ€¦"></textarea>
                 </div>
 
             </div>
 
-            <!-- Footer -->
+            
             <div class="modal-footer" style="margin-top:25px;">
                 <a href="{{ route('admin.appointments.index') }}" class="btn btn-outline">
                     Cancel
@@ -108,3 +108,5 @@
 </div>
 
 @endsection
+
+

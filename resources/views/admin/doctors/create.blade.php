@@ -1,15 +1,15 @@
-@extends('admin.layout')
+﻿@extends('admin.layout')
 
 @section('content')
 
 <div class="page-content active">
 
-    <!-- Header -->
+    
     <div class="page-header">
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.doctors.index') }}" class="action-btn back-btn">
-                    ←
+                    â†
                 </a>
                 <div>
                     <h1>Add New Doctor</h1>
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <!-- Card (Modal Style) -->
+    
     <div class="modal-like">
 
         <form action="#" method="POST">
@@ -80,12 +80,12 @@
 
                 <div class="form-group full">
                     <label class="form-label">Biography / Notes</label>
-                    <textarea name="bio" class="form-textarea" placeholder="Doctor's professional summary…"></textarea>
+                    <textarea name="bio" class="form-textarea" placeholder="Doctor's professional summaryâ€¦"></textarea>
                 </div>
 
             </div>
 
-            <!-- Footer -->
+            
             <div class="modal-footer" style="margin-top:30px;">
                 <a href="{{ route('admin.doctors.index') }}" class="btn btn-outline">
                     Cancel
@@ -102,3 +102,5 @@
 </div>
 
 @endsection
+
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,12 +15,10 @@
 <body>
     <div class="auth-wrap">
 
-        <!-- LEFT PANEL (unchanged) -->
         <aside class="auth-panel">
             ...
         </aside>
 
-        <!-- RIGHT FORM PANEL -->
         <main class="auth-form-wrap">
             <div class="auth-form-box">
 
@@ -30,10 +28,9 @@
                     <p>Sign in to access your health dashboard and appointments.</p>
                 </div>
 
-                <!-- ✅ Session Status -->
                 <x-auth-session-status class="mb-3" :status="session('status')" />
 
-                <!-- ✅ Global Errors -->
+                
                 @if ($errors->any())
                 <div class="alert-error">
                     @foreach ($errors->all() as $error)
@@ -42,11 +39,9 @@
                 </div>
                 @endif
 
-                <!-- FORM -->
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <!-- Email -->
                     <div class="field-group">
                         <x-input-label for="email" :value="__('Email')" />
 
@@ -65,7 +60,6 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-                    <!-- Password -->
                     <div class="field-group mt-4">
                         <x-input-label for="password" :value="__('Password')" />
 
@@ -82,7 +76,6 @@
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
-                    <!-- Remember -->
                     <div class="form-meta">
                         <label class="checkbox-wrap">
                             <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -96,7 +89,6 @@
                         @endif
                     </div>
 
-                    <!-- Submit -->
                     <button type="submit" class="btn-submit">
                         {{ __('Log in') }}
                     </button>
@@ -115,3 +107,5 @@
 </body>
 
 </html>
+
+

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Appointment;
+use App\Models\Prescription;
+use App\Models\MedicalRecord;
+use App\Models\Message;
 
 class HomeController extends Controller
 {
@@ -13,18 +17,37 @@ class HomeController extends Controller
         $role = Auth::user()->role;
 
         if ($role == 'patient') {
-            return view('dashboard'); // Points to resources/views/dashboard.blade.php
+            $userId = Auth::id();
+            $appointments = Appointment::where('user_id', $userId)
+                ->orderBy('date', 'asc')
+                ->get();
+            $prescriptions = Prescription::where('user_id', $userId)
+                ->where('status', 'active')
+                ->orderBy('start_date', 'desc')
+                ->get();
+            $medicalRecords = MedicalRecord::where('user_id', $userId)
+                ->orderBy('record_date', 'desc')
+                ->get();
+            $unreadMessages = Message::where('receiver_id', $userId)
+                ->where('is_read', false)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return response()
+                ->view('dashboard', compact('appointments', 'prescriptions', 'medicalRecords', 'unreadMessages'))
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
         }
 
         if ($role == 'admin') {
-            // Make sure you have a view like resources/views/admin/home.blade.php
-            // that @extends('admin.layout')
-            return view('admin.layout'); // Points to resources/views/admin/layout.blade.php
+            return view('admin.dashboard');
         }
+
         if ($role == 'doctor') {
-            return view('doctor.dashboard'); // Points to resources/views/doctor/dashboard.blade.php
+            return view('Doctor.dashboard');
         }
 
         return redirect('/');
     }
 }
+

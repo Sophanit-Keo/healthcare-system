@@ -13,16 +13,8 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
-    /**
-     * Validate and create a newly registered user.
-     *
-     * @param  array<string, string>  $input
-     *
-     * @throws ValidationException
-     */
     public function create(array $input): User
     {
-        // ❌ block admin registration
         if (isset($input['user_type']) && $input['user_type'] === 'admin') {
             throw ValidationException::withMessages([
                 'user_type' => 'You are not allowed to register as admin.',
@@ -53,3 +45,4 @@ class CreateNewUser implements CreatesNewUsers
         ]);
     }
 }
+

@@ -9,43 +9,24 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $query = Patients::with('user');
 
-        // ✅ Filter by status
         if ($request->status) {
             $query->where('status', $request->status);
         }
 
-        // ✅ Search
-        // if ($request->search) {
-        //     $query->where(function ($q) use ($request) {
-        //         $q->where('name', 'like', '%' . $request->search . '%')
-        //           ->orWhere('email', 'like', '%' . $request->search . '%');
-        //     });
-        // }
-
-        // ✅ Pagination + latest
         $patients = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.patients.index', compact('patients'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.patients.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -67,26 +48,15 @@ class PatientsController extends Controller
         return redirect()->route('admin.patients.index')->with('success', 'Patient created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Patients $patients)
     {
         return view('admin.patients.index', compact('patients'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Patients $patients)
     {
         return view('admin.patients.create', compact('patients'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-
 
     public function update(Request $request, Patients $patients)
     {
@@ -102,20 +72,13 @@ class PatientsController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        // ✅ update data
         $patients->update($validatedData);
-
-        // ✅ optional: update user_id
-        // $patients->user_id = Auth::id();
-        // $patients->save();
 
         return redirect()
             ->route('admin.patients.index')
             ->with('success', 'Patient updated successfully.');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Patients $patients)
     {
         //
@@ -130,3 +93,4 @@ class PatientsController extends Controller
         ]);
     }
 }
+

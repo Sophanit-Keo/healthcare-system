@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Healthcare</title>
+
+        {{-- Vite CSS and JS --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         {{-- Google Fonts (loaded in CSS via @import, but listed here as fallback) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,9 +21,6 @@
 
     {{-- Animate.css (for WOW.js) --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/animate/animate.min.css') }}">
-
-    <!-- {{-- ✅ Our clean stylesheet --}}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}"> -->
 
     @stack('style')
     </head>
@@ -45,3 +45,6 @@
         
     </body>
 </html>
+
+
+

@@ -1,4 +1,4 @@
-<footer class="page-footer">
+﻿<footer class="page-footer">
   <div class="container">
     <div class="row px-md-3">
       <div class="col-sm-6 col-lg-3 py-3">
@@ -46,3 +46,5 @@
     <p id="copyright">Copyright &copy; 2025 <a href="#">HeathCare</a>. All right reserved</p>
   </div>
 </footer>
+
+

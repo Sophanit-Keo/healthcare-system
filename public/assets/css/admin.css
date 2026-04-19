@@ -1218,6 +1218,73 @@ textarea {
     .page-content {
         padding: 20px 16px;
     }
+    .page-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .page-header-left h1 {
+        font-size: 1.15rem;
+    }
+    .chart-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .stat-value {
+        font-size: 1.35rem;
+    }
+    .page-content {
+        padding: 16px 10px;
+    }
+    .page-header-left h1 {
+        font-size: 1.05rem;
+    }
+    .page-header-left p {
+        font-size: 0.78rem;
+    }
+    .appt-item {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+    }
+    .appt-time {
+        min-width: auto;
+    }
+    .appt-info {
+        flex-basis: calc(100% - 80px);
+    }
+    .appt-name {
+        white-space: normal;
+    }
+    .avail-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+    }
+    .avail-bar-wrap {
+        flex: 1 1 100%;
+    }
+    .table-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    .donut-wrap {
+        width: 120px;
+        height: 120px;
+    }
+    .donut-num {
+        font-size: 1.1rem;
+    }
+    .btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
 }
 
 /* ─── MOBILE TOGGLE ─── */

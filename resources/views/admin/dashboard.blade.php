@@ -1,15 +1,13 @@
-@extends('admin.layout')
+﻿@extends('admin.layout')
 @section('title', 'Dashboard')
 @section('content')
 
-<!-- ══════════════════════
-       PAGE: DASHBOARD
-  ══════════════════════ -->
+
 <div class="page-content active" id="page-dashboard">
 
   <div class="page-header">
     <div class="page-header-left">
-      <h1>Good morning, Admin 👋</h1>
+      <h1>Good morning, Admin ðŸ‘‹</h1>
       <p>Here's what's happening at One-Health today, Friday 27 March 2026.</p>
     </div>
     <button class="btn btn-primary">
@@ -20,7 +18,7 @@
     </button>
   </div>
 
-  <!-- STAT CARDS -->
+  
   <div class="stats-grid">
     <div class="stat-card c-green">
       <div class="stat-card-top">
@@ -29,7 +27,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
-        <span class="stat-trend up">↑ 12.4%</span>
+        <span class="stat-trend up">â†‘ 12.4%</span>
       </div>
       <div>
         <div class="stat-value">48,284</div>
@@ -44,7 +42,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
-        <span class="stat-trend up">↑ 8.1%</span>
+        <span class="stat-trend up">â†‘ 8.1%</span>
       </div>
       <div>
         <div class="stat-value">1,340</div>
@@ -59,7 +57,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <span class="stat-trend up">↑ 5.7%</span>
+        <span class="stat-trend up">â†‘ 5.7%</span>
       </div>
       <div>
         <div class="stat-value">$84,320</div>
@@ -74,7 +72,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
-        <span class="stat-trend down">↓ 2.0%</span>
+        <span class="stat-trend down">â†“ 2.0%</span>
       </div>
       <div>
         <div class="stat-value">47</div>
@@ -83,7 +81,7 @@
     </div>
   </div>
 
-  <!-- CHARTS -->
+  
   <div class="charts-row">
     <div class="chart-card">
       <div class="chart-header">
@@ -138,10 +136,10 @@
     </div>
   </div>
 
-  <!-- BOTTOM ROW -->
+  
   <div class="bottom-row">
 
-    <!-- Today's Appointments -->
+    
     <div class="table-card">
       <div class="table-header">
         <div>
@@ -156,7 +154,7 @@
           <div class="appt-dot" style="background:var(--green)"></div>
           <div class="appt-info">
             <div class="appt-name">Sarah Johnson</div>
-            <div class="appt-dept">General Health — Dr. Rebecca Steffany</div>
+            <div class="appt-dept">General Health â€” Dr. Rebecca Steffany</div>
           </div>
           <span class="badge badge-green">Confirmed</span>
         </div>
@@ -165,7 +163,7 @@
           <div class="appt-dot" style="background:var(--blue)"></div>
           <div class="appt-info">
             <div class="appt-name">Michael Torres</div>
-            <div class="appt-dept">Cardiology — Dr. Stein Albert</div>
+            <div class="appt-dept">Cardiology â€” Dr. Stein Albert</div>
           </div>
           <span class="badge badge-blue">In Progress</span>
         </div>
@@ -174,7 +172,7 @@
           <div class="appt-dot" style="background:var(--amber)"></div>
           <div class="appt-info">
             <div class="appt-name">Emily Watson</div>
-            <div class="appt-dept">Dental — Dr. Alexa Melvin</div>
+            <div class="appt-dept">Dental â€” Dr. Alexa Melvin</div>
           </div>
           <span class="badge badge-amber">Pending</span>
         </div>
@@ -183,7 +181,7 @@
           <div class="appt-dot" style="background:var(--purple)"></div>
           <div class="appt-info">
             <div class="appt-name">James O'Brien</div>
-            <div class="appt-dept">Neurology — Dr. Pham Nguyen</div>
+            <div class="appt-dept">Neurology â€” Dr. Pham Nguyen</div>
           </div>
           <span class="badge badge-green">Confirmed</span>
         </div>
@@ -192,14 +190,14 @@
           <div class="appt-dot" style="background:var(--red)"></div>
           <div class="appt-info">
             <div class="appt-name">Linda Kim</div>
-            <div class="appt-dept">Orthopaedics — Dr. Marcus Webb</div>
+            <div class="appt-dept">Orthopaedics â€” Dr. Marcus Webb</div>
           </div>
           <span class="badge badge-red">Cancelled</span>
         </div>
       </div>
     </div>
 
-    <!-- Doctor Availability -->
+    
     <div class="table-card">
       <div class="table-header">
         <div>
@@ -277,5 +275,7 @@
     </div>
   </div>
 
-</div><!-- /page-dashboard -->
+</div>
 @endsection
+
+

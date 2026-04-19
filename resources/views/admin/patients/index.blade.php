@@ -1,4 +1,4 @@
-@extends('admin.layout')
+﻿@extends('admin.layout')
 @section('title', 'Patients')
 @section('content')
 <div class="page-content active" id="page-patients">
@@ -16,7 +16,6 @@
       Add Patient
     </a>
   </div>
-
 
   <div class="table-card">
     <div class="search-bar">
@@ -99,7 +98,7 @@
           <td>
             <div style="display:flex; gap:8px;">
 
-              <!-- ✏️ EDIT BUTTON -->
+              
               <a href="{{ route('admin.patients.edit', $patient->user_id) }}" class="action-btn">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -112,18 +111,20 @@
       </tbody>
     </table>
     <div class="pagination">
-      <span class="pagination-info">Showing 1–5 of 1,284 patients</span>
+      <span class="pagination-info">Showing 1â€“5 of 1,284 patients</span>
       <div class="pagination-btns">
-        <button class="pg-btn">‹</button>
+        <button class="pg-btn">â€¹</button>
         <button class="pg-btn active">1</button>
         <button class="pg-btn">2</button>
         <button class="pg-btn">3</button>
-        <button class="pg-btn">…</button>
+        <button class="pg-btn">â€¦</button>
         <button class="pg-btn">257</button>
-        <button class="pg-btn">›</button>
+        <button class="pg-btn">â€º</button>
       </div>
     </div>
   </div>
-</div><!-- /page-patients -->
+</div>
 
 @endsection
+
+

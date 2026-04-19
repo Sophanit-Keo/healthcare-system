@@ -968,6 +968,33 @@ textarea.form-control {
 }
 
 /* SECTION SPACING */
+
+/* ─── PATIENT DASHBOARD RESPONSIVE ─── */
+@media (max-width: 767px) {
+    .page-hero h1 {
+        font-size: 1.4rem !important;
+    }
+    .page-hero p {
+        font-size: 0.85rem;
+    }
+    .page-hero {
+        padding: 40px 0 30px !important;
+    }
+    .card-service {
+        padding: 20px 16px !important;
+    }
+    .card-service h5 {
+        font-size: 0.9rem;
+    }
+}
+@media (max-width: 480px) {
+    .page-hero h1 {
+        font-size: 1.15rem !important;
+    }
+    .container {
+        padding: 0 14px;
+    }
+}
 @media (max-width: 767px) {
     .page-section {
         padding: 56px 0;

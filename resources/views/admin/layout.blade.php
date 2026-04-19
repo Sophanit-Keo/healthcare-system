@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,18 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 
-
     <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
     @stack('admin')
 </head>
 
 <body>
-    <!-- SIDEBAR OVERLAY (mobile) -->
+    
     <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <!-- ══════════════════════════════════════
-        SIDEBAR
-    ══════════════════════════════════════ -->
+    
     <aside class="sidebar" id="sidebar">
 
         <div class="sidebar-logo">
@@ -61,7 +58,6 @@
                 Patients
             </a>
         </div>
-
 
         <div class="sidebar-section">
             <div class="sidebar-section-label">Doctors</div>
@@ -131,12 +127,10 @@
 
     </aside>
 
-    <!-- ══════════════════════════════════════
-        MAIN
-    ══════════════════════════════════════ -->
+    
     <div class="main">
 
-        <!-- TOPBAR -->
+        
         <header class="topbar">
             <button class="menu-toggle" onclick="toggleSidebar()">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -150,7 +144,7 @@
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" placeholder="Search anything…">
+                <input type="text" placeholder="Search anythingâ€¦">
             </div>
 
             <div class="topbar-actions">
@@ -166,11 +160,7 @@
                     </svg>
                 </button>
                 <div class="flex items-center gap-3">
-                    <!-- <button class="icon-btn">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="width:24px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-        </svg>
-    </button> -->
+                    
 
                     <div class="admin-container" style="display: flex; align-items: center; gap: 10px;">
                         <div class="text-right hidden-mobile">
@@ -196,9 +186,10 @@
 
         @yield('content')
 
-
         <script src="{{ asset('assets/vendor/appadmin.js') }}"></script>
         @stack('appadmin')
 </body>
 
 </html>
+
+
