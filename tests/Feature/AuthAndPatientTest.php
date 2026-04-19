@@ -26,6 +26,27 @@ class AuthAndPatientTest extends TestCase
             ->assertSee('Create account');
     }
 
+    public function test_forgot_password_page_renders(): void
+    {
+        $this->get('/forgot-password')
+            ->assertOk()
+            ->assertSee('Forgot your password', false);
+    }
+
+    public function test_reset_password_page_renders(): void
+    {
+        $this->get('/reset-password/test-token')
+            ->assertOk()
+            ->assertSee('Reset password');
+    }
+
+    public function test_two_factor_challenge_page_renders(): void
+    {
+        $this->get('/two-factor-challenge')
+            // Fortify only shows the 2FA challenge during an in-progress 2FA login flow.
+            ->assertRedirect('/login');
+    }
+
     public function test_register_creates_patient_profile_and_assigns_patient_role(): void
     {
         $response = $this->post('/register', [
