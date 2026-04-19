@@ -8,9 +8,14 @@ class VitalSign extends Model
 {
     protected $fillable = [
         'encounter_id',
-        'type',
-        'value',
-        'unit',
+        'temperature',
+        'blood_pressure_systolic',
+        'blood_pressure_diastolic',
+        'heart_rate',
+        'respiratory_rate',
+        'oxygen_saturation',
+        'weight',
+        'height',
         'recorded_at',
     ];
     public function encounter() {
