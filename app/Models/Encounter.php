@@ -12,16 +12,18 @@ class Encounter extends Model
         'health_staff_id',
         'facility_id',
         'department_id',
-        'health_staff_id',
         'notes',
-        'encounter_date',
-        'encounter_time',
-        'status',
+        'encounter_type',
+        'started_at',
+        'ended_at',
+        'chief_complaint',
         'diagnosis',
         'treatment_plan',
-        'follow_up_date',
-        'created_by',
-        'updated_by',
+    ];
+
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
     ];
     
     public function appointment() {
@@ -38,5 +40,10 @@ class Encounter extends Model
 
     public function vitalSigns() {
     return $this->hasMany(VitalSign::class);
+    }
+
+    public function labOrders()
+    {
+        return $this->hasMany(LabOrder::class);
     }
 }

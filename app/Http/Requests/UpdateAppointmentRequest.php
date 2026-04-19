@@ -12,7 +12,7 @@ class UpdateAppointmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,14 @@ class UpdateAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'health_staff_id' => ['nullable', 'integer', 'exists:health_staff,id'],
+            'facility_id' => ['nullable', 'integer', 'exists:facilities,id'],
+            'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'appointment_date' => ['sometimes', 'date'],
+            'appointment_time' => ['sometimes', 'date_format:H:i'],
+            'status' => ['sometimes', 'in:scheduled,completed,cancelled,no_show'],
+            'reason' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
         ];
     }
 }

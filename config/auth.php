@@ -42,8 +42,18 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-    ],
 
+        // Used by Laravel Sanctum when calling `auth:sanctum`.
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+        // Optional alias if you prefer `auth:api` for token-authenticated routes.
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
