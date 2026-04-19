@@ -22,7 +22,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $user = $request->user();
+        $user = Auth::user();
 
         $token = $user->createToken('api-token')->plainTextToken;
 
@@ -35,7 +35,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()?->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logout successful',
