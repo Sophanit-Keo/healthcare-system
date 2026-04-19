@@ -6,7 +6,9 @@
     <div class="py-8">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow rounded-lg p-6">
-                <form method="POST" action="{{ route('patient.appointments.store') }}" class="space-y-4">
+                <div id="api-errors" class="hidden mb-4 p-4 rounded bg-red-50 text-red-800 text-sm"></div>
+
+                <form id="appointment-form" method="POST" action="{{ route('patient.appointments.store') }}" class="space-y-4" data-api-submit="1">
                     @csrf
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -65,5 +67,41 @@
             </div>
         </div>
     </div>
-</x-app-layout>
 
+    <script>
+        (function () {
+            const form = document.getElementById('appointment-form');
+            const errorsEl = document.getElementById('api-errors');
+            if (!form || !window.api) return;
+
+            form.addEventListener('submit', async function (e) {
+                if (!form.dataset.apiSubmit) return;
+                e.preventDefault();
+
+                errorsEl.classList.add('hidden');
+                errorsEl.textContent = '';
+
+                const fd = new FormData(form);
+                const payload = Object.fromEntries(fd.entries());
+
+                try {
+                    await window.api.post('/appointments', payload);
+                    window.location.href = @json(route('patient.appointments.index'));
+                } catch (err) {
+                    const resp = err?.response;
+                    if (resp?.status === 422 && resp?.data?.errors) {
+                        const lines = [];
+                        for (const key in resp.data.errors) {
+                            for (const msg of resp.data.errors[key]) lines.push(msg);
+                        }
+                        errorsEl.textContent = lines.join('\n');
+                        errorsEl.classList.remove('hidden');
+                        return;
+                    }
+                    errorsEl.textContent = 'Failed to request appointment via API. Please try again.';
+                    errorsEl.classList.remove('hidden');
+                }
+            });
+        })();
+    </script>
+</x-app-layout>
