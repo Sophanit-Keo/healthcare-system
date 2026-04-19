@@ -12,7 +12,12 @@ use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentControll
 use App\Http\Controllers\Admin\EncounterController as AdminEncounterController;
 use App\Http\Controllers\Admin\LabOrderController as AdminLabOrderController;
 
-
+Route::get('/', function () {
+    // Default entry point: guests go to login, authenticated users go to dashboard.
+    return auth()->check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('login');
+});
 
 Route::get('/dashboard', DashboardController::class)
     ->middleware(['auth'])
