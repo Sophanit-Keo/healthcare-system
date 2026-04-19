@@ -37,6 +37,15 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
+        // Explicitly bind Fortify view responses to our Blade templates.
+        // (Prevents accidental overrides that would return plain strings like "Login View".)
+        Fortify::loginView(fn () => view('auth.login'));
+        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
+        Fortify::resetPasswordView(fn (Request $request) => view('auth.reset-password', ['request' => $request]));
+        Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
+        Fortify::verifyEmailView(fn () => view('auth.verify-email'));
+
         Fortify::authenticateUsing(function (Request $request) {
             $login = $request->input('login');
 

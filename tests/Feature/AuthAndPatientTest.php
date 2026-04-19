@@ -12,6 +12,20 @@ class AuthAndPatientTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_login_page_renders(): void
+    {
+        $this->get('/login')
+            ->assertOk()
+            ->assertSee('Sign in');
+    }
+
+    public function test_register_page_renders(): void
+    {
+        $this->get('/register')
+            ->assertOk()
+            ->assertSee('Create account');
+    }
+
     public function test_register_creates_patient_profile_and_assigns_patient_role(): void
     {
         $response = $this->post('/register', [
@@ -73,4 +87,3 @@ class AuthAndPatientTest extends TestCase
         $response->assertJsonStructure(['token', 'user']);
     }
 }
-
