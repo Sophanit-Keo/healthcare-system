@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\EncounterController;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -22,8 +23,14 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:patients.delete');
 
     Route::apiResource('appointments', AppointmentController::class)
-        ->middleware('permission:appointments.view');
+        ->middlewareFor(['index', 'show'], 'permission:appointments.view')
+        ->middlewareFor(['store'], 'permission:appointments.create')
+        ->middlewareFor(['update'], 'permission:appointments.update')
+        ->middlewareFor(['destroy'], 'permission:appointments.delete');
 
     Route::apiResource('encounters', EncounterController::class)
-        ->middleware('permission:encounters.view');
+        ->middlewareFor(['index', 'show'], 'permission:encounters.view')
+        ->middlewareFor(['store'], 'permission:encounters.create')
+        ->middlewareFor(['update'], 'permission:encounters.update')
+        ->middlewareFor(['destroy'], 'permission:encounters.delete');
 });
