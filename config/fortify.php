@@ -45,7 +45,8 @@ return [
     |
     */
 
-    'username' => 'email',
+    // We accept either email or username during login.
+    'username' => 'login',
 
     'email' => 'email',
 
@@ -73,7 +74,7 @@ return [
     |
     */
 
-    'home' => '/home',
+    'home' => '/dashboard',
 
     /*
     |--------------------------------------------------------------------------
