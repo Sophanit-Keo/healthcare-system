@@ -1,4 +1,4 @@
-﻿@extends('admin.layout')
+@extends('admin.layout')
 @section('title', 'Patients')
 @section('content')
 <div class="page-content active" id="page-patients">
@@ -23,7 +23,8 @@
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <form method="GET" action="{{ route('admin.patients.index') }}">
+        <form method="GET" action="{{ route('admin.patients.index') }}" style="display:contents">
+          @if(request('status'))<input type="hidden" name="status" value="{{ request('status') }}">@endif
           <input type="text"
             name="search"
             value="{{ request('search') }}"
@@ -31,27 +32,19 @@
         </form>
       </div>
       <div class="status-filter">
-        <a href="{{ route('admin.patients.index') }}"
+        <a href="{{ route('admin.patients.index', array_merge(request()->except('status','page'), [])) }}"
           class="status-tab {{ request('status') == null ? 'active' : '' }}">
           All
         </a>
-
-        <a href="{{ route('admin.patients.index', ['status' => 'active']) }}"
+        <a href="{{ route('admin.patients.index', array_merge(request()->except('status','page'), ['status'=>'active'])) }}"
           class="status-tab {{ request('status') == 'active' ? 'active' : '' }}">
           Active
         </a>
-
-        <a href="{{ route('admin.patients.index', ['status' => 'inactive']) }}"
+        <a href="{{ route('admin.patients.index', array_merge(request()->except('status','page'), ['status'=>'inactive'])) }}"
           class="status-tab {{ request('status') == 'inactive' ? 'active' : '' }}">
           Inactive
         </a>
       </div>
-      <button class="btn btn-outline" style="margin-left:auto">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-        Export
-      </button>
     </div>
     <table class="data-table">
       <thead>
@@ -99,7 +92,7 @@
             <div style="display:flex; gap:8px;">
 
               
-              <a href="{{ route('admin.patients.edit', $patient->user_id) }}" class="action-btn">
+              <a href="{{ route('admin.patients.edit', $patient->PatientID) }}" class="action-btn">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
@@ -111,15 +104,23 @@
       </tbody>
     </table>
     <div class="pagination">
-      <span class="pagination-info">Showing 1â€“5 of 1,284 patients</span>
+      <span class="pagination-info">Showing {{ $patients->firstItem() }}–{{ $patients->lastItem() }} of {{ $patients->total() }} patients</span>
       <div class="pagination-btns">
-        <button class="pg-btn">â€¹</button>
-        <button class="pg-btn active">1</button>
-        <button class="pg-btn">2</button>
-        <button class="pg-btn">3</button>
-        <button class="pg-btn">â€¦</button>
-        <button class="pg-btn">257</button>
-        <button class="pg-btn">â€º</button>
+        @if($patients->onFirstPage())
+          <button class="pg-btn" disabled>‹</button>
+        @else
+          <a href="{{ $patients->previousPageUrl() }}" class="pg-btn">‹</a>
+        @endif
+
+        @foreach($patients->getUrlRange(1, $patients->lastPage()) as $page => $url)
+          <a href="{{ $url }}" class="pg-btn {{ $page == $patients->currentPage() ? 'active' : '' }}">{{ $page }}</a>
+        @endforeach
+
+        @if($patients->hasMorePages())
+          <a href="{{ $patients->nextPageUrl() }}" class="pg-btn">›</a>
+        @else
+          <button class="pg-btn" disabled>›</button>
+        @endif
       </div>
     </div>
   </div>

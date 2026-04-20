@@ -7,9 +7,29 @@ use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = Appointment::latest()->paginate(10);
+        $query = Appointment::query();
+
+        if ($request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('patient_name', 'like', "%{$search}%")
+                  ->orWhere('doctor', 'like', "%{$search}%")
+                  ->orWhere('department', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->date) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $appointments = $query->latest()->paginate(10)->withQueryString();
         return view('admin.appointments.index', compact('appointments'));
     }
 

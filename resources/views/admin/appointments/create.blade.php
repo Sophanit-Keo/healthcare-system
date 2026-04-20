@@ -1,4 +1,4 @@
-﻿@extends('admin.layout')
+@extends('admin.layout')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.appointments.index') }}" class="action-btn back-btn">
-                    â†
+                    ←
                 </a>
                 <div>
                     <h1>Book Appointment</h1>
@@ -86,7 +86,7 @@
                 
                 <div class="form-group">
                     <label class="form-label">Notes</label>
-                    <textarea name="notes" class="form-textarea" placeholder="Reason for visit or notesâ€¦"></textarea>
+                    <textarea name="notes" class="form-textarea" placeholder="Reason for visit or notes…"></textarea>
                 </div>
 
             </div>

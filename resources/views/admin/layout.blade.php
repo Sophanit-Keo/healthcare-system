@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>@yield('title') | OneHealth Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
@@ -15,14 +15,14 @@
 </head>
 
 <body>
-    
+
     <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
     
     <aside class="sidebar" id="sidebar">
 
         <div class="sidebar-logo">
-            <a href="#">
+            <a href="{{ route('admin.dashboard') }}">
                 <div class="logo-icon">
                     <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -62,7 +62,7 @@
         <div class="sidebar-section">
             <div class="sidebar-section-label">Doctors</div>
 
-            <a href="#" class="nav-item {{ request()->routeIs('admin.doctors.index') ? 'active' : '' }}">
+            <a href="{{ route('admin.doctors.index') }}" class="nav-item {{ request()->routeIs('admin.doctors.index') ? 'active' : '' }}">
                 <div class="nav-icon">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -75,26 +75,13 @@
         <div class="sidebar-section">
             <div class="sidebar-section-label">Appointments</div>
 
-            <a href="#" class="nav-item {{ request()->routeIs('admin.appointments.index') ? 'active' : '' }}">
+            <a href="{{ route('admin.appointments.index') }}" class="nav-item {{ request()->routeIs('admin.appointments.index') ? 'active' : '' }}">
                 <div class="nav-icon">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                 </div>
                 Appointments
-            </a>
-        </div>
-
-        <div class="sidebar-section">
-            <div class="sidebar-section-label">Blog / News</div>
-
-            <a href="#" class="nav-item {{ request()->routeIs('admin.blog.index') ? 'active' : '' }}">
-                <div class="nav-icon">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </div>
-                Blog / News
             </a>
         </div>
 
@@ -114,10 +101,10 @@
 
         <div class="sidebar-bottom">
             <div class="admin-profile">
-                <div class="admin-avatar">AD</div>
+                <div class="admin-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
                 <div class="admin-info">
-                    <div class="admin-name">Admin User</div>
-                    <div class="admin-role">Super Administrator</div>
+                    <div class="admin-name">{{ Auth::user()->name }}</div>
+                    <div class="admin-role">{{ ucfirst(Auth::user()->role ?? 'Admin') }}</div>
                 </div>
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.3)" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -127,10 +114,8 @@
 
     </aside>
 
-    
     <div class="main">
 
-        
         <header class="topbar">
             <button class="menu-toggle" onclick="toggleSidebar()">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -144,7 +129,7 @@
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" placeholder="Search anythingâ€¦">
+                <input type="text" placeholder="Search anything…">
             </div>
 
             <div class="topbar-actions">
@@ -159,10 +144,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                     </svg>
                 </button>
-                <div class="flex items-center gap-3">
-                    
-
-                    <div class="admin-container" style="display: flex; align-items: center; gap: 10px;">
+                <div class="admin-container" style="display: flex; align-items: center; gap: 10px;">
                         <div class="text-right hidden-mobile">
                             <div style="font-size: 0.85rem; font-weight: 600; color: #333;">{{ Auth::user()->name }}</div>
 
@@ -180,7 +162,6 @@
                             {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
                         </div>
                     </div>
-                </div>
             </div>
         </header>
 
@@ -191,5 +172,4 @@
 </body>
 
 </html>
-
 

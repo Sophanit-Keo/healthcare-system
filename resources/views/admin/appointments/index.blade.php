@@ -1,4 +1,4 @@
-﻿@extends('admin.layout')
+@extends('admin.layout')
 @section('title', 'Appointments')
 
 @section('content')
@@ -34,17 +34,29 @@
 
     <div class="table-card">
       <div class="search-bar">
-        <div class="search-input-wrap">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input type="text" placeholder="Search appointmentsâ€¦">
-        </div>
+        <form method="GET" action="{{ route('admin.appointments.index') }}" style="display:contents">
+          <div class="search-input-wrap">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search appointments…">
+          </div>
+          @if(request('status'))<input type="hidden" name="status" value="{{ request('status') }}">@endif
+          @if(request('date'))<input type="hidden" name="date" value="{{ request('date') }}">@endif
+        </form>
         <div class="status-filter">
-          <button class="status-tab active">All</button>
-          <button class="status-tab">Confirmed</button>
-          <button class="status-tab">Pending</button>
-          <button class="status-tab">Cancelled</button>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), [])) }}"
+             class="status-tab {{ !request('status') ? 'active' : '' }}">All</a>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'confirmed'])) }}"
+             class="status-tab {{ request('status')==='confirmed' ? 'active' : '' }}">Confirmed</a>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'pending'])) }}"
+             class="status-tab {{ request('status')==='pending' ? 'active' : '' }}">Pending</a>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'cancelled'])) }}"
+             class="status-tab {{ request('status')==='cancelled' ? 'active' : '' }}">Cancelled</a>
         </div>
-        <input type="date" class="filter-select" style="margin-left:auto" value="2026-03-27">
+        <form method="GET" action="{{ route('admin.appointments.index') }}" style="margin-left:auto">
+          @if(request('search'))<input type="hidden" name="search" value="{{ request('search') }}">@endif
+          @if(request('status'))<input type="hidden" name="status" value="{{ request('status') }}">@endif
+          <input type="date" name="date" class="filter-select" value="{{ request('date') }}" onchange="this.form.submit()">
+        </form>
       </div>
       <table class="data-table">
         <thead>
@@ -59,52 +71,61 @@
           </tr>
         </thead>
         <tbody>
+          @forelse($appointments as $appt)
+          @php
+            $statusBadge = match($appt->status) {
+              'confirmed'   => 'badge-green',
+              'in_progress' => 'badge-blue',
+              'pending'     => 'badge-amber',
+              'cancelled'   => 'badge-red',
+              default       => 'badge-gray',
+            };
+            $initials = strtoupper(substr($appt->patient_name ?? 'PA', 0, 1) . substr(explode(' ', $appt->patient_name ?? 'PA ')[1] ?? 'A', 0, 1));
+          @endphp
           <tr>
-            <td style="color:var(--text-muted);font-size:0.8rem">#APT-0241</td>
-            <td><div class="user-cell"><div class="avatar av-green" style="width:30px;height:30px;font-size:0.7rem">SJ</div><span style="font-weight:500;font-size:0.875rem">Sarah Johnson</span></div></td>
-            <td style="color:var(--text-secondary)">Dr. Rebecca Steffany</td>
-            <td><span class="badge badge-green">General</span></td>
-            <td style="color:var(--text-secondary);font-size:0.85rem">27 Mar 2026 â€” 09:00</td>
-            <td><span class="badge badge-green">Confirmed</span></td>
-            <td><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn danger"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></td>
+            <td style="color:var(--text-muted);font-size:0.8rem">#APT-{{ str_pad($appt->id, 4, '0', STR_PAD_LEFT) }}</td>
+            <td>
+              <div class="user-cell">
+                <div class="avatar av-green" style="width:30px;height:30px;font-size:0.7rem">{{ $initials }}</div>
+                <span style="font-weight:500;font-size:0.875rem">{{ $appt->patient_name }}</span>
+              </div>
+            </td>
+            <td style="color:var(--text-secondary)">{{ $appt->doctor ? 'Dr. '.$appt->doctor : '—' }}</td>
+            <td><span class="badge badge-green">{{ $appt->department }}</span></td>
+            <td style="color:var(--text-secondary);font-size:0.85rem">
+              {{ $appt->date ? $appt->date->format('d M Y') : '—' }}{{ $appt->time ? ' — '.$appt->time : '' }}
+            </td>
+            <td><span class="badge {{ $statusBadge }}">{{ ucfirst(str_replace('_', ' ', $appt->status ?? 'pending')) }}</span></td>
+            <td>
+              <form method="POST" action="{{ route('admin.appointments.destroy', $appt->id) }}" onsubmit="return confirm('Delete this appointment?')" style="display:inline">
+                @csrf @method('DELETE')
+                <button type="submit" class="action-btn danger">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </form>
+            </td>
           </tr>
-          <tr>
-            <td style="color:var(--text-muted);font-size:0.8rem">#APT-0242</td>
-            <td><div class="user-cell"><div class="avatar av-blue" style="width:30px;height:30px;font-size:0.7rem">MT</div><span style="font-weight:500;font-size:0.875rem">Michael Torres</span></div></td>
-            <td style="color:var(--text-secondary)">Dr. Stein Albert</td>
-            <td><span class="badge badge-blue">Cardiology</span></td>
-            <td style="color:var(--text-secondary);font-size:0.85rem">27 Mar 2026 â€” 09:30</td>
-            <td><span class="badge badge-blue">In Progress</span></td>
-            <td><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn danger"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></td>
-          </tr>
-          <tr>
-            <td style="color:var(--text-muted);font-size:0.8rem">#APT-0243</td>
-            <td><div class="user-cell"><div class="avatar av-pink" style="width:30px;height:30px;font-size:0.7rem">EW</div><span style="font-weight:500;font-size:0.875rem">Emily Watson</span></div></td>
-            <td style="color:var(--text-secondary)">Dr. Alexa Melvin</td>
-            <td><span class="badge badge-amber">Dental</span></td>
-            <td style="color:var(--text-secondary);font-size:0.85rem">27 Mar 2026 â€” 10:15</td>
-            <td><span class="badge badge-amber">Pending</span></td>
-            <td><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button class="action-btn danger"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></td>
-          </tr>
-          <tr>
-            <td style="color:var(--text-muted);font-size:0.8rem">#APT-0244</td>
-            <td><div class="user-cell"><div class="avatar av-red" style="width:30px;height:30px;font-size:0.7rem">LK</div><span style="font-weight:500;font-size:0.875rem">Linda Kim</span></div></td>
-            <td style="color:var(--text-secondary)">Dr. Marcus Webb</td>
-            <td><span class="badge badge-gray">Orthopaedics</span></td>
-            <td style="color:var(--text-secondary);font-size:0.85rem">27 Mar 2026 â€” 14:00</td>
-            <td><span class="badge badge-red">Cancelled</span></td>
-            <td><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button class="action-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button><button class="action-btn danger"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></td>
-          </tr>
+          @empty
+          <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted)">No appointments found.</td></tr>
+          @endforelse
         </tbody>
       </table>
       <div class="pagination">
-        <span class="pagination-info">Showing 1â€“4 of 24 appointments today</span>
+        <span class="pagination-info">Showing {{ $appointments->firstItem() ?? 0 }}–{{ $appointments->lastItem() ?? 0 }} of {{ $appointments->total() }} appointments</span>
         <div class="pagination-btns">
-          <button class="pg-btn">â€¹</button>
-          <button class="pg-btn active">1</button>
-          <button class="pg-btn">2</button>
-          <button class="pg-btn">3</button>
-          <button class="pg-btn">â€º</button>
+          @if($appointments->onFirstPage())
+            <button class="pg-btn" disabled>‹</button>
+          @else
+            <a href="{{ $appointments->previousPageUrl() }}" class="pg-btn">‹</a>
+          @endif
+          @foreach($appointments->getUrlRange(1, $appointments->lastPage()) as $page => $url)
+            <a href="{{ $url }}" class="pg-btn {{ $page == $appointments->currentPage() ? 'active' : '' }}">{{ $page }}</a>
+          @endforeach
+          @if($appointments->hasMorePages())
+            <a href="{{ $appointments->nextPageUrl() }}" class="pg-btn">›</a>
+          @else
+            <button class="pg-btn" disabled>›</button>
+          @endif
         </div>
       </div>
     </div>

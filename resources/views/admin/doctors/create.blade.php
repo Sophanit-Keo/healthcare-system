@@ -1,4 +1,4 @@
-﻿@extends('admin.layout')
+@extends('admin.layout')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.doctors.index') }}" class="action-btn back-btn">
-                    â†
+                    ←
                 </a>
                 <div>
                     <h1>Add New Doctor</h1>
@@ -22,7 +22,7 @@
     
     <div class="modal-like">
 
-        <form action="#" method="POST">
+        <form action="{{ route('admin.doctors.store') }}" method="POST">
             @csrf
 
             <div class="form-grid">
@@ -80,7 +80,7 @@
 
                 <div class="form-group full">
                     <label class="form-label">Biography / Notes</label>
-                    <textarea name="bio" class="form-textarea" placeholder="Doctor's professional summaryâ€¦"></textarea>
+                    <textarea name="bio" class="form-textarea" placeholder="Doctor's professional summary…"></textarea>
                 </div>
 
             </div>

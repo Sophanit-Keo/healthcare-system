@@ -1,4 +1,4 @@
-﻿@extends('layout.main')
+@extends('layout.main')
 
 @push('style')
 <style>
@@ -18,14 +18,14 @@
 @section('content')
 @if(session('success'))
 <div id="toast" style="position:fixed;top:30px;right:30px;z-index:9999;min-width:320px;max-width:420px;padding:18px 24px;border-radius:12px;color:#fff;font-weight:500;font-size:.95rem;box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s;opacity:0;background:linear-gradient(135deg,#1a8a6e,#12705a)">
-  <span style="font-size:22px">âœ…</span><span>{{ session('success') }}</span>
+  <span style="font-size:22px">✅</span><span>{{ session('success') }}</span>
 </div>
 <script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('toast');if(t){setTimeout(function(){t.style.transform='translateX(0)';t.style.opacity='1'},100);setTimeout(function(){t.style.transform='translateX(120%)';t.style.opacity='0'},4000)}});</script>
 @endif
 
 <div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">ðŸ”¬ Book a Lab Test</h1>
+    <h1 style="color:#fff;margin-bottom:4px">🔬 Book a Lab Test</h1>
     <p style="color:rgba(255,255,255,.7)">Request a lab test and get your results online.</p>
   </div>
 </div>
@@ -95,17 +95,17 @@
           <h4 style="margin-bottom:14px;color:#18243a">My Lab Tests</h4>
           @if($labTests->isEmpty())
           <div class="empty-state">
-            <div style="font-size:40px;margin-bottom:8px">ðŸ”¬</div>
+            <div style="font-size:40px;margin-bottom:8px">🔬</div>
             No lab tests booked yet.
           </div>
           @else
           <div style="display:flex;flex-direction:column;gap:12px">
             @foreach($labTests as $test)
             <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:#f7f9fc;border-radius:10px">
-              <div style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:#fdf4ff">ðŸ”¬</div>
+              <div style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:#fdf4ff">🔬</div>
               <div style="flex:1;min-width:0">
                 <div style="font-weight:600;font-size:.9rem;color:#18243a">{{ $test->test_name }}</div>
-                <div style="font-size:.8rem;color:#8898b0">{{ $test->department }} â€¢ {{ $test->test_date->format('d M Y') }}</div>
+                <div style="font-size:.8rem;color:#8898b0">{{ $test->department }} • {{ $test->test_date->format('d M Y') }}</div>
               </div>
               <span class="status-badge" style="{{ $test->status === 'completed' ? 'background:#e8f7f3;color:#1a8a6e' : ($test->status === 'in_progress' ? 'background:#eef2ff;color:#3b82f6' : 'background:#fff7ed;color:#d97706') }}">{{ str_replace('_', ' ', $test->status) }}</span>
             </div>
@@ -115,7 +115,7 @@
         </div>
 
         <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">â† Back to Dashboard</a>
+          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
         </div>
 
       </div>

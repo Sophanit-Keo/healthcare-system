@@ -1,4 +1,4 @@
-﻿@extends('admin.layout')
+@extends('admin.layout')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.blog.index') }}" class="action-btn back-btn">
-                    â†
+                    ←
                 </a>
                 <div>
                     <h1>New Blog Post</h1>
@@ -30,7 +30,7 @@
                 
                 <div class="form-group full">
                     <label class="form-label">Post Title<span>*</span></label>
-                    <input type="text" name="title" class="form-input" placeholder="Enter an engaging titleâ€¦" required>
+                    <input type="text" name="title" class="form-input" placeholder="Enter an engaging title…" required>
                 </div>
 
                 
@@ -72,13 +72,13 @@
                 
                 <div class="form-group full">
                     <label class="form-label">Content / Excerpt</label>
-                    <textarea name="content" class="form-textarea" placeholder="Write the article content or excerptâ€¦" style="min-height:140px"></textarea>
+                    <textarea name="content" class="form-textarea" placeholder="Write the article content or excerpt…" style="min-height:140px"></textarea>
                 </div>
 
                 
                 <div class="form-group full">
                     <label class="form-label">Post Emoji / Thumbnail</label>
-                    <input type="text" name="emoji" class="form-input" placeholder="e.g. ðŸŒ or ðŸ’Š">
+                    <input type="text" name="emoji" class="form-input" placeholder="e.g. 🌍 or 💊">
                 </div>
 
             </div>

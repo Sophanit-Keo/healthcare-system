@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,7 +23,7 @@
                 <div class="form-header">
                     <span class="eyebrow">New Account</span>
                     <h1>Create your account</h1>
-                    <p>Start your journey to better health today â€” it's completely free.</p>
+                    <p>Start your journey to better health today — it's completely free.</p>
                 </div>
 
                 @if ($errors->any())

@@ -6,7 +6,6 @@ use App\Models\Patients;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class PatientsController extends Controller
 {
     public function index(Request $request)
@@ -15,6 +14,16 @@ class PatientsController extends Controller
 
         if ($request->status) {
             $query->where('status', $request->status);
+        }
+
+        if ($request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
         }
 
         $patients = $query->latest()->paginate(10)->withQueryString();
@@ -48,22 +57,17 @@ class PatientsController extends Controller
         return redirect()->route('admin.patients.index')->with('success', 'Patient created successfully.');
     }
 
-    public function show(Patients $patients)
+    public function edit(Patients $patient)
     {
-        return view('admin.patients.index', compact('patients'));
+        return view('admin.patients.edit', compact('patient'));
     }
 
-    public function edit(Patients $patients)
-    {
-        return view('admin.patients.create', compact('patients'));
-    }
-
-    public function update(Request $request, Patients $patients)
+    public function update(Request $request, Patients $patient)
     {
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:patients,email',
+            'email' => 'required|string|email|max:255|unique:patients,email,' . $patient->PatientID . ',PatientID',
             'phone' => 'required|string|max:20',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:male,female',
@@ -72,25 +76,17 @@ class PatientsController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        $patients->update($validatedData);
+        $patient->update($validatedData);
 
         return redirect()
             ->route('admin.patients.index')
             ->with('success', 'Patient updated successfully.');
     }
-    
-    public function destroy(Patients $patients)
+
+    public function destroy(Patients $patient)
     {
-        //
-    }
-    public function search(Request $request)
-    {
-        $query = $request->input('search');
-        $patients = Patients::where('email', 'like', "%$query%");
-        return view('admin.patients.index', [
-            'patients' => $patients->get(),
-            'query' => $query
-        ]);
+        $patient->delete();
+        return redirect()->route('admin.patients.index')->with('success', 'Patient deleted.');
     }
 }
 

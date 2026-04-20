@@ -1,4 +1,4 @@
-﻿@extends('layout.main')
+@extends('layout.main')
 
 @push('style')
 <style>
@@ -19,14 +19,14 @@
 @section('content')
 @if(session('success'))
 <div id="toast" style="position:fixed;top:30px;right:30px;z-index:9999;min-width:320px;max-width:420px;padding:18px 24px;border-radius:12px;color:#fff;font-weight:500;font-size:.95rem;box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s;opacity:0;background:linear-gradient(135deg,#1a8a6e,#12705a)">
-  <span style="font-size:22px">âœ…</span><span>{{ session('success') }}</span>
+  <span style="font-size:22px">✅</span><span>{{ session('success') }}</span>
 </div>
 <script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('toast');if(t){setTimeout(function(){t.style.transform='translateX(0)';t.style.opacity='1'},100);setTimeout(function(){t.style.transform='translateX(120%)';t.style.opacity='0'},4000)}});</script>
 @endif
 
 <div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">ðŸ’¬ Chat with Doctor</h1>
+    <h1 style="color:#fff;margin-bottom:4px">💬 Chat with Doctor</h1>
     <p style="color:rgba(255,255,255,.7)">Send messages and get medical advice from our doctors.</p>
   </div>
 </div>
@@ -72,7 +72,7 @@
           <h4 style="margin-bottom:14px;color:#18243a">Message History</h4>
           @if($messages->isEmpty())
           <div class="empty-state">
-            <div style="font-size:40px;margin-bottom:8px">ðŸ’¬</div>
+            <div style="font-size:40px;margin-bottom:8px">💬</div>
             No messages yet. Send one to get started!
           </div>
           @else
@@ -80,7 +80,7 @@
             @foreach($messages as $msg)
             <div class="msg-item">
               <div class="msg-icon" style="background:{{ $msg->sender_id == Auth::id() ? 'linear-gradient(135deg,#1a8a6e,#12705a)' : 'linear-gradient(135deg,#3b82f6,#2563eb)' }}">
-                {{ $msg->sender_id == Auth::id() ? 'ðŸ“¤' : 'ðŸ“¥' }}
+                {{ $msg->sender_id == Auth::id() ? '📤' : '📥' }}
               </div>
               <div style="flex:1;min-width:0">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
@@ -103,7 +103,7 @@
         </div>
 
         <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">â† Back to Dashboard</a>
+          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
         </div>
 
       </div>

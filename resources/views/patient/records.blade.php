@@ -1,4 +1,4 @@
-﻿@extends('layout.main')
+@extends('layout.main')
 
 @push('style')
 <style>
@@ -15,7 +15,7 @@
 @section('content')
 <div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">ðŸ“‹ My Medical Records</h1>
+    <h1 style="color:#fff;margin-bottom:4px">📋 My Medical Records</h1>
     <p style="color:rgba(255,255,255,.7)">View your complete medical history and reports.</p>
   </div>
 </div>
@@ -29,7 +29,7 @@
           <h4 style="margin-bottom:18px;color:#18243a">All Records ({{ $records->count() }})</h4>
           @if($records->isEmpty())
           <div class="empty-state">
-            <div style="font-size:40px;margin-bottom:8px">ðŸ“‹</div>
+            <div style="font-size:40px;margin-bottom:8px">📋</div>
             No medical records found.
           </div>
           @else
@@ -37,11 +37,11 @@
             @foreach($records as $record)
             <div class="record-item">
               <div class="record-icon" style="background:{{ $record->type === 'lab' ? '#eef2ff' : ($record->type === 'imaging' ? '#fdf2f8' : ($record->type === 'surgery' ? '#fef2f2' : '#fff7ed')) }}">
-                {{ $record->type === 'lab' ? 'ðŸ”¬' : ($record->type === 'imaging' ? 'ðŸ©»' : ($record->type === 'surgery' ? 'ðŸ¥' : ($record->type === 'checkup' ? 'ðŸ©º' : 'ðŸ“„'))) }}
+                {{ $record->type === 'lab' ? '🔬' : ($record->type === 'imaging' ? '🩻' : ($record->type === 'surgery' ? '🏥' : ($record->type === 'checkup' ? '🩺' : '📄'))) }}
               </div>
               <div style="flex:1;min-width:0">
                 <div style="font-weight:600;font-size:.9rem;color:#18243a">{{ $record->title }}</div>
-                <div style="font-size:.8rem;color:#8898b0">{{ $record->department }} â€¢ Dr. {{ $record->doctor_name }}</div>
+                <div style="font-size:.8rem;color:#8898b0">{{ $record->department }} • Dr. {{ $record->doctor_name }}</div>
                 <div style="font-size:.8rem;color:#8898b0">{{ $record->record_date->format('d M Y') }}</div>
                 @if($record->diagnosis)
                 <div style="font-size:.8rem;color:#526078;margin-top:4px"><strong>Diagnosis:</strong> {{ $record->diagnosis }}</div>
@@ -58,7 +58,7 @@
         </div>
 
         <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">â† Back to Dashboard</a>
+          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
         </div>
 
       </div>

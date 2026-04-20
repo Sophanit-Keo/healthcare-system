@@ -1,4 +1,4 @@
-﻿<footer class="page-footer">
+<footer class="page-footer">
   <div class="container">
     <div class="row px-md-3">
       <div class="col-sm-6 col-lg-3 py-3">
