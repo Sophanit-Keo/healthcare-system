@@ -6,9 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
+
     public function up(): void
     {
         Schema::create('patient_facility_consents', function (Blueprint $table) {
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->timestamp('revoked_at')->nullable();
             $table->timestamp('expires_at')->nullable();
 
-            // If set, tracks who recorded this change (patient or staff/admin).
+            
             $table->foreignId('updated_by_user_id')->nullable()->constrained('users')->nullOnDelete();
 
             $table->timestamps();
@@ -34,9 +33,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
+
     public function down(): void
     {
         Schema::dropIfExists('patient_facility_consents');

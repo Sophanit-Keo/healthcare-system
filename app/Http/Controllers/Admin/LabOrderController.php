@@ -25,9 +25,7 @@ class LabOrderController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request): View
     {
         abort_unless($request->user()->can('lab_orders.view'), 403);
@@ -42,9 +40,7 @@ class LabOrderController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create(Request $request): View
     {
         abort_unless($request->user()->can('lab_orders.create'), 403);
@@ -56,9 +52,7 @@ class LabOrderController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request): RedirectResponse
     {
         abort_unless($request->user()->can('lab_orders.create'), 403);
@@ -110,9 +104,7 @@ class LabOrderController extends Controller
             ->with('status', 'lab-order-created');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, LabOrder $labOrder): View
     {
         abort_unless($request->user()->can('lab_orders.view'), 403);
@@ -122,25 +114,19 @@ class LabOrderController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
         abort(404);

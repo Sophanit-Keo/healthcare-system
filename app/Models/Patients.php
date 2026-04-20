@@ -6,21 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patients extends Model
 {
-    protected $primaryKey = 'PatientID';
-
     protected $fillable = [
         'user_id',
-        'first_name',
-        'last_name',
-        'email',
         'phone',
-        'address',
         'date_of_birth',
         'gender',
-        'department',
-        'status',
-        'notes',
+        'address',
+        'blood_type',
+        'emergency_contact_name',
+        'emergency_contact_phone',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

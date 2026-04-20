@@ -78,21 +78,21 @@ class RolesAndPermissionsSeeder extends Seeder
             'appointments.update',
             'consents.view',
         ]);
-
-        // Patients are authorized by role checks for their own data; keep permissions minimal.
         $patient->givePermissionTo([
             'consents.manage',
         ]);
         $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            ['name' => 'Admin', 'username' => 'admin', 'password' => bcrypt('password')]
+            ['email' => 'admin@gmail.com'],
+            ['name' => 'Admin', 'username' => 'admin', 'password' => bcrypt('password'), 'role' => 'admin']
         );
+        $admin->update(['role' => 'admin']);
         $admin->assignRole('admin');
 
         $doctor = User::firstOrCreate(
-            ['email' => 'doctor@example.com'],
-            ['name' => 'Doctor', 'username' => 'doctor', 'password' => bcrypt('password')]
+            ['email' => 'doctor@gmail.com'],
+            ['name' => 'Doctor', 'username' => 'doctor', 'password' => bcrypt('password'), 'role' => 'doctor']
         );
+        $doctor->update(['role' => 'doctor']);
         $doctor->assignRole('doctor');
 
         $defaultFacility = Facility::query()->first();
@@ -110,7 +110,7 @@ class RolesAndPermissionsSeeder extends Seeder
                     'gender' => null,
                     'date_of_birth' => null,
                     'phone' => null,
-                    'email' => 'doctor@example.com',
+                    'email' => 'doctor@gmail.com',
                     'role' => 'doctor',
                     'license_number' => null,
                     'hire_date' => null,
@@ -120,9 +120,10 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $patientUser = User::firstOrCreate(
-            ['email' => 'patient@example.com'],
-            ['name' => 'Patient', 'username' => 'patient', 'password' => bcrypt('password')]
+            ['email' => 'patient@gmail.com'],
+            ['name' => 'Patient', 'username' => 'patient', 'password' => bcrypt('password'), 'role' => 'patient']
         );
+        $patientUser->update(['role' => 'patient']);
         $patientUser->assignRole('patient');
         $patientUser->patient()->firstOrCreate([]);
     }

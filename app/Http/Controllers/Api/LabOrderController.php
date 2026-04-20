@@ -24,9 +24,7 @@ class LabOrderController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -46,9 +44,7 @@ class LabOrderController extends Controller
         return LabOrderResource::collection($query->latest()->paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StoreLabOrderRequest $request)
     {
         $user = $request->user();
@@ -103,9 +99,7 @@ class LabOrderController extends Controller
             ->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, LabOrder $labOrder)
     {
         $user = $request->user();
@@ -120,9 +114,7 @@ class LabOrderController extends Controller
         return new LabOrderResource($labOrder->load('items'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdateLabOrderRequest $request, LabOrder $labOrder)
     {
         $user = $request->user();
@@ -152,9 +144,7 @@ class LabOrderController extends Controller
         return new LabOrderResource($labOrder->load('items'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Request $request, LabOrder $labOrder)
     {
         $user = $request->user();

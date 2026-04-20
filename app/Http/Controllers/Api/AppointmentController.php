@@ -22,16 +22,12 @@ class AppointmentController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
         $user = $request->user();
 
         $query = Appointment::query()->with(['patient.user', 'staff', 'facility', 'department']);
-
-        // Patients can only see their own appointments.
         if ($user->hasRole('patient')) {
             $patientId = $user->patient?->id;
             $query->where('patient_id', $patientId);
@@ -42,15 +38,11 @@ class AppointmentController extends Controller
         return AppointmentResource::collection($query->latest()->paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StoreAppointmentRequest $request)
     {
         $user = $request->user();
         $data = $request->validated();
-
-        // Patient self-service: lock the appointment to the authenticated patient.
         if ($user->hasRole('patient')) {
             $patientId = $user->patient?->id;
             if (! $patientId) {
@@ -63,8 +55,6 @@ class AppointmentController extends Controller
             abort_unless($user->can('appointments.create'), 403);
 
             $this->staffScopeService->enforceFacilityScope($user, $data['facility_id'] ?? null);
-
-            // Staff/admin creating for a patient: require consent when facility_id is provided.
             if (! empty($data['facility_id'])) {
                 $patient = Patient::findOrFail($data['patient_id']);
                 if (! $this->consentService->hasActiveFacilityConsent($patient, (int) $data['facility_id'])) {
@@ -82,9 +72,7 @@ class AppointmentController extends Controller
             ->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, Appointment $appointment)
     {
         $user = $request->user();
@@ -99,9 +87,7 @@ class AppointmentController extends Controller
         return new AppointmentResource($appointment->load(['patient.user', 'staff', 'facility', 'department']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
         $user = $request->user();
@@ -118,9 +104,7 @@ class AppointmentController extends Controller
         return new AppointmentResource($appointment->load(['patient.user', 'staff', 'facility', 'department']));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Request $request, Appointment $appointment)
     {
         $user = $request->user();

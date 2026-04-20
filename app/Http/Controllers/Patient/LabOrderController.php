@@ -9,9 +9,7 @@ use Illuminate\View\View;
 
 class LabOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request): View
     {
         $patientId = $request->user()->patient?->id;
@@ -27,25 +25,19 @@ class LabOrderController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         abort(404);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         abort(404);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, LabOrder $labOrder): View
     {
         abort_unless($labOrder->patient_id === $request->user()->patient?->id, 403);
@@ -55,25 +47,19 @@ class LabOrderController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
         abort(404);

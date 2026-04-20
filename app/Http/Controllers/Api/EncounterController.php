@@ -22,9 +22,7 @@ class EncounterController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -40,9 +38,7 @@ class EncounterController extends Controller
         return EncounterResource::collection($query->latest()->paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StoreEncounterRequest $request)
     {
         $user = $request->user();
@@ -78,9 +74,7 @@ class EncounterController extends Controller
             ->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, Encounter $encounter)
     {
         $user = $request->user();
@@ -95,9 +89,7 @@ class EncounterController extends Controller
         return new EncounterResource($encounter->load(['patient.user', 'vitalSigns']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdateEncounterRequest $request, Encounter $encounter)
     {
         $user = $request->user();
@@ -114,9 +106,7 @@ class EncounterController extends Controller
         return new EncounterResource($encounter->load(['patient.user', 'vitalSigns']));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Request $request, Encounter $encounter)
     {
         $user = $request->user();

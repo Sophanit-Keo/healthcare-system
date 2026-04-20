@@ -8,9 +8,7 @@ use Illuminate\Database\Seeder;
 
 class FacilitiesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    
     public function run(): void
     {
         $facility = Facility::firstOrCreate(

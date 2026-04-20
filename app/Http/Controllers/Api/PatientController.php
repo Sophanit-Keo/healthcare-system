@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Http\Requests\StorePatientRequest;
@@ -11,9 +10,7 @@ use App\Http\Resources\PatientResource;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         abort_unless(request()->user()->can('patients.view'), 403);
@@ -26,9 +23,7 @@ class PatientController extends Controller
         return PatientResource::collection($patients);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StorePatientRequest $request)
     {
         abort_unless($request->user()->can('patients.create'), 403);
@@ -41,9 +36,7 @@ class PatientController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Patient $patient)
     {
         abort_unless(request()->user()->can('patients.view'), 403);
@@ -51,9 +44,7 @@ class PatientController extends Controller
         return new PatientResource($patient->load('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdatePatientRequest $request, Patient $patient)
     {
         abort_unless($request->user()->can('patients.update'), 403);
@@ -63,9 +54,7 @@ class PatientController extends Controller
         return new PatientResource($patient->load('user'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Patient $patient)
     {
         abort_unless(request()->user()->can('patients.delete'), 403);

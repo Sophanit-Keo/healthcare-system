@@ -12,17 +12,14 @@ class PatientsController extends Controller
     {
         $query = Patients::with('user');
 
-        if ($request->status) {
-            $query->where('status', $request->status);
-        }
-
         if ($request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                $q->where('phone', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($uq) use ($search) {
+                      $uq->where('name', 'like', "%{$search}%")
+                         ->orWhere('email', 'like', "%{$search}%");
+                  });
             });
         }
 
@@ -38,17 +35,14 @@ class PatientsController extends Controller
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:patients',
-            'phone' => 'required|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'gender' => 'nullable|in:male,female',
-            'department' => 'nullable|string|max:255',
-            'status' => 'nullable|in:active,inactive',
-            'notes' => 'nullable|string'
+            'phone'                   => 'nullable|string|max:20',
+            'date_of_birth'           => 'nullable|date',
+            'gender'                  => 'nullable|in:male,female,other',
+            'address'                 => 'nullable|string|max:255',
+            'blood_type'              => 'nullable|string|max:10',
+            'emergency_contact_name'  => 'nullable|string|max:255',
+            'emergency_contact_phone' => 'nullable|string|max:20',
         ]);
 
         $validatedData['user_id'] = Auth::id();
@@ -65,15 +59,13 @@ class PatientsController extends Controller
     public function update(Request $request, Patients $patient)
     {
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:patients,email,' . $patient->PatientID . ',PatientID',
-            'phone' => 'required|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'gender' => 'nullable|in:male,female',
-            'department' => 'nullable|string|max:255',
-            'status' => 'nullable|in:active,inactive',
-            'notes' => 'nullable|string'
+            'phone'                   => 'nullable|string|max:20',
+            'date_of_birth'           => 'nullable|date',
+            'gender'                  => 'nullable|in:male,female,other',
+            'address'                 => 'nullable|string|max:255',
+            'blood_type'              => 'nullable|string|max:10',
+            'emergency_contact_name'  => 'nullable|string|max:255',
+            'emergency_contact_phone' => 'nullable|string|max:20',
         ]);
 
         $patient->update($validatedData);

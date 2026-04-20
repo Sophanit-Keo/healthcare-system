@@ -19,23 +19,22 @@ class SampleDataSeeder extends Seeder
 
         foreach ($firstNames as $i => $fn) {
             $ln   = $lastNames[$i];
-            $user = User::create([
-                'name'     => "$fn $ln",
-                'email'    => strtolower("{$fn}.{$ln}{$i}@patient.com"),
-                'password' => Hash::make('password'),
-                'role'     => 'patient',
-            ]);
-            Patients::create([
-                'user_id'       => $user->id,
-                'first_name'    => $fn,
-                'last_name'     => $ln,
-                'email'         => $user->email,
-                'phone'         => '+855 0' . rand(10, 99) . ' ' . rand(100, 999) . ' ' . rand(100, 999),
-                'date_of_birth' => now()->subYears(rand(20, 60))->format('Y-m-d'),
-                'gender'        => $genders[$i % 2],
-                'department'    => $departments[$i % count($departments)],
-                'status'        => 'active',
-            ]);
+            $user = User::firstOrCreate(
+                ['email' => strtolower("{$fn}.{$ln}{$i}@patient.com")],
+                [
+                    'name'     => "$fn $ln",
+                    'password' => Hash::make('password'),
+                    'role'     => 'patient',
+                ]
+            );
+            Patients::firstOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'phone'         => '+855 0' . rand(10, 99) . ' ' . rand(100, 999) . ' ' . rand(100, 999),
+                    'date_of_birth' => now()->subYears(rand(20, 60))->format('Y-m-d'),
+                    'gender'        => $genders[$i % 2],
+                ]
+            );
         }
 
         $docFirst = ['Alex', 'Maria', 'Robert', 'Linda', 'Kevin', 'Susan', 'Mark', 'Patricia', 'Steven', 'Karen'];
@@ -44,24 +43,28 @@ class SampleDataSeeder extends Seeder
 
         foreach ($docFirst as $i => $fn) {
             $ln   = $docLast[$i];
-            $user = User::create([
-                'name'     => "$fn $ln",
-                'email'    => strtolower("{$fn}.{$ln}{$i}@doctor.com"),
-                'password' => Hash::make('password'),
-                'role'     => 'doctor',
-            ]);
-            Doctor::create([
-                'first_name'         => $fn,
-                'last_name'          => $ln,
-                'email'              => $user->email,
-                'phone'              => '+855 0' . rand(10, 99) . ' ' . rand(100, 999) . ' ' . rand(100, 999),
-                'specialization'     => $departments[$i % count($departments)],
-                'status'             => $statuses[$i % count($statuses)],
-                'years_of_experience'=> rand(2, 25),
-                'consultation_fee'   => rand(30, 200),
-                'schedule_load'      => rand(20, 90),
-                'biography_note'     => 'Experienced specialist with a strong background in patient care.',
-            ]);
+            $user = User::firstOrCreate(
+                ['email' => strtolower("{$fn}.{$ln}{$i}@doctor.com")],
+                [
+                    'name'     => "$fn $ln",
+                    'password' => Hash::make('password'),
+                    'role'     => 'doctor',
+                ]
+            );
+            Doctor::firstOrCreate(
+                ['email' => $user->email],
+                [
+                    'first_name'          => $fn,
+                    'last_name'           => $ln,
+                    'phone'               => '+855 0' . rand(10, 99) . ' ' . rand(100, 999) . ' ' . rand(100, 999),
+                    'specialization'      => $departments[$i % count($departments)],
+                    'status'              => $statuses[$i % count($statuses)],
+                    'years_of_experience' => rand(2, 25),
+                    'consultation_fee'    => rand(30, 200),
+                    'schedule_load'       => rand(20, 90),
+                    'biography_note'      => 'Experienced specialist with a strong background in patient care.',
+                ]
+            );
         }
     }
 }

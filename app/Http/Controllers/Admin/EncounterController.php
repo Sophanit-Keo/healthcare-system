@@ -24,9 +24,7 @@ class EncounterController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request): View
     {
         abort_unless($request->user()->can('encounters.view'), 403);
@@ -41,9 +39,7 @@ class EncounterController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create(Request $request): View
     {
         abort_unless($request->user()->can('encounters.create'), 403);
@@ -56,9 +52,7 @@ class EncounterController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request): RedirectResponse
     {
         abort_unless($request->user()->can('encounters.create'), 403);
@@ -95,9 +89,7 @@ class EncounterController extends Controller
             ->with('status', 'encounter-created');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, Encounter $encounter): View
     {
         abort_unless($request->user()->can('encounters.view'), 403);
@@ -107,25 +99,19 @@ class EncounterController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
         abort(404);

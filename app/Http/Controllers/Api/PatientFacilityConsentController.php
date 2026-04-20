@@ -11,9 +11,7 @@ use Illuminate\Http\Request;
 
 class PatientFacilityConsentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -33,9 +31,7 @@ class PatientFacilityConsentController extends Controller
         return PatientFacilityConsentResource::collection($query->latest()->paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StorePatientFacilityConsentRequest $request)
     {
         $user = $request->user();
@@ -67,9 +63,7 @@ class PatientFacilityConsentController extends Controller
             ->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Request $request, PatientFacilityConsent $patientFacilityConsent)
     {
         $user = $request->user();
@@ -80,9 +74,7 @@ class PatientFacilityConsentController extends Controller
         return new PatientFacilityConsentResource($patientFacilityConsent);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdatePatientFacilityConsentRequest $request, PatientFacilityConsent $patientFacilityConsent)
     {
         $user = $request->user();
@@ -105,9 +97,7 @@ class PatientFacilityConsentController extends Controller
         return new PatientFacilityConsentResource($patientFacilityConsent);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Request $request, PatientFacilityConsent $patientFacilityConsent)
     {
         $user = $request->user();
@@ -117,8 +107,6 @@ class PatientFacilityConsentController extends Controller
         if (! $user->hasRole('patient')) {
             abort_unless($user->can('consents.manage'), 403);
         }
-
-        // Default to revoke (keeps audit trail).
         $patientFacilityConsent->update([
             'status' => 'revoked',
             'revoked_at' => now(),
