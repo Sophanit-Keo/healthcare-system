@@ -7,33 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $fillable = [
-        'patient_id',
-        'health_staff_id',
-        'facility_id',
-        'department_id',
-        'appointment_date',
-        'appointment_time',
+        'patient_name',
+        'email',
+        'phone',
+        'doctor',
+        'department',
+        'date',
+        'time',
         'status',
-        'reason',
-        'notes',
+        'message',
+        'user_id',
     ];
-    public function patient() {
-    return $this->belongsTo(Patient::class);
+
+    protected function casts(): array
+    {
+        return [
+            'date' => 'date',
+        ];
     }
 
-    public function staff() {
-    return $this->belongsTo(HealthStaff::class, 'health_staff_id');
-    }
-
-    public function facility() {
-    return $this->belongsTo(Facility::class);
-    }
-
-    public function department() {
-    return $this->belongsTo(Department::class);
-    }
-
-    public function encounter() {
-    return $this->hasOne(Encounter::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
+

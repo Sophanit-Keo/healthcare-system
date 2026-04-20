@@ -13,15 +13,14 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
-    /**
-     * Validate and create a newly registered user.
-     *
-     * @param  array<string, string>  $input
-     *
-     * @throws ValidationException
-     */
     public function create(array $input): User
     {
+        if (isset($input['user_type']) && $input['user_type'] === 'admin') {
+            throw ValidationException::withMessages([
+                'user_type' => 'You are not allowed to register as admin.',
+            ]);
+        }
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -31,13 +30,19 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
+            'phone' => ['required', 'string'],
+            'user_type' => ['required', 'in:patient,doctor'],
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'phone' => $input['phone'],
+            'user_type' => $input['user_type'],
+            'status' => $input['user_type'] === 'doctor' ? 'pending' : 'active',
             'password' => Hash::make($input['password']),
         ]);
     }
 }
+
