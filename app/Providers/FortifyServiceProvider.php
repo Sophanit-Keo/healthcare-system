@@ -13,6 +13,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -29,8 +31,33 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
+        // Explicitly bind Fortify view responses to our Blade templates.
+        // (Prevents accidental overrides that would return plain strings like "Login View".)
+        Fortify::loginView(fn () => view('auth.login'));
+        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
+        Fortify::resetPasswordView(fn (Request $request) => view('auth.reset-password', ['request' => $request]));
+        Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
+        Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
+        Fortify::verifyEmailView(fn () => view('auth.verify-email'));
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $login = $request->input('login');
+
+            $user = User::query()
+                ->where('email', $login)
+                ->orWhere('username', $login)
+                ->first();
+
+            if ($user && Hash::check((string) $request->input('password'), (string) $user->password)) {
+                return $user;
+            }
+
+            return null;
+        });
+
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower((string) $request->input('login')).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

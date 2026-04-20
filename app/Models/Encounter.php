@@ -10,7 +10,20 @@ class Encounter extends Model
         'appointment_id',
         'patient_id',
         'health_staff_id',
+        'facility_id',
+        'department_id',
         'notes',
+        'encounter_type',
+        'started_at',
+        'ended_at',
+        'chief_complaint',
+        'diagnosis',
+        'treatment_plan',
+    ];
+
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
     ];
     
     public function appointment() {
@@ -27,5 +40,10 @@ class Encounter extends Model
 
     public function vitalSigns() {
     return $this->hasMany(VitalSign::class);
+    }
+
+    public function labOrders()
+    {
+        return $this->hasMany(LabOrder::class);
     }
 }

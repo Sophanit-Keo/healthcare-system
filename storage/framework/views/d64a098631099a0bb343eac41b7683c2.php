@@ -1,0 +1,79 @@
+<div class="topbar">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-8 text-sm">
+        <div class="site-info">
+          <a href="#">📞 +00 123 4455 6666</a>
+          <span class="divider">|</span>
+          <a href="#">✉️ mail@example.com</a>
+        </div>
+      </div>
+      <div class="col-sm-4 text-right text-sm">
+        <div class="social-mini-button">
+          <a href="#">f</a>
+          <a href="#">t</a>
+          <a href="#">d</a>
+          <a href="#">in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<nav class="navbar" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <span class="text-primary">One</span>-Health
+    </a>
+    <div class="input-navbar" style="flex:0 0 auto">
+      <div class="input-group-text">🔍</div>
+      <input type="text" class="form-control" placeholder="Enter keyword..">
+    </div>
+    <button class="navbar-toggler" onclick="document.getElementById('nav').classList.toggle('show')">
+      <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+        <rect y="0" width="22" height="2" rx="1" fill="currentColor" />
+        <rect y="6" width="16" height="2" rx="1" fill="currentColor" />
+        <rect y="12" width="22" height="2" rx="1" fill="currentColor" />
+      </svg>
+    </button>
+    <div class="navbar-collapse" id="nav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item "><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo e(route('home')); ?>#about_us">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo e(route('home')); ?>#our_doctor">Doctors</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo e(route('home')); ?>#blog_new">News</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo e(route('home')); ?>#appointment">Contact</a></li>
+
+        <?php if(Route::has('login')): ?>
+        <nav class="nav-item">
+          <?php if(auth()->guard()->check()): ?>
+          <a
+            href="<?php echo e(url('/dashboard')); ?>"
+            class="nav-link">
+            Dashboard
+          </a>
+          <?php else: ?>
+          <a
+            href="<?php echo e(route('login')); ?>"
+            class="nav-link">
+            Log in
+          </a>
+
+          <?php if(Route::has('register')): ?>
+          <a
+            href="<?php echo e(route('register')); ?>"
+            class="nav-link">
+            Register
+          </a>
+          <?php endif; ?>
+          <?php endif; ?>
+        </nav>
+        <?php endif; ?>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<?php /**PATH C:\Users\REACH\Desktop\Laravel assignment\resources\views/layout/navbar.blade.php ENDPATH**/ ?>

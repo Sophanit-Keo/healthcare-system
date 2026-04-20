@@ -11,6 +11,7 @@ class HealthStaff extends Model
     protected $table = 'health_staff';
 
     protected $fillable = [
+        'user_id',
         'staff_code',
         'facility_id',
         'department_id',
@@ -25,6 +26,11 @@ class HealthStaff extends Model
         'hire_date',
         'status',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function facility(): BelongsTo
     {
