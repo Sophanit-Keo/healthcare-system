@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('health_staff_id')->nullable()->constrained('health_staff')->nullOnDelete();
-            $table->foreignId('facility_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
-
-            $table->date('appointment_date');
-            $table->time('appointment_time');
-            $table->enum('status', ['scheduled', 'completed', 'cancelled', 'no_show'])->default('scheduled');
-            $table->string('reason')->nullable();
-            $table->text('notes')->nullable();
+            $table->string('patient_name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('doctor')->nullable();
+            $table->string('department');
+            $table->date('date');
+            $table->time('time')->nullable();
+            $table->string('status')->default('pending');
+            $table->text('message')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }
