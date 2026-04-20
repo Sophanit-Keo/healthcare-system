@@ -1,4 +1,53 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Healthcare System
+
+A Laravel-based healthcare management system with admin, doctor, and patient roles.
+
+## Requirements
+
+- PHP 8.2+
+- Composer
+- Node.js & npm
+- MySQL
+
+## Setup
+
+```bash
+git clone https://github.com/Sophanit-Keo/healthcare-system.git
+cd healthcare-system
+
+composer install
+npm install && npm run build
+
+cp .env.example .env
+php artisan key:generate
+```
+
+Edit `.env` and set your database credentials:
+
+```
+DB_DATABASE=heathcare_project
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+Create the database, then run:
+
+```bash
+php artisan migrate
+php artisan db:seed --class=RolesAndPermissionsSeeder
+php artisan db:seed --class=SampleDataSeeder
+php artisan serve
+```
+
+Visit [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+## Demo Accounts
+
+| Role    | Email              | Password |
+|---------|--------------------|----------|
+| Admin   | admin@gmail.com    | password |
+| Doctor  | doctor@gmail.com   | password |
+| Patient | patient@gmail.com  | password |
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
