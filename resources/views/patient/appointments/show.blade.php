@@ -7,7 +7,10 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow rounded-lg p-6 space-y-3">
                 <div class="text-sm text-gray-500">Date / time</div>
-                <div class="text-lg font-medium text-gray-900">{{ $appointment->appointment_date }} {{ $appointment->appointment_time }}</div>
+                <div class="text-lg font-medium text-gray-900">
+                    {{ $appointment->appointment_date?->format('Y-m-d') ?? $appointment->date?->format('Y-m-d') ?? '-' }}
+                    {{ $appointment->appointment_time ?? $appointment->time ?? '' }}
+                </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div>
@@ -16,7 +19,7 @@
                     </div>
                     <div>
                         <div class="text-sm text-gray-500">Department</div>
-                        <div class="text-gray-900">{{ $appointment->department?->name ?? '-' }}</div>
+                        <div class="text-gray-900">{{ $appointment->departmentRef?->name ?? ($appointment->department ?? '-') }}</div>
                     </div>
                 </div>
 
@@ -64,4 +67,3 @@
         </div>
     </div>
 </x-app-layout>
-

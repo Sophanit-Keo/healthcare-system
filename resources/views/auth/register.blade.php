@@ -22,7 +22,7 @@
 
                 <div class="form-header">
                     <span class="eyebrow">New Account</span>
-                    <h1>Create your account</h1>
+                    <h1>Create account</h1>
                     <p>Start your journey to better health today — it's completely free.</p>
                 </div>
 
@@ -55,6 +55,21 @@
                     </div>
 
                     <div class="field-group mt-3">
+                        <x-input-label for="username" :value="__('Username (optional)')" />
+                        <div class="field-wrap">
+                            <input
+                                id="username"
+                                type="text"
+                                name="username"
+                                value="{{ old('username') }}"
+                                autocomplete="username"
+                                class="{{ $errors->has('username') ? 'is-invalid' : '' }}"
+                                placeholder="e.g. john_doe">
+                        </div>
+                        <x-input-error :messages="$errors->get('username')" class="mt-2" />
+                    </div>
+
+                    <div class="field-group mt-3">
                         <x-input-label for="email" :value="__('Email')" />
                         <div class="field-wrap">
                             <input
@@ -78,7 +93,6 @@
                                 type="text"
                                 name="phone"
                                 value="{{ old('phone') }}"
-                                required
                                 autocomplete="tel"
                                 class="{{ $errors->has('phone') ? 'is-invalid' : '' }}"
                                 placeholder="012 345 678">
@@ -114,30 +128,6 @@
                         </div>
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
-                    <div class="field-group mt-3">
-                        <label for="user_type">Register as</label>
-                        <div class="field-wrap">
-                            <select
-                                id="user_type"
-                                name="user_type"
-                                required
-                                class="{{ $errors->has('user_type') ? 'is-invalid' : '' }}">
-
-                                <option value="">-- Select Role --</option>
-                                <option value="patient" {{ old('user_type') == 'patient' ? 'selected' : '' }}>
-                                    Patient
-                                </option>
-                                <option value="doctor" {{ old('user_type') == 'doctor' ? 'selected' : '' }}>
-                                    Doctor
-                                </option>
-                            </select>
-                        </div>
-
-                        @error('user_type')
-                        <span class="field-error">{{ $message }}</span>
-                        @enderror
-                    </div>
-
                     <button type="submit" class="btn-submit mt-4">
                         {{ __('Register') }}
                     </button>
@@ -157,5 +147,3 @@
 </body>
 
 </html>
-
-

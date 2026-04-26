@@ -27,10 +27,10 @@
                     <tbody class="divide-y">
                         @forelse ($appointments as $appointment)
                             <tr>
-                                <td class="p-3">{{ $appointment->appointment_date }}</td>
-                                <td class="p-3">{{ $appointment->appointment_time }}</td>
+                                <td class="p-3">{{ $appointment->appointment_date?->format('Y-m-d') ?? $appointment->date?->format('Y-m-d') ?? '-' }}</td>
+                                <td class="p-3">{{ $appointment->appointment_time ?? $appointment->time ?? '-' }}</td>
                                 <td class="p-3">{{ $appointment->facility?->name ?? '-' }}</td>
-                                <td class="p-3">{{ $appointment->department?->name ?? '-' }}</td>
+                                <td class="p-3">{{ $appointment->departmentRef?->name ?? '-' }}</td>
                                 <td class="p-3">{{ $appointment->status }}</td>
                                 <td class="p-3 text-right">
                                     <a class="text-indigo-600 hover:text-indigo-700" href="{{ route('patient.appointments.show', $appointment) }}">View</a>
@@ -49,4 +49,3 @@
         </div>
     </div>
 </x-app-layout>
-

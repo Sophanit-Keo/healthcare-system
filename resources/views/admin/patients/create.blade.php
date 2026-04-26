@@ -9,7 +9,7 @@
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.patients.index') }}" class="action-btn back-btn">
-                    ←
+                    &larr;
                 </a>
                 <h1>New Patient</h1>
             </div>
@@ -21,6 +21,14 @@
    <div class="form-card">
     <form action="{{ route('admin.patients.store') }}" method="POST">
         @csrf
+
+        @if($errors->any())
+            <div style="margin-bottom:16px;padding:12px 14px;background:#fef2f2;color:#dc2626;border-radius:8px">
+                @foreach($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
         <div class="form-section">
             <h3>Personal Information</h3>
@@ -46,6 +54,7 @@
                 <div>
                     <label>Phone</label>
                     <input type="text" name="phone" placeholder="+855 xxx xxx xxx" value="{{ old('phone') }}" required>
+                    @error('phone') <span style="color:red">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
@@ -57,36 +66,47 @@
                     <label>Gender</label>
                     <select name="gender">
                         <option value="">Select</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
+                        <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
+                        <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Other</option>
                     </select>
                 </div>
             </div>
         </div>
 
         <div class="form-section">
-            <h3>Medical Information</h3>
+            <h3>Additional Information</h3>
             <div class="form-grid">
-                <div>
-                    <label>Department</label>
-                    <select name="department">
-                        <option value="General">General</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dental">Dental</option>
-                    </select>
-                </div>
-
                 <div>
                     <label>Status</label>
                     <select name="status">
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="active" {{ old('status', 'active') === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ old('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
 
                 <div class="full">
-                    <label>Medical Notes</label>
-                    <textarea name="notes" rows="4">{{ old('notes') }}</textarea>
+                    <label>Address</label>
+                    <input type="text" name="address" placeholder="Street, city, province..." value="{{ old('address') }}">
+                    @error('address') <span style="color:red">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label>Blood Type</label>
+                    <input type="text" name="blood_type" placeholder="e.g. O+, A-" value="{{ old('blood_type') }}">
+                    @error('blood_type') <span style="color:red">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label>Emergency Contact Name</label>
+                    <input type="text" name="emergency_contact_name" placeholder="Contact name" value="{{ old('emergency_contact_name') }}">
+                    @error('emergency_contact_name') <span style="color:red">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label>Emergency Contact Phone</label>
+                    <input type="text" name="emergency_contact_phone" placeholder="+855 xxx xxx xxx" value="{{ old('emergency_contact_phone') }}">
+                    @error('emergency_contact_phone') <span style="color:red">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
@@ -101,5 +121,3 @@
 </div>
 
 @endsection
-
-

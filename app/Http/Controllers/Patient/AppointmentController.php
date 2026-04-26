@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Department;
 use App\Models\Facility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -18,7 +19,7 @@ class AppointmentController extends Controller
         $patientId = $request->user()->patient?->id;
 
         $appointments = Appointment::query()
-            ->with(['facility', 'department', 'staff'])
+            ->with(['facility', 'departmentRef', 'staff'])
             ->where('patient_id', $patientId)
             ->latest()
             ->paginate(10);
@@ -40,7 +41,10 @@ class AppointmentController extends Controller
     
     public function store(Request $request): RedirectResponse
     {
-        $patientId = $request->user()->patient?->id;
+        $patient = $request->user()->patient;
+        $patientId = $patient?->id;
+
+        abort_unless($patientId, 403);
 
         $data = $request->validate([
             'facility_id' => ['nullable', 'integer', 'exists:facilities,id'],
@@ -51,11 +55,49 @@ class AppointmentController extends Controller
             'notes' => ['nullable', 'string'],
         ]);
 
-        Appointment::create([
+        $payload = [
             ...$data,
             'patient_id' => $patientId,
             'status' => 'scheduled',
-        ]);
+        ];
+
+        if (
+            Schema::hasColumn('appointments', 'patient_name')
+            || Schema::hasColumn('appointments', 'department')
+            || Schema::hasColumn('appointments', 'date')
+        ) {
+            $departmentName = null;
+            if (! empty($data['department_id'])) {
+                $departmentName = Department::query()->whereKey($data['department_id'])->value('name');
+            }
+
+            if (Schema::hasColumn('appointments', 'user_id')) {
+                $payload['user_id'] = $request->user()->id;
+            }
+            if (Schema::hasColumn('appointments', 'patient_name')) {
+                $payload['patient_name'] = $request->user()->name;
+            }
+            if (Schema::hasColumn('appointments', 'email')) {
+                $payload['email'] = $request->user()->email;
+            }
+            if (Schema::hasColumn('appointments', 'phone')) {
+                $payload['phone'] = $patient?->phone ?? $request->user()->phone;
+            }
+            if (Schema::hasColumn('appointments', 'department')) {
+                $payload['department'] = $departmentName ?? 'General';
+            }
+            if (Schema::hasColumn('appointments', 'date')) {
+                $payload['date'] = $data['appointment_date'];
+            }
+            if (Schema::hasColumn('appointments', 'time')) {
+                $payload['time'] = $data['appointment_time'];
+            }
+            if (Schema::hasColumn('appointments', 'message')) {
+                $payload['message'] = $data['notes'] ?? $data['reason'] ?? null;
+            }
+        }
+
+        Appointment::create($payload);
 
         return redirect()
             ->route('patient.appointments.index')
@@ -65,10 +107,12 @@ class AppointmentController extends Controller
     
     public function show(Request $request, Appointment $appointment): View
     {
-        abort_unless($appointment->patient_id === $request->user()->patient?->id, 403);
+        $patientId = $request->user()->patient?->id;
+
+        abort_unless($appointment->patient_id === $patientId, 403);
 
         return view('patient.appointments.show', [
-            'appointment' => $appointment->load(['facility', 'department', 'staff']),
+            'appointment' => $appointment->load(['facility', 'departmentRef', 'staff']),
         ]);
     }
 
@@ -87,7 +131,9 @@ class AppointmentController extends Controller
     
     public function destroy(Request $request, Appointment $appointment): RedirectResponse
     {
-        abort_unless($appointment->patient_id === $request->user()->patient?->id, 403);
+        $patientId = $request->user()->patient?->id;
+
+        abort_unless($appointment->patient_id === $patientId, 403);
 
         $appointment->delete();
 

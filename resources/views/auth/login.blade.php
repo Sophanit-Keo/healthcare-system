@@ -43,21 +43,21 @@
                     @csrf
 
                     <div class="field-group">
-                        <x-input-label for="email" :value="__('Email')" />
+                        <x-input-label for="login" :value="__('Email or username')" />
 
                         <div class="field-wrap">
                             <input
-                                id="email"
-                                type="email"
-                                name="email"
-                                value="{{ old('email') }}"
+                                id="login"
+                                type="text"
+                                name="login"
+                                value="{{ old('login') }}"
                                 required
                                 autofocus
                                 autocomplete="username"
-                                class="{{ $errors->has('email') ? 'is-invalid' : '' }}">
+                                class="{{ ($errors->has('login') || $errors->has('email')) ? 'is-invalid' : '' }}">
                         </div>
 
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('login')" class="mt-2" />
                     </div>
 
                     <div class="field-group mt-4">
@@ -107,5 +107,4 @@
 </body>
 
 </html>
-
 

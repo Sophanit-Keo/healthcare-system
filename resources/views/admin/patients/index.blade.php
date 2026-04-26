@@ -5,7 +5,7 @@
   <div class="page-header">
     <div class="page-header-left">
       <h1>Manage Patients</h1>
-      <p>1,284 registered patients in the system.</p>
+      <p>{{ $patients->total() }} registered patients in the system.</p>
     </div>
     <a href="{{route('admin.patients.create')}}" class="btn btn-primary {{ request()->routeIs('admin.patients.create') ? 'active' : '' }}">
       <div class="nav-icon">
@@ -52,7 +52,7 @@
           <th>Patient</th>
           <th>Phone</th>
           <th>Date of Birth</th>
-          <th>Department</th>
+          <th>Gender</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -75,16 +75,17 @@
           <td style="color:var(--text-secondary)">{{ $patient->phone }}</td>
 
           <td style="color:var(--text-secondary)">
-            {{ $patient->updated_at ? $patient->updated_at->format('d M Y') : 'N/A' }}
+            {{ $patient->date_of_birth ? $patient->date_of_birth->format('d M Y') : 'N/A' }}
           </td>
 
           <td>
-            <span class="badge badge-green">{{ $patient->department ?? 'General' }}</span>
+            <span class="badge badge-green">{{ ucfirst($patient->gender ?? 'N/A') }}</span>
           </td>
 
           <td>
-            <span class="badge {{ ($patient->status == 'active') ? 'badge-green' : 'badge-red' }}">
-              {{ ucfirst($patient->status ?? 'active') }}
+            @php($status = $patient->user->status ?? 'active')
+            <span class="badge {{ ($status === 'active') ? 'badge-green' : 'badge-red' }}">
+              {{ ucfirst($status) }}
             </span>
           </td>
 
@@ -104,12 +105,12 @@
       </tbody>
     </table>
     <div class="pagination">
-      <span class="pagination-info">Showing {{ $patients->firstItem() }}–{{ $patients->lastItem() }} of {{ $patients->total() }} patients</span>
+      <span class="pagination-info">Showing {{ $patients->firstItem() }}&ndash;{{ $patients->lastItem() }} of {{ $patients->total() }} patients</span>
       <div class="pagination-btns">
         @if($patients->onFirstPage())
-          <button class="pg-btn" disabled>‹</button>
+          <button class="pg-btn" disabled>&lsaquo;</button>
         @else
-          <a href="{{ $patients->previousPageUrl() }}" class="pg-btn">‹</a>
+          <a href="{{ $patients->previousPageUrl() }}" class="pg-btn">&lsaquo;</a>
         @endif
 
         @foreach($patients->getUrlRange(1, $patients->lastPage()) as $page => $url)
@@ -117,9 +118,9 @@
         @endforeach
 
         @if($patients->hasMorePages())
-          <a href="{{ $patients->nextPageUrl() }}" class="pg-btn">›</a>
+          <a href="{{ $patients->nextPageUrl() }}" class="pg-btn">&rsaquo;</a>
         @else
-          <button class="pg-btn" disabled>›</button>
+          <button class="pg-btn" disabled>&rsaquo;</button>
         @endif
       </div>
     </div>
@@ -127,5 +128,3 @@
 </div>
 
 @endsection
-
-

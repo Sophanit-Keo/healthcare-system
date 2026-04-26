@@ -17,6 +17,13 @@ class Patient extends Model
         'emergency_contact_phone',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'date_of_birth' => 'date',
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
