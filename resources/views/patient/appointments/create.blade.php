@@ -1,107 +1,125 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Request Appointment</h2>
-    </x-slot>
+@extends('layout.main')
+@include('patient.partials.ui')
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg p-6">
-                <div id="api-errors" class="hidden mb-4 p-4 rounded bg-red-50 text-red-800 text-sm"></div>
+@section('content')
+<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+  <div class="page-container">
+    <h1 style="color:#fff;margin-bottom:4px">Request Appointment</h1>
+    <p style="color:rgba(255,255,255,.7)">Choose a date/time and optionally a facility/department.</p>
+  </div>
+</div>
 
-                <form id="appointment-form" method="POST" action="{{ route('patient.appointments.store') }}" class="space-y-4" data-api-submit="1">
-                    @csrf
+<div class="bg-light">
+  <div class="page-section" style="padding-top:0">
+    <div style="margin-top:-2rem;position:relative;z-index:10">
+      <div class="page-container">
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="appointment_date" value="{{ old('appointment_date') }}" required class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                            @error('appointment_date')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Time</label>
-                            <input type="time" name="appointment_time" value="{{ old('appointment_time') }}" required class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                            @error('appointment_time')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
-                        </div>
-                    </div>
+        <div class="page-card" style="max-width:860px;margin-left:auto;margin-right:auto">
+          <div id="api-errors" class="alert-danger" style="display:none;white-space:pre-line"></div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Facility (optional)</label>
-                            <select name="facility_id" class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">--</option>
-                                @foreach ($facilities as $facility)
-                                    <option value="{{ $facility->id }}" @selected(old('facility_id') == $facility->id)>{{ $facility->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('facility_id')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Department (optional)</label>
-                            <select name="department_id" class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">--</option>
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>{{ $department->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('department_id')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
-                        </div>
-                    </div>
+          <form id="appointment-form" method="POST" action="{{ route('patient.appointments.store') }}" data-api-submit="1">
+            @csrf
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Reason (optional)</label>
-                        <input type="text" name="reason" value="{{ old('reason') }}" class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                        @error('reason')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Notes (optional)</label>
-                        <textarea name="notes" rows="4" class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">{{ old('notes') }}</textarea>
-                        @error('notes')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <button type="submit" class="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700">Submit</button>
-                        <a class="px-4 py-2 rounded bg-gray-100 text-gray-800 hover:bg-gray-200" href="{{ route('patient.appointments.index') }}">Cancel</a>
-                    </div>
-                </form>
+            <div class="form-grid" style="margin-bottom:14px">
+              <div>
+                <label class="form-label">Date</label>
+                <input type="date" name="appointment_date" value="{{ old('appointment_date') }}" required class="form-input">
+                @error('appointment_date')<div class="form-error">{{ $message }}</div>@enderror
+              </div>
+              <div>
+                <label class="form-label">Time</label>
+                <input type="time" name="appointment_time" value="{{ old('appointment_time') }}" required class="form-input">
+                @error('appointment_time')<div class="form-error">{{ $message }}</div>@enderror
+              </div>
             </div>
+
+            <div class="form-grid" style="margin-bottom:14px">
+              <div>
+                <label class="form-label">Facility (optional)</label>
+                <select name="facility_id" class="form-select">
+                  <option value="">--</option>
+                  @foreach ($facilities as $facility)
+                    <option value="{{ $facility->id }}" @selected(old('facility_id') == $facility->id)>{{ $facility->name }}</option>
+                  @endforeach
+                </select>
+                @error('facility_id')<div class="form-error">{{ $message }}</div>@enderror
+              </div>
+              <div>
+                <label class="form-label">Department (optional)</label>
+                <select name="department_id" class="form-select">
+                  <option value="">--</option>
+                  @foreach ($departments as $department)
+                    <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>{{ $department->name }}</option>
+                  @endforeach
+                </select>
+                @error('department_id')<div class="form-error">{{ $message }}</div>@enderror
+              </div>
+            </div>
+
+            <div class="form-grid-1" style="margin-bottom:14px">
+              <div>
+                <label class="form-label">Reason (optional)</label>
+                <input type="text" name="reason" value="{{ old('reason') }}" class="form-input">
+                @error('reason')<div class="form-error">{{ $message }}</div>@enderror
+              </div>
+              <div>
+                <label class="form-label">Notes (optional)</label>
+                <textarea name="notes" class="form-textarea">{{ old('notes') }}</textarea>
+                @error('notes')<div class="form-error">{{ $message }}</div>@enderror
+              </div>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:6px">
+              <a class="btn-soft-ghost" href="{{ route('patient.appointments.index') }}">Cancel</a>
+              <button type="submit" class="btn-soft-primary">Submit</button>
+            </div>
+          </form>
         </div>
+
+        <div style="margin-top:10px">
+          <a href="{{ route('patient.appointments.index') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Appointments</a>
+        </div>
+
+      </div>
     </div>
+  </div>
+</div>
 
-    <script>
-        (function () {
-            const form = document.getElementById('appointment-form');
-            const errorsEl = document.getElementById('api-errors');
-            if (!form || !window.api) return;
+<script>
+  (function () {
+    const form = document.getElementById('appointment-form');
+    const errorsEl = document.getElementById('api-errors');
+    if (!form || !window.api) return;
 
-            form.addEventListener('submit', async function (e) {
-                if (!form.dataset.apiSubmit) return;
-                e.preventDefault();
+    form.addEventListener('submit', async function (e) {
+      if (!form.dataset.apiSubmit) return;
+      e.preventDefault();
 
-                errorsEl.classList.add('hidden');
-                errorsEl.textContent = '';
+      errorsEl.style.display = 'none';
+      errorsEl.textContent = '';
 
-                const fd = new FormData(form);
-                const payload = Object.fromEntries(fd.entries());
+      const fd = new FormData(form);
+      const payload = Object.fromEntries(fd.entries());
 
-                try {
-                    await window.api.post('/appointments', payload);
-                    window.location.href = @json(route('patient.appointments.index'));
-                } catch (err) {
-                    const resp = err?.response;
-                    if (resp?.status === 422 && resp?.data?.errors) {
-                        const lines = [];
-                        for (const key in resp.data.errors) {
-                            for (const msg of resp.data.errors[key]) lines.push(msg);
-                        }
-                        errorsEl.textContent = lines.join('\n');
-                        errorsEl.classList.remove('hidden');
-                        return;
-                    }
-                    errorsEl.textContent = 'Failed to request appointment via API. Please try again.';
-                    errorsEl.classList.remove('hidden');
-                }
-            });
-        })();
-    </script>
-</x-app-layout>
+      try {
+        await window.api.post('/appointments', payload);
+        window.location.href = @json(route('patient.appointments.index'));
+      } catch (err) {
+        const resp = err?.response;
+        if (resp?.status === 422 && resp?.data?.errors) {
+          const lines = [];
+          for (const key in resp.data.errors) {
+            for (const msg of resp.data.errors[key]) lines.push(msg);
+          }
+          errorsEl.textContent = lines.join('\\n');
+          errorsEl.style.display = 'block';
+          return;
+        }
+        errorsEl.textContent = 'Failed to request appointment via API. Please try again.';
+        errorsEl.style.display = 'block';
+      }
+    });
+  })();
+</script>
+@endsection
+

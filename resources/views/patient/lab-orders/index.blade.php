@@ -1,41 +1,57 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">My Lab Orders</h2>
-    </x-slot>
+@extends('layout.main')
+@include('patient.partials.ui')
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg overflow-hidden">
-                <table class="min-w-full text-sm">
-                    <thead class="bg-gray-50 text-gray-600">
-                        <tr>
-                            <th class="text-left p-3">Order</th>
-                            <th class="text-left p-3">Status</th>
-                            <th class="text-left p-3">Ordered at</th>
-                            <th class="text-right p-3">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y">
-                        @forelse ($orders as $order)
-                            <tr>
-                                <td class="p-3">#{{ $order->id }}</td>
-                                <td class="p-3">{{ $order->status }}</td>
-                                <td class="p-3">{{ $order->ordered_at ?? $order->created_at }}</td>
-                                <td class="p-3 text-right">
-                                    <a class="text-indigo-600 hover:text-indigo-700" href="{{ route('patient.lab-orders.show', $order) }}">View</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td class="p-6 text-center text-gray-500" colspan="4">No lab orders yet.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+@section('content')
+<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+  <div class="page-container">
+    <h1 style="color:#fff;margin-bottom:4px">My Lab Orders</h1>
+    <p style="color:rgba(255,255,255,.7)">Track orders and view the items and results.</p>
+  </div>
+</div>
 
-            <div class="mt-4">{{ $orders->links() }}</div>
+<div class="bg-light">
+  <div class="page-section" style="padding-top:0">
+    <div style="margin-top:-2rem;position:relative;z-index:10">
+      <div class="page-container">
+
+        <div class="page-card">
+          <div class="soft-table-wrap">
+            <table class="soft-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Status</th>
+                  <th>Ordered at</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse ($orders as $order)
+                  <tr>
+                    <td>#{{ $order->id }}</td>
+                    <td><span class="soft-badge">{{ str_replace('_', ' ', (string) $order->status) }}</span></td>
+                    <td>{{ $order->ordered_at ?? $order->created_at }}</td>
+                    <td style="text-align:right"><a href="{{ route('patient.lab-orders.show', $order) }}" style="color:#1a8a6e;font-weight:600">View</a></td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="4" class="soft-muted" style="text-align:center;padding:26px">No lab orders yet.</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top:14px">{{ $orders->links() }}</div>
         </div>
+
+        <div style="margin-top:10px">
+          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
+        </div>
+
+      </div>
     </div>
-</x-app-layout>
+  </div>
+</div>
+@endsection
 

@@ -1,51 +1,77 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between gap-4">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">My Appointments</h2>
-            <a href="{{ route('patient.appointments.create') }}" class="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700">Request appointment</a>
-        </div>
-    </x-slot>
+@extends('layout.main')
+@include('patient.partials.ui')
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (session('status'))
-                <div class="mb-4 p-4 rounded bg-green-50 text-green-800">{{ session('status') }}</div>
-            @endif
-
-            <div class="bg-white shadow rounded-lg overflow-hidden">
-                <table class="min-w-full text-sm">
-                    <thead class="bg-gray-50 text-gray-600">
-                        <tr>
-                            <th class="text-left p-3">Date</th>
-                            <th class="text-left p-3">Time</th>
-                            <th class="text-left p-3">Facility</th>
-                            <th class="text-left p-3">Department</th>
-                            <th class="text-left p-3">Status</th>
-                            <th class="text-right p-3">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y">
-                        @forelse ($appointments as $appointment)
-                            <tr>
-                                <td class="p-3">{{ $appointment->appointment_date?->format('Y-m-d') ?? $appointment->date?->format('Y-m-d') ?? '-' }}</td>
-                                <td class="p-3">{{ $appointment->appointment_time ?? $appointment->time ?? '-' }}</td>
-                                <td class="p-3">{{ $appointment->facility?->name ?? '-' }}</td>
-                                <td class="p-3">{{ $appointment->departmentRef?->name ?? '-' }}</td>
-                                <td class="p-3">{{ $appointment->status }}</td>
-                                <td class="p-3 text-right">
-                                    <a class="text-indigo-600 hover:text-indigo-700" href="{{ route('patient.appointments.show', $appointment) }}">View</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td class="p-6 text-center text-gray-500" colspan="6">No appointments yet.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="mt-4">{{ $appointments->links() }}</div>
-        </div>
+@section('content')
+<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+  <div class="page-container">
+    <div class="actions-row" style="gap:14px">
+      <div>
+        <h1 style="color:#fff;margin-bottom:4px">My Appointments</h1>
+        <p style="color:rgba(255,255,255,.7)">View upcoming appointments and your history.</p>
+      </div>
+      <a href="{{ route('patient.appointments.create') }}" class="btn-soft-primary">Request appointment</a>
     </div>
-</x-app-layout>
+  </div>
+</div>
+
+<div class="bg-light">
+  <div class="page-section" style="padding-top:0">
+    <div style="margin-top:-2rem;position:relative;z-index:10">
+      <div class="page-container">
+
+        @if (session('status'))
+          <div class="alert-success">{{ session('status') }}</div>
+        @endif
+
+        <div class="page-card">
+          <div class="soft-table-wrap">
+            <table class="soft-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Facility</th>
+                  <th>Department</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse ($appointments as $appointment)
+                  <tr>
+                    <td>{{ $appointment->appointment_date?->format('Y-m-d') ?? $appointment->date?->format('Y-m-d') ?? '-' }}</td>
+                    <td>{{ $appointment->appointment_time ?? $appointment->time ?? '-' }}</td>
+                    <td>{{ $appointment->facility?->name ?? '-' }}</td>
+                    <td>{{ $appointment->departmentRef?->name ?? '-' }}</td>
+                    <td>
+                      @php($status = (string) ($appointment->status ?? 'scheduled'))
+                      <span class="soft-badge {{ $status === 'completed' ? 'green' : ($status === 'cancelled' ? 'red' : ($status === 'no_show' ? 'amber' : '')) }}">
+                        {{ str_replace('_', ' ', $status) }}
+                      </span>
+                    </td>
+                    <td style="text-align:right">
+                      <a href="{{ route('patient.appointments.show', $appointment) }}" style="color:#1a8a6e;font-weight:600">View</a>
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="6" class="soft-muted" style="text-align:center;padding:26px">No appointments yet.</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top:14px">{{ $appointments->links() }}</div>
+        </div>
+
+        <div style="margin-top:10px">
+          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
+

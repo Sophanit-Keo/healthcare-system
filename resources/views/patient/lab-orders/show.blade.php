@@ -1,60 +1,72 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Lab Order #{{ $order->id }}</h2>
-    </x-slot>
+@extends('layout.main')
+@include('patient.partials.ui')
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <div class="text-sm text-gray-500">Status</div>
-                        <div class="text-gray-900">{{ $order->status }}</div>
-                    </div>
-                    <div>
-                        <div class="text-sm text-gray-500">Ordered at</div>
-                        <div class="text-gray-900">{{ $order->ordered_at ?? $order->created_at }}</div>
-                    </div>
-                </div>
+@section('content')
+<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+  <div class="page-container">
+    <h1 style="color:#fff;margin-bottom:4px">Lab Order #{{ $order->id }}</h1>
+    <p style="color:rgba(255,255,255,.7)">Order status, notes, and items.</p>
+  </div>
+</div>
 
-                @if ($order->notes)
-                    <div class="pt-4">
-                        <div class="text-sm text-gray-500">Notes</div>
-                        <div class="text-gray-900 whitespace-pre-line">{{ $order->notes }}</div>
-                    </div>
-                @endif
-            </div>
+<div class="bg-light">
+  <div class="page-section" style="padding-top:0">
+    <div style="margin-top:-2rem;position:relative;z-index:10">
+      <div class="page-container">
 
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="font-semibold text-gray-900">Items</div>
-                <div class="mt-4 overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead class="bg-gray-50 text-gray-600">
-                            <tr>
-                                <th class="text-left p-3">Test</th>
-                                <th class="text-left p-3">Specimen</th>
-                                <th class="text-left p-3">Status</th>
-                                <th class="text-left p-3">Result</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y">
-                            @foreach ($order->items as $item)
-                                <tr>
-                                    <td class="p-3">{{ $item->test_name }}</td>
-                                    <td class="p-3">{{ $item->specimen ?? '-' }}</td>
-                                    <td class="p-3">{{ $item->status }}</td>
-                                    <td class="p-3 whitespace-pre-line">{{ $item->result ?? '-' }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+        <div class="page-card" style="max-width:1000px;margin-left:auto;margin-right:auto">
+          <div class="form-grid">
             <div>
-                <a class="text-indigo-600 hover:text-indigo-700" href="{{ route('patient.lab-orders.index') }}">Back</a>
+              <div class="soft-muted">Status</div>
+              <div style="margin-top:2px"><span class="soft-badge">{{ str_replace('_', ' ', (string) $order->status) }}</span></div>
             </div>
+            <div>
+              <div class="soft-muted">Ordered at</div>
+              <div style="font-weight:600">{{ $order->ordered_at ?? $order->created_at }}</div>
+            </div>
+          </div>
+
+          @if ($order->notes)
+            <div style="margin-top:14px">
+              <div class="soft-muted">Notes</div>
+              <div style="white-space:pre-line">{{ $order->notes }}</div>
+            </div>
+          @endif
         </div>
+
+        <div class="page-card" style="max-width:1000px;margin-left:auto;margin-right:auto">
+          <h4>Items</h4>
+          <div class="soft-table-wrap">
+            <table class="soft-table">
+              <thead>
+                <tr>
+                  <th>Test</th>
+                  <th>Specimen</th>
+                  <th>Status</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($order->items as $item)
+                  <tr>
+                    <td>{{ $item->test_name }}</td>
+                    <td>{{ $item->specimen ?? '-' }}</td>
+                    <td><span class="soft-badge">{{ str_replace('_', ' ', (string) $item->status) }}</span></td>
+                    <td style="white-space:pre-line">{{ $item->result ?? '-' }}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <a href="{{ route('patient.lab-orders.index') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back</a>
+        </div>
+
+      </div>
     </div>
-</x-app-layout>
+  </div>
+</div>
+@endsection
 
