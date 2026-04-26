@@ -20,7 +20,8 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        
+    // Breeze handles auth routes in routes/auth.php for this app.
+    Fortify::ignoreRoutes();
     }
 
     public function boot(): void
