@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Doctor;
-use App\Models\Patients;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +27,7 @@ class SampleDataSeeder extends Seeder
                     'role'     => 'patient',
                 ]
             );
-            Patients::firstOrCreate(
+            Patient::firstOrCreate(
                 ['user_id' => $user->id],
                 [
                     'phone'         => '+855 0' . rand(10, 99) . ' ' . rand(100, 999) . ' ' . rand(100, 999),

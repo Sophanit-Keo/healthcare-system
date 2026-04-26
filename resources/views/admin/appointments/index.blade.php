@@ -45,12 +45,14 @@
         <div class="status-filter">
           <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), [])) }}"
              class="status-tab {{ !request('status') ? 'active' : '' }}">All</a>
-          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'confirmed'])) }}"
-             class="status-tab {{ request('status')==='confirmed' ? 'active' : '' }}">Confirmed</a>
-          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'pending'])) }}"
-             class="status-tab {{ request('status')==='pending' ? 'active' : '' }}">Pending</a>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'scheduled'])) }}"
+             class="status-tab {{ request('status')==='scheduled' ? 'active' : '' }}">Scheduled</a>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'completed'])) }}"
+             class="status-tab {{ request('status')==='completed' ? 'active' : '' }}">Completed</a>
           <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'cancelled'])) }}"
              class="status-tab {{ request('status')==='cancelled' ? 'active' : '' }}">Cancelled</a>
+          <a href="{{ route('admin.appointments.index', array_merge(request()->except('status','page'), ['status'=>'no_show'])) }}"
+             class="status-tab {{ request('status')==='no_show' ? 'active' : '' }}">No Show</a>
         </div>
         <form method="GET" action="{{ route('admin.appointments.index') }}" style="margin-left:auto">
           @if(request('search'))<input type="hidden" name="search" value="{{ request('search') }}">@endif
@@ -73,29 +75,39 @@
         <tbody>
           @forelse($appointments as $appt)
           @php
+            $patientName = $appt->patient?->user?->name ?? $appt->patient_name ?? 'Patient';
             $statusBadge = match($appt->status) {
-              'confirmed'   => 'badge-green',
-              'in_progress' => 'badge-blue',
-              'pending'     => 'badge-amber',
-              'cancelled'   => 'badge-red',
+              'completed' => 'badge-green',
+              'scheduled' => 'badge-blue',
+              'cancelled' => 'badge-red',
+              'no_show' => 'badge-gray',
               default       => 'badge-gray',
             };
-            $initials = strtoupper(substr($appt->patient_name ?? 'PA', 0, 1) . substr(explode(' ', $appt->patient_name ?? 'PA ')[1] ?? 'A', 0, 1));
+            $parts = preg_split('/\\s+/', trim((string) $patientName));
+            $initials = strtoupper(substr($parts[0] ?? 'P', 0, 1) . substr($parts[1] ?? 'A', 0, 1));
           @endphp
           <tr>
             <td style="color:var(--text-muted);font-size:0.8rem">#APT-{{ str_pad($appt->id, 4, '0', STR_PAD_LEFT) }}</td>
             <td>
               <div class="user-cell">
                 <div class="avatar av-green" style="width:30px;height:30px;font-size:0.7rem">{{ $initials }}</div>
-                <span style="font-weight:500;font-size:0.875rem">{{ $appt->patient_name }}</span>
+                <span style="font-weight:500;font-size:0.875rem">{{ $patientName }}</span>
               </div>
             </td>
-            <td style="color:var(--text-secondary)">{{ $appt->doctor ? 'Dr. '.$appt->doctor : '—' }}</td>
-            <td><span class="badge badge-green">{{ $appt->department }}</span></td>
-            <td style="color:var(--text-secondary);font-size:0.85rem">
-              {{ $appt->date ? $appt->date->format('d M Y') : '—' }}{{ $appt->time ? ' — '.$appt->time : '' }}
+            <td style="color:var(--text-secondary)">
+              @if($appt->staff)
+                {{ 'Dr. ' . trim(($appt->staff->first_name ?? '') . ' ' . ($appt->staff->last_name ?? '')) }}
+              @elseif($appt->doctor)
+                {{ $appt->doctor }}
+              @else
+                —
+              @endif
             </td>
-            <td><span class="badge {{ $statusBadge }}">{{ ucfirst(str_replace('_', ' ', $appt->status ?? 'pending')) }}</span></td>
+            <td><span class="badge badge-green">{{ $appt->departmentRef?->name ?? $appt->department ?? '-' }}</span></td>
+            <td style="color:var(--text-secondary);font-size:0.85rem">
+              {{ $appt->appointment_date ? $appt->appointment_date->format('d M Y') : ($appt->date ? $appt->date->format('d M Y') : '—') }}{{ ($appt->appointment_time ?? $appt->time) ? ' — '.($appt->appointment_time ?? $appt->time) : '' }}
+            </td>
+            <td><span class="badge {{ $statusBadge }}">{{ ucfirst(str_replace('_', ' ', $appt->status ?? 'scheduled')) }}</span></td>
             <td>
               <form method="POST" action="{{ route('admin.appointments.destroy', $appt->id) }}" onsubmit="return confirm('Delete this appointment?')" style="display:inline">
                 @csrf @method('DELETE')
@@ -131,5 +143,3 @@
     </div>
   </div>
   @endsection
-
-

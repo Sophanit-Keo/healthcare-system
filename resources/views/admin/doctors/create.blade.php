@@ -9,7 +9,7 @@
         <div class="page-header-left">
             <div style="display:flex;align-items:center;gap:12px;">
                 <a href="{{ route('admin.doctors.index') }}" class="action-btn back-btn">
-                    ←
+                    &larr;
                 </a>
                 <div>
                     <h1>Add New Doctor</h1>
@@ -62,9 +62,10 @@
                 <div class="form-group">
                     <label class="form-label">Status</label>
                     <select name="status" class="form-select">
-                        <option>Available</option>
-                        <option>On Leave</option>
-                        <option>Unavailable</option>
+                        <option value="">Select</option>
+                        <option value="available" {{ old('status') === 'available' ? 'selected' : '' }}>Available</option>
+                        <option value="onleave" {{ old('status') === 'onleave' ? 'selected' : '' }}>On Leave</option>
+                        <option value="unavailable" {{ old('status') === 'unavailable' ? 'selected' : '' }}>Unavailable</option>
                     </select>
                 </div>
 
@@ -80,7 +81,7 @@
 
                 <div class="form-group full">
                     <label class="form-label">Biography / Notes</label>
-                    <textarea name="bio" class="form-textarea" placeholder="Doctor's professional summary…"></textarea>
+                    <textarea name="bio" class="form-textarea" placeholder="Doctor's professional summary..."></textarea>
                 </div>
 
             </div>
@@ -102,5 +103,4 @@
 </div>
 
 @endsection
-
 

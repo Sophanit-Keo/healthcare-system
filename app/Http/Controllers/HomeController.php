@@ -4,39 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Appointment;
-use App\Models\Prescription;
-use App\Models\MedicalRecord;
-use App\Models\Message;
+use App\Models\Encounter;
+use App\Models\LabOrder;
+use App\Models\Patient;
+use App\Models\PatientFacilityConsent;
 
 class HomeController extends Controller
 {
     public function redirect()
     {
-        $role = Auth::user()->role;
+        $user = Auth::user();
+        $role = $user->role;
+
+        if (method_exists($user, 'hasAnyRole') && $user->hasAnyRole(['admin', 'doctor', 'patient'])) {
+            if ($user->hasRole('admin')) {
+                $role = 'admin';
+            } elseif ($user->hasRole('doctor')) {
+                $role = 'doctor';
+            } elseif ($user->hasRole('patient')) {
+                $role = 'patient';
+            }
+        }
 
         if ($role == 'patient') {
-            $userId = Auth::id();
-            $appointments = Appointment::where('user_id', $userId)
-                ->orderBy('date', 'asc')
-                ->get();
-            $prescriptions = Prescription::where('user_id', $userId)
-                ->where('status', 'active')
-                ->orderBy('start_date', 'desc')
-                ->get();
-            $medicalRecords = MedicalRecord::where('user_id', $userId)
-                ->orderBy('record_date', 'desc')
-                ->get();
-            $unreadMessages = Message::where('receiver_id', $userId)
-                ->where('is_read', false)
-                ->orderBy('created_at', 'desc')
-                ->get();
-            return response()
-                ->view('dashboard', compact('appointments', 'prescriptions', 'medicalRecords', 'unreadMessages'))
-                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                ->header('Pragma', 'no-cache')
-                ->header('Expires', '0');
+            $patient = $user->patient;
+            if (! $patient) {
+                $patient = Patient::firstOrCreate(['user_id' => $user->id]);
+            }
+
+            $patientId = $patient->id;
+
+            return view('dashboards.patient', [
+                'appointmentsCount' => Appointment::query()->where('patient_id', $patientId)->count(),
+                'encountersCount' => Encounter::query()->where('patient_id', $patientId)->count(),
+                'labOrdersCount' => LabOrder::query()->where('patient_id', $patientId)->count(),
+                'consentsCount' => PatientFacilityConsent::query()->where('patient_id', $patientId)->count(),
+            ]);
         }
 
         if ($role == 'admin') {
@@ -44,10 +48,9 @@ class HomeController extends Controller
         }
 
         if ($role == 'doctor') {
-            return view('Doctor.dashboard');
+            return redirect()->route('doctor.dashboard');
         }
 
         return redirect('/');
     }
 }
-

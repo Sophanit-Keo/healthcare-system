@@ -16,8 +16,12 @@ class StoreAppointmentRequest extends FormRequest
     
     public function rules(): array
     {
+        $user = $this->user();
+        $isPatient = ($user?->role ?? null) === 'patient'
+            || (method_exists($user, 'hasRole') && $user->hasRole('patient'));
+
         return [
-            'patient_id' => ['required', 'integer', 'exists:patients,id'],
+            'patient_id' => [$isPatient ? 'nullable' : 'required', 'integer', 'exists:patients,id'],
             'health_staff_id' => ['nullable', 'integer', 'exists:health_staff,id'],
             'facility_id' => ['nullable', 'integer', 'exists:facilities,id'],
             'department_id' => ['nullable', 'integer', 'exists:departments,id'],

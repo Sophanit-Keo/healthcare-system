@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Department;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -35,7 +37,22 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        return view('admin.appointments.create');
+        $doctors = Doctor::query()
+            ->orderBy('first_name')
+            ->orderBy('last_name')
+            ->get();
+
+        $departments = Department::query()
+            ->where('status', 'active')
+            ->orderBy('name')
+            ->pluck('name')
+            ->all();
+
+        if (empty($departments)) {
+            $departments = ['General Health', 'Cardiology', 'Dental', 'Neurology', 'Orthopaedics'];
+        }
+
+        return view('admin.appointments.create', compact('doctors', 'departments'));
     }
 
     public function store(Request $request)
@@ -52,7 +69,7 @@ class AppointmentController extends Controller
             'message'      => 'required|string|max:2000',
         ]);
 
-        $validated['status'] = $validated['status'] ?? 'pending';
+        $validated['status'] = ! empty($validated['status']) ? $validated['status'] : 'pending';
 
         if (auth()->check()) {
             $validated['user_id'] = auth()->id();
@@ -64,7 +81,7 @@ class AppointmentController extends Controller
             return response()->json(['message' => 'Appointment booked successfully.']);
         }
 
-        if (auth()->check() && auth()->user()->role === 'admin') {
+        if ($request->routeIs('admin.appointments.store')) {
             return redirect()->route('admin.appointments.index')
                 ->with('success', 'Appointment created successfully.');
         }
@@ -84,4 +101,3 @@ class AppointmentController extends Controller
             ->with('success', 'Appointment deleted.');
     }
 }
-

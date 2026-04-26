@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class DoctorMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -16,13 +16,14 @@ class AdminMiddleware
             abort(403);
         }
 
-        $isStaffByColumn = in_array($user->role, ['admin', 'doctor'], true);
-        $isStaffBySpatie = method_exists($user, 'hasAnyRole') && $user->hasAnyRole(['admin', 'doctor']);
+        $isDoctorByColumn = ($user->role ?? null) === 'doctor';
+        $isDoctorBySpatie = method_exists($user, 'hasRole') && $user->hasRole('doctor');
 
-        if (! $isStaffByColumn && ! $isStaffBySpatie) {
+        if (! $isDoctorByColumn && ! $isDoctorBySpatie) {
             abort(403);
         }
 
         return $next($request);
     }
 }
+
