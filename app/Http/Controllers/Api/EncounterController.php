@@ -18,11 +18,8 @@ class EncounterController extends Controller
     public function __construct(
         private readonly ConsentService $consentService,
         private readonly StaffScopeService $staffScopeService,
-    )
-    {
-    }
+    ) {}
 
-    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -38,7 +35,6 @@ class EncounterController extends Controller
         return EncounterResource::collection($query->latest()->paginate(10));
     }
 
-    
     public function store(StoreEncounterRequest $request)
     {
         $user = $request->user();
@@ -74,7 +70,6 @@ class EncounterController extends Controller
             ->setStatusCode(201);
     }
 
-    
     public function show(Request $request, Encounter $encounter)
     {
         $user = $request->user();
@@ -89,7 +84,6 @@ class EncounterController extends Controller
         return new EncounterResource($encounter->load(['patient.user', 'vitalSigns']));
     }
 
-    
     public function update(UpdateEncounterRequest $request, Encounter $encounter)
     {
         $user = $request->user();
@@ -106,7 +100,6 @@ class EncounterController extends Controller
         return new EncounterResource($encounter->load(['patient.user', 'vitalSigns']));
     }
 
-    
     public function destroy(Request $request, Encounter $encounter)
     {
         $user = $request->user();

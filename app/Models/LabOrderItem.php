@@ -30,4 +30,3 @@ class LabOrderItem extends Model
         return $this->belongsTo(LabOrder::class);
     }
 }
-

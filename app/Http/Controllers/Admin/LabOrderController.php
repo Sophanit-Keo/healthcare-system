@@ -10,8 +10,8 @@ use App\Models\LabOrderItem;
 use App\Models\Patient;
 use App\Services\ConsentService;
 use App\Services\StaffScopeService;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -21,11 +21,8 @@ class LabOrderController extends Controller
     public function __construct(
         private readonly ConsentService $consentService,
         private readonly StaffScopeService $staffScopeService,
-    )
-    {
-    }
+    ) {}
 
-    
     public function index(Request $request): View
     {
         abort_unless($request->user()->can('lab_orders.view'), 403);
@@ -40,7 +37,6 @@ class LabOrderController extends Controller
         ]);
     }
 
-    
     public function create(Request $request): View
     {
         abort_unless($request->user()->can('lab_orders.create'), 403);
@@ -52,7 +48,6 @@ class LabOrderController extends Controller
         ]);
     }
 
-    
     public function store(Request $request): RedirectResponse
     {
         abort_unless($request->user()->can('lab_orders.create'), 403);
@@ -104,7 +99,6 @@ class LabOrderController extends Controller
             ->with('status', 'lab-order-created');
     }
 
-    
     public function show(Request $request, LabOrder $labOrder): View
     {
         abort_unless($request->user()->can('lab_orders.view'), 403);
@@ -114,19 +108,16 @@ class LabOrderController extends Controller
         ]);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(string $id)
     {
         abort(404);

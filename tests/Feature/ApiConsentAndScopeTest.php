@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Facility;
 use App\Models\Department;
+use App\Models\Facility;
 use App\Models\HealthStaff;
 use App\Models\Patient;
 use App\Models\PatientFacilityConsent;
@@ -145,4 +145,3 @@ class ApiConsentAndScopeTest extends TestCase
         ])->assertStatus(422);
     }
 }
-

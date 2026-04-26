@@ -2,16 +2,16 @@
 @include('patient.partials.ui')
 
 @section('content')
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">Facility Consents</h1>
-    <p style="color:rgba(255,255,255,.7)">Grant or revoke consent for facilities to access your information.</p>
+    <h1 class="page-hero-title">Facility Consents</h1>
+    <p class="page-hero-subtitle">Grant or revoke consent for facilities to access your information.</p>
   </div>
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
         @if (session('status'))
@@ -53,7 +53,7 @@
                   <th>Status</th>
                   <th>Granted</th>
                   <th>Expires</th>
-                  <th style="text-align:right">Actions</th>
+                  <th class="text-end">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -61,17 +61,16 @@
                   <tr>
                     <td>{{ $consent->facility?->name ?? ('Facility #' . $consent->facility_id) }}</td>
                     <td>
-                      @php($status = (string) ($consent->status ?? 'granted'))
-                      <span class="soft-badge {{ $status === 'granted' ? 'green' : 'amber' }}">{{ str_replace('_', ' ', $status) }}</span>
+                      @include('patient.partials.status-badge', ['status' => $consent->status ?? 'granted'])
                     </td>
                     <td>{{ $consent->granted_at ?? '-' }}</td>
                     <td>{{ $consent->expires_at ?? '-' }}</td>
-                    <td style="text-align:right">
+                    <td class="text-end">
                       @if ($consent->status === 'granted')
                         <form method="POST" action="{{ route('patient.consents.destroy', $consent) }}" style="display:inline" onsubmit="return confirm('Revoke consent?')">
                           @csrf
                           @method('DELETE')
-                          <button class="btn-soft-ghost" style="background:#fef2f2;color:#b91c1c" type="submit">Revoke</button>
+                          <button class="btn-soft-danger" type="submit">Revoke</button>
                         </form>
                       @else
                         <span class="soft-muted">-</span>
@@ -80,18 +79,18 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="5" class="soft-muted" style="text-align:center;padding:26px">No consents yet.</td>
+                    <td colspan="5" class="soft-muted soft-empty">No consents yet.</td>
                   </tr>
                 @endforelse
               </tbody>
             </table>
           </div>
 
-          <div style="margin-top:14px">{{ $consents->links() }}</div>
+          <div class="mt-3">{{ $consents->links('pagination::bootstrap-5') }}</div>
         </div>
 
-        <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
+        <div class="mt-2">
+          <a href="{{ route('dashboard') }}" class="link-soft-primary back-link">&larr; Back to Dashboard</a>
         </div>
 
       </div>
@@ -99,4 +98,3 @@
   </div>
 </div>
 @endsection
-

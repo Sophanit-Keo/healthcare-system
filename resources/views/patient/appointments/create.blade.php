@@ -2,20 +2,20 @@
 @include('patient.partials.ui')
 
 @section('content')
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">Request Appointment</h1>
-    <p style="color:rgba(255,255,255,.7)">Choose a date/time and optionally a facility/department.</p>
+    <h1 class="page-hero-title">Request Appointment</h1>
+    <p class="page-hero-subtitle">Choose a date/time and optionally a facility/department.</p>
   </div>
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
-        <div class="page-card" style="max-width:860px;margin-left:auto;margin-right:auto">
-          <div id="api-errors" class="alert-danger" style="display:none;white-space:pre-line"></div>
+        <div class="page-card page-card--form">
+          <div id="api-errors" class="alert-danger pre-line" style="display:none"></div>
 
           <form id="appointment-form" method="POST" action="{{ route('patient.appointments.store') }}" data-api-submit="1">
             @csrf
@@ -76,8 +76,8 @@
           </form>
         </div>
 
-        <div style="margin-top:10px">
-          <a href="{{ route('patient.appointments.index') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Appointments</a>
+        <div class="mt-2">
+          <a href="{{ route('patient.appointments.index') }}" class="link-soft-primary back-link">&larr; Back to Appointments</a>
         </div>
 
       </div>
@@ -122,4 +122,3 @@
   })();
 </script>
 @endsection
-

@@ -63,4 +63,3 @@ class WebRoutesTest extends TestCase
         $this->actingAs($user)->get(route('patient.appointments.index'))->assertStatus(403);
     }
 }
-

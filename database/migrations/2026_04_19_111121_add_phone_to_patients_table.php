@@ -6,16 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
-
     public function up(): void
     {
         Schema::table('patients', function (Blueprint $table) {
             $table->string('phone', 20)->nullable()->after('user_id');
         });
     }
-
-    
 
     public function down(): void
     {

@@ -20,10 +20,10 @@ class PatientsController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('phone', 'like', "%{$search}%")
-                  ->orWhereHas('user', function ($uq) use ($search) {
-                      $uq->where('name', 'like', "%{$search}%")
-                         ->orWhere('email', 'like', "%{$search}%");
-                  });
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -47,23 +47,23 @@ class PatientsController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'first_name'              => ['required', 'string', 'max:255'],
-            'last_name'               => ['required', 'string', 'max:255'],
-            'email'                   => ['required', 'email', 'max:255', 'unique:users,email'],
-            'status'                  => ['nullable', 'string', Rule::in(['active', 'inactive'])],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'status' => ['nullable', 'string', Rule::in(['active', 'inactive'])],
 
-            'phone'                   => ['required', 'string', 'max:20'],
-            'date_of_birth'           => ['nullable', 'date'],
-            'gender'                  => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
-            'address'                 => ['nullable', 'string', 'max:255'],
-            'blood_type'              => ['nullable', 'string', 'max:10'],
-            'emergency_contact_name'  => ['nullable', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:20'],
+            'date_of_birth' => ['nullable', 'date'],
+            'gender' => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
+            'address' => ['nullable', 'string', 'max:255'],
+            'blood_type' => ['nullable', 'string', 'max:10'],
+            'emergency_contact_name' => ['nullable', 'string', 'max:255'],
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
         ]);
 
         DB::transaction(function () use ($data) {
             $user = User::create([
-                'name' => trim($data['first_name'] . ' ' . $data['last_name']),
+                'name' => trim($data['first_name'].' '.$data['last_name']),
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'password' => Hash::make('password'),
@@ -97,17 +97,17 @@ class PatientsController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $data = $request->validate([
-            'first_name'              => ['required', 'string', 'max:255'],
-            'last_name'               => ['required', 'string', 'max:255'],
-            'email'                   => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($patient->user_id)],
-            'status'                  => ['nullable', 'string', Rule::in(['active', 'inactive'])],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($patient->user_id)],
+            'status' => ['nullable', 'string', Rule::in(['active', 'inactive'])],
 
-            'phone'                   => ['required', 'string', 'max:20'],
-            'date_of_birth'           => ['nullable', 'date'],
-            'gender'                  => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
-            'address'                 => ['nullable', 'string', 'max:255'],
-            'blood_type'              => ['nullable', 'string', 'max:10'],
-            'emergency_contact_name'  => ['nullable', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:20'],
+            'date_of_birth' => ['nullable', 'date'],
+            'gender' => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
+            'address' => ['nullable', 'string', 'max:255'],
+            'blood_type' => ['nullable', 'string', 'max:10'],
+            'emergency_contact_name' => ['nullable', 'string', 'max:255'],
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
         ]);
 
@@ -116,7 +116,7 @@ class PatientsController extends Controller
 
             if ($patient->user) {
                 $patient->user->update([
-                    'name' => trim($data['first_name'] . ' ' . $data['last_name']),
+                    'name' => trim($data['first_name'].' '.$data['last_name']),
                     'email' => $data['email'],
                     'phone' => $data['phone'],
                     'status' => $data['status'] ?? ($patient->user->status ?? 'active'),
@@ -148,6 +148,7 @@ class PatientsController extends Controller
         } else {
             $patient->delete();
         }
+
         return redirect()->route('admin.patients.index')->with('success', 'Patient deleted.');
     }
 }

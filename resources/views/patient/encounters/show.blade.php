@@ -2,19 +2,19 @@
 @include('patient.partials.ui')
 
 @section('content')
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">Encounter #{{ $encounter->id }}</h1>
-    <p style="color:rgba(255,255,255,.7)">Details, vital signs, and related lab orders.</p>
+    <h1 class="page-hero-title">Encounter #{{ $encounter->id }}</h1>
+    <p class="page-hero-subtitle">Details, vital signs, and related lab orders.</p>
   </div>
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
-        <div class="page-card" style="max-width:1000px;margin-left:auto;margin-right:auto">
+        <div class="page-card page-card--wide">
           <div class="form-grid" style="margin-bottom:8px">
             <div>
               <div class="soft-muted">Type</div>
@@ -59,7 +59,7 @@
           @endif
         </div>
 
-        <div class="page-card" style="max-width:1000px;margin-left:auto;margin-right:auto">
+        <div class="page-card page-card--wide">
           <h4>Vital signs</h4>
           <div class="soft-table-wrap">
             <table class="soft-table">
@@ -89,7 +89,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="5" class="soft-muted" style="text-align:center;padding:26px">No vital signs recorded.</td>
+                    <td colspan="5" class="soft-muted soft-empty">No vital signs recorded.</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -97,14 +97,14 @@
           </div>
         </div>
 
-        <div class="page-card" style="max-width:1000px;margin-left:auto;margin-right:auto">
+        <div class="page-card page-card--wide">
           <h4>Lab orders</h4>
           <div style="display:flex;flex-direction:column;gap:12px">
             @forelse ($encounter->labOrders as $order)
               <div style="padding:14px 16px;background:#f7f9fc;border-radius:12px;border:1px solid #eef2f7">
                 <div class="actions-row" style="justify-content:space-between">
                   <div style="font-weight:700;color:#18243a">Order #{{ $order->id }}</div>
-                  <span class="soft-badge">{{ str_replace('_', ' ', (string) $order->status) }}</span>
+                  @include('patient.partials.status-badge', ['status' => $order->status])
                 </div>
                 <div style="margin-top:10px">
                   <div class="soft-muted">Items</div>
@@ -121,8 +121,8 @@
           </div>
         </div>
 
-        <div style="margin-top:10px">
-          <a href="{{ route('patient.encounters.index') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back</a>
+        <div class="mt-2">
+          <a href="{{ route('patient.encounters.index') }}" class="link-soft-primary back-link">&larr; Back</a>
         </div>
 
       </div>
@@ -130,4 +130,3 @@
   </div>
 </div>
 @endsection
-

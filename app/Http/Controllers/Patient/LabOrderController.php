@@ -9,7 +9,6 @@ use Illuminate\View\View;
 
 class LabOrderController extends Controller
 {
-    
     public function index(Request $request): View
     {
         $patientId = $request->user()->patient?->id;
@@ -25,19 +24,16 @@ class LabOrderController extends Controller
         ]);
     }
 
-    
     public function create()
     {
         abort(404);
     }
 
-    
     public function store(Request $request)
     {
         abort(404);
     }
 
-    
     public function show(Request $request, LabOrder $labOrder): View
     {
         abort_unless($labOrder->patient_id === $request->user()->patient?->id, 403);
@@ -47,19 +43,16 @@ class LabOrderController extends Controller
         ]);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(string $id)
     {
         abort(404);

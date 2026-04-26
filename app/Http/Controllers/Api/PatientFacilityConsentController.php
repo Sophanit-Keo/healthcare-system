@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class PatientFacilityConsentController extends Controller
 {
-    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -31,7 +30,6 @@ class PatientFacilityConsentController extends Controller
         return PatientFacilityConsentResource::collection($query->latest()->paginate(10));
     }
 
-    
     public function store(StorePatientFacilityConsentRequest $request)
     {
         $user = $request->user();
@@ -63,7 +61,6 @@ class PatientFacilityConsentController extends Controller
             ->setStatusCode(201);
     }
 
-    
     public function show(Request $request, PatientFacilityConsent $patientFacilityConsent)
     {
         $user = $request->user();
@@ -74,7 +71,6 @@ class PatientFacilityConsentController extends Controller
         return new PatientFacilityConsentResource($patientFacilityConsent);
     }
 
-    
     public function update(UpdatePatientFacilityConsentRequest $request, PatientFacilityConsent $patientFacilityConsent)
     {
         $user = $request->user();
@@ -97,7 +93,6 @@ class PatientFacilityConsentController extends Controller
         return new PatientFacilityConsentResource($patientFacilityConsent);
     }
 
-    
     public function destroy(Request $request, PatientFacilityConsent $patientFacilityConsent)
     {
         $user = $request->user();

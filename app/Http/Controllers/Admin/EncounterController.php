@@ -10,21 +10,18 @@ use App\Models\Facility;
 use App\Models\Patient;
 use App\Services\ConsentService;
 use App\Services\StaffScopeService;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class EncounterController extends Controller
 {
     public function __construct(
         private readonly ConsentService $consentService,
         private readonly StaffScopeService $staffScopeService,
-    )
-    {
-    }
+    ) {}
 
-    
     public function index(Request $request): View
     {
         abort_unless($request->user()->can('encounters.view'), 403);
@@ -39,7 +36,6 @@ class EncounterController extends Controller
         ]);
     }
 
-    
     public function create(Request $request): View
     {
         abort_unless($request->user()->can('encounters.create'), 403);
@@ -52,7 +48,6 @@ class EncounterController extends Controller
         ]);
     }
 
-    
     public function store(Request $request): RedirectResponse
     {
         abort_unless($request->user()->can('encounters.create'), 403);
@@ -89,7 +84,6 @@ class EncounterController extends Controller
             ->with('status', 'encounter-created');
     }
 
-    
     public function show(Request $request, Encounter $encounter): View
     {
         abort_unless($request->user()->can('encounters.view'), 403);
@@ -99,19 +93,16 @@ class EncounterController extends Controller
         ]);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(string $id)
     {
         abort(404);

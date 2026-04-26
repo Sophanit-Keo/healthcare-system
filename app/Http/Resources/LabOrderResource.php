@@ -7,7 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class LabOrderResource extends JsonResource
 {
-    
     public function toArray(Request $request): array
     {
         return [
@@ -25,4 +24,3 @@ class LabOrderResource extends JsonResource
         ];
     }
 }
-

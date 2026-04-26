@@ -42,4 +42,3 @@ return [
     'serialization' => 'json',
 
 ];
-

@@ -14,7 +14,7 @@ class PrescriptionController extends Controller
 {
     public function index(Request $request): View
     {
-        $doctorName = 'Dr. ' . $request->user()->name;
+        $doctorName = 'Dr. '.$request->user()->name;
 
         $prescriptions = Prescription::query()
             ->with('user')
@@ -49,7 +49,7 @@ class PrescriptionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $doctorName = 'Dr. ' . $request->user()->name;
+        $doctorName = 'Dr. '.$request->user()->name;
 
         $data = $request->validate([
             'user_id' => ['required', 'integer', 'exists:users,id'],
@@ -73,4 +73,3 @@ class PrescriptionController extends Controller
             ->with('success', 'Prescription created successfully.');
     }
 }
-

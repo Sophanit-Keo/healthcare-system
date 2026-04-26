@@ -33,11 +33,8 @@ class AppointmentController extends Controller
     public function __construct(
         private readonly ConsentService $consentService,
         private readonly StaffScopeService $staffScopeService,
-    )
-    {
-    }
+    ) {}
 
-    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -53,7 +50,6 @@ class AppointmentController extends Controller
         return AppointmentResource::collection($query->latest()->paginate(10));
     }
 
-    
     public function store(StoreAppointmentRequest $request)
     {
         $user = $request->user();
@@ -102,7 +98,7 @@ class AppointmentController extends Controller
             if (! empty($payload['health_staff_id'])) {
                 $staff = HealthStaff::query()->whereKey($payload['health_staff_id'])->first();
                 if ($staff) {
-                    $doctorName = 'Dr. ' . trim(($staff->first_name ?? '') . ' ' . ($staff->last_name ?? ''));
+                    $doctorName = 'Dr. '.trim(($staff->first_name ?? '').' '.($staff->last_name ?? ''));
                 }
             }
 
@@ -110,7 +106,7 @@ class AppointmentController extends Controller
                 $payload['user_id'] = $patient?->user_id;
             }
             if (Schema::hasColumn('appointments', 'patient_name')) {
-                $payload['patient_name'] = $patient?->user?->name ?? (! empty($payload['patient_id']) ? ('Patient #' . $payload['patient_id']) : 'Patient');
+                $payload['patient_name'] = $patient?->user?->name ?? (! empty($payload['patient_id']) ? ('Patient #'.$payload['patient_id']) : 'Patient');
             }
             if (Schema::hasColumn('appointments', 'email')) {
                 $payload['email'] = $patient?->user?->email;
@@ -142,7 +138,6 @@ class AppointmentController extends Controller
             ->setStatusCode(201);
     }
 
-    
     public function show(Request $request, Appointment $appointment)
     {
         $user = $request->user();
@@ -157,7 +152,6 @@ class AppointmentController extends Controller
         return new AppointmentResource($appointment->load(['patient.user', 'staff', 'facility', 'departmentRef']));
     }
 
-    
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
         $user = $request->user();
@@ -174,7 +168,6 @@ class AppointmentController extends Controller
         return new AppointmentResource($appointment->load(['patient.user', 'staff', 'facility', 'departmentRef']));
     }
 
-    
     public function destroy(Request $request, Appointment $appointment)
     {
         $user = $request->user();

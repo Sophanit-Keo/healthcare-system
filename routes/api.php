@@ -1,12 +1,13 @@
 <?php
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\PatientController;
+
 use App\Http\Controllers\Api\AppointmentController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EncounterController;
-use App\Http\Controllers\Api\VitalSignController;
-use App\Http\Controllers\Api\PatientFacilityConsentController;
 use App\Http\Controllers\Api\LabOrderController;
+use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\PatientFacilityConsentController;
+use App\Http\Controllers\Api\VitalSignController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\DoctorMiddleware;
+use App\Http\Middleware\PatientMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,10 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'patient' => \App\Http\Middleware\PatientMiddleware::class,
-            'doctor' => \App\Http\Middleware\DoctorMiddleware::class,
+            'admin' => AdminMiddleware::class,
+            'patient' => PatientMiddleware::class,
+            'doctor' => DoctorMiddleware::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions): void {})->create();

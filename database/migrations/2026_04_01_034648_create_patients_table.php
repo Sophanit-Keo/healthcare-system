@@ -6,14 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
-
     public function up(): void
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
-            
+
             $table->date('date_of_birth')->nullable();
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
@@ -23,8 +21,6 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
-    
 
     public function down(): void
     {

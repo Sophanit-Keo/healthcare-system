@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\Facility;
 use App\Models\PatientFacilityConsent;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ConsentController extends Controller
 {
-    
     public function index(Request $request): View
     {
         $patientId = $request->user()->patient?->id;
@@ -28,13 +27,11 @@ class ConsentController extends Controller
         ]);
     }
 
-    
     public function create()
     {
         abort(404);
     }
 
-    
     public function store(Request $request): RedirectResponse
     {
         $patientId = $request->user()->patient?->id;
@@ -60,25 +57,21 @@ class ConsentController extends Controller
             ->with('status', 'consent-granted');
     }
 
-    
     public function show(string $id)
     {
         abort(404);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(Request $request, PatientFacilityConsent $consent): RedirectResponse
     {
         abort_unless($consent->patient_id === $request->user()->patient?->id, 403);

@@ -10,7 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected function casts(): array
     {
@@ -19,6 +19,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     protected $fillable = [
         'name',
         'username',
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'role',
         'status',
     ];
+
     public function patients()
     {
         return $this->hasOne(Patient::class, 'user_id');

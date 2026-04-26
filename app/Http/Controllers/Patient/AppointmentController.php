@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Department;
 use App\Models\Facility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class AppointmentController extends Controller
 {
-    
     public function index(Request $request): View
     {
         $patientId = $request->user()->patient?->id;
@@ -29,7 +28,6 @@ class AppointmentController extends Controller
         ]);
     }
 
-    
     public function create(): View
     {
         return view('patient.appointments.create', [
@@ -38,7 +36,6 @@ class AppointmentController extends Controller
         ]);
     }
 
-    
     public function store(Request $request): RedirectResponse
     {
         $patient = $request->user()->patient;
@@ -104,7 +101,6 @@ class AppointmentController extends Controller
             ->with('status', 'appointment-created');
     }
 
-    
     public function show(Request $request, Appointment $appointment): View
     {
         $patientId = $request->user()->patient?->id;
@@ -116,19 +112,16 @@ class AppointmentController extends Controller
         ]);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(Request $request, Appointment $appointment): RedirectResponse
     {
         $patientId = $request->user()->patient?->id;

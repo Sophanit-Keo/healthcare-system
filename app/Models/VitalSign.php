@@ -18,7 +18,9 @@ class VitalSign extends Model
         'height',
         'recorded_at',
     ];
-    public function encounter() {
-    return $this->belongsTo(Encounter::class);
+
+    public function encounter()
+    {
+        return $this->belongsTo(Encounter::class);
     }
 }

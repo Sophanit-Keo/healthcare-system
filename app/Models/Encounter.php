@@ -25,21 +25,25 @@ class Encounter extends Model
         'started_at' => 'datetime',
         'ended_at' => 'datetime',
     ];
-    
-    public function appointment() {
-    return $this->belongsTo(Appointment::class);
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
     }
 
-    public function patient() {
-    return $this->belongsTo(Patient::class);
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
     }
 
-    public function staff() {
-    return $this->belongsTo(HealthStaff::class, 'health_staff_id');
+    public function staff()
+    {
+        return $this->belongsTo(HealthStaff::class, 'health_staff_id');
     }
 
-    public function vitalSigns() {
-    return $this->hasMany(VitalSign::class);
+    public function vitalSigns()
+    {
+        return $this->hasMany(VitalSign::class);
     }
 
     public function labOrders()

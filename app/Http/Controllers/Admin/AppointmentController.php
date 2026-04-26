@@ -8,9 +8,9 @@ use App\Models\Department;
 use App\Models\Facility;
 use App\Models\HealthStaff;
 use App\Models\Patient;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class AppointmentController extends Controller
@@ -55,7 +55,6 @@ class AppointmentController extends Controller
         ]);
     }
 
-    
     public function create(Request $request): View
     {
         return view('admin.appointments.create', [
@@ -71,7 +70,6 @@ class AppointmentController extends Controller
         ]);
     }
 
-    
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
@@ -107,7 +105,7 @@ class AppointmentController extends Controller
             if (! empty($data['health_staff_id'])) {
                 $staff = HealthStaff::query()->whereKey($data['health_staff_id'])->first();
                 if ($staff) {
-                    $doctorName = 'Dr. ' . trim(($staff->first_name ?? '') . ' ' . ($staff->last_name ?? ''));
+                    $doctorName = 'Dr. '.trim(($staff->first_name ?? '').' '.($staff->last_name ?? ''));
                 }
             }
 
@@ -115,7 +113,7 @@ class AppointmentController extends Controller
                 $payload['user_id'] = $patient?->user_id;
             }
             if (Schema::hasColumn('appointments', 'patient_name')) {
-                $payload['patient_name'] = $patient?->user?->name ?? ('Patient #' . $data['patient_id']);
+                $payload['patient_name'] = $patient?->user?->name ?? ('Patient #'.$data['patient_id']);
             }
             if (Schema::hasColumn('appointments', 'email')) {
                 $payload['email'] = $patient?->user?->email;
@@ -147,7 +145,6 @@ class AppointmentController extends Controller
             ->with('success', 'Appointment created successfully.');
     }
 
-    
     public function show(Request $request, Appointment $appointment): View
     {
         return view('admin.appointments.show', [
@@ -155,19 +152,16 @@ class AppointmentController extends Controller
         ]);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(Request $request, Appointment $appointment): RedirectResponse
     {
         $appointment->delete();

@@ -2,16 +2,16 @@
 @include('patient.partials.ui')
 
 @section('content')
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">Welcome, {{ Auth::user()->name }}</h1>
-    <p style="color:rgba(255,255,255,.7)">Your health summary and quick actions.</p>
+    <h1 class="page-hero-title">Welcome, {{ Auth::user()->name }}</h1>
+    <p class="page-hero-subtitle">Your health summary and quick actions.</p>
   </div>
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
         <div class="row mb-4" style="align-items:stretch">

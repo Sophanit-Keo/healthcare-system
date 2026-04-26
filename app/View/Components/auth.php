@@ -8,14 +8,10 @@ use Illuminate\View\Component;
 
 class auth extends Component
 {
-    public function __construct()
-    {
-        
-    }
+    public function __construct() {}
 
     public function render(): View|Closure|string
     {
         return view('components.auth');
     }
 }
-

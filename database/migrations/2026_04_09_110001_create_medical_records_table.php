@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('doctor_name')->nullable();
             $table->string('department')->nullable();
-            $table->string('type')->default('general'); 
+            $table->string('type')->default('general');
             $table->date('record_date');
             $table->text('description')->nullable();
             $table->text('diagnosis')->nullable();
@@ -27,4 +27,3 @@ return new class extends Migration
         Schema::dropIfExists('medical_records');
     }
 };
-

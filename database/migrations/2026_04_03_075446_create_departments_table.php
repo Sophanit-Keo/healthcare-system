@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
-
     public function up(): void
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('facility_id')
+            $table->foreignId('facility_id')
                 ->constrained('facilities')
                 ->cascadeOnDelete();
 
@@ -27,8 +25,6 @@ return new class extends Migration
 
         });
     }
-
-    
 
     public function down(): void
     {

@@ -8,7 +8,6 @@ use Illuminate\Database\Seeder;
 
 class FacilitiesSeeder extends Seeder
 {
-    
     public function run(): void
     {
         $facility = Facility::firstOrCreate(

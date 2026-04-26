@@ -2,12 +2,12 @@
 @include('patient.partials.ui')
 
 @section('content')
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <div class="actions-row" style="gap:14px">
+    <div class="actions-row actions-row--spaced">
       <div>
-        <h1 style="color:#fff;margin-bottom:4px">My Appointments</h1>
-        <p style="color:rgba(255,255,255,.7)">View upcoming appointments and your history.</p>
+        <h1 class="page-hero-title">My Appointments</h1>
+        <p class="page-hero-subtitle">View upcoming appointments and your history.</p>
       </div>
       <a href="{{ route('patient.appointments.create') }}" class="btn-soft-primary">Request appointment</a>
     </div>
@@ -15,8 +15,8 @@
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
         @if (session('status'))
@@ -33,7 +33,7 @@
                   <th>Facility</th>
                   <th>Department</th>
                   <th>Status</th>
-                  <th style="text-align:right">Actions</th>
+                  <th class="text-end">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,29 +44,26 @@
                     <td>{{ $appointment->facility?->name ?? '-' }}</td>
                     <td>{{ $appointment->departmentRef?->name ?? '-' }}</td>
                     <td>
-                      @php($status = (string) ($appointment->status ?? 'scheduled'))
-                      <span class="soft-badge {{ $status === 'completed' ? 'green' : ($status === 'cancelled' ? 'red' : ($status === 'no_show' ? 'amber' : '')) }}">
-                        {{ str_replace('_', ' ', $status) }}
-                      </span>
+                      @include('patient.partials.status-badge', ['status' => $appointment->status ?? 'scheduled'])
                     </td>
-                    <td style="text-align:right">
-                      <a href="{{ route('patient.appointments.show', $appointment) }}" style="color:#1a8a6e;font-weight:600">View</a>
+                    <td class="text-end">
+                      <a href="{{ route('patient.appointments.show', $appointment) }}" class="link-soft-primary">View</a>
                     </td>
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="6" class="soft-muted" style="text-align:center;padding:26px">No appointments yet.</td>
+                    <td colspan="6" class="soft-muted soft-empty">No appointments yet.</td>
                   </tr>
                 @endforelse
               </tbody>
             </table>
           </div>
 
-          <div style="margin-top:14px">{{ $appointments->links() }}</div>
+          <div class="mt-3">{{ $appointments->links('pagination::bootstrap-5') }}</div>
         </div>
 
-        <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
+        <div class="mt-2">
+          <a href="{{ route('dashboard') }}" class="link-soft-primary back-link">&larr; Back to Dashboard</a>
         </div>
 
       </div>
@@ -74,4 +71,3 @@
   </div>
 </div>
 @endsection
-

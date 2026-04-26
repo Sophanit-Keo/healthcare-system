@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class VitalSignController extends Controller
 {
-    
     public function index(Request $request)
     {
         abort_unless($request->user()->can('encounters.view'), 403);
@@ -25,7 +24,6 @@ class VitalSignController extends Controller
         return VitalSignResource::collection($query->latest()->paginate(10));
     }
 
-    
     public function store(StoreVitalSignRequest $request)
     {
         abort_unless($request->user()->can('encounters.update'), 403);
@@ -37,7 +35,6 @@ class VitalSignController extends Controller
             ->setStatusCode(201);
     }
 
-    
     public function show(VitalSign $vitalSign)
     {
         abort_unless(request()->user()->can('encounters.view'), 403);
@@ -45,7 +42,6 @@ class VitalSignController extends Controller
         return new VitalSignResource($vitalSign);
     }
 
-    
     public function update(UpdateVitalSignRequest $request, VitalSign $vitalSign)
     {
         abort_unless($request->user()->can('encounters.update'), 403);
@@ -55,7 +51,6 @@ class VitalSignController extends Controller
         return new VitalSignResource($vitalSign);
     }
 
-    
     public function destroy(VitalSign $vitalSign)
     {
         abort_unless(request()->user()->can('encounters.update'), 403);

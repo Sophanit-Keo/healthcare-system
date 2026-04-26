@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
-
     public function up(): void
     {
         Schema::table('health_staff', function (Blueprint $table) {
@@ -19,8 +17,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
         });
     }
-
-    
 
     public function down(): void
     {

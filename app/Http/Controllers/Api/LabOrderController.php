@@ -20,11 +20,8 @@ class LabOrderController extends Controller
     public function __construct(
         private readonly ConsentService $consentService,
         private readonly StaffScopeService $staffScopeService,
-    )
-    {
-    }
+    ) {}
 
-    
     public function index(Request $request)
     {
         $user = $request->user();
@@ -44,7 +41,6 @@ class LabOrderController extends Controller
         return LabOrderResource::collection($query->latest()->paginate(10));
     }
 
-    
     public function store(StoreLabOrderRequest $request)
     {
         $user = $request->user();
@@ -99,7 +95,6 @@ class LabOrderController extends Controller
             ->setStatusCode(201);
     }
 
-    
     public function show(Request $request, LabOrder $labOrder)
     {
         $user = $request->user();
@@ -114,7 +109,6 @@ class LabOrderController extends Controller
         return new LabOrderResource($labOrder->load('items'));
     }
 
-    
     public function update(UpdateLabOrderRequest $request, LabOrder $labOrder)
     {
         $user = $request->user();
@@ -144,7 +138,6 @@ class LabOrderController extends Controller
         return new LabOrderResource($labOrder->load('items'));
     }
 
-    
     public function destroy(Request $request, LabOrder $labOrder)
     {
         $user = $request->user();

@@ -61,4 +61,3 @@ class ChatController extends Controller
             ->with('success', 'Message sent successfully!');
     }
 }
-

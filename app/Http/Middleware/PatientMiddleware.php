@@ -31,4 +31,3 @@ class PatientMiddleware
         return $next($request);
     }
 }
-

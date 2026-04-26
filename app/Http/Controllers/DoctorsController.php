@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
 use App\Models\Department;
+use App\Models\Doctor;
 use App\Models\Facility;
 use App\Models\HealthStaff;
 use App\Models\User;
@@ -24,9 +24,9 @@ class DoctorsController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('specialization', 'like', "%{$search}%");
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('specialization', 'like', "%{$search}%");
             });
         }
 
@@ -39,6 +39,7 @@ class DoctorsController extends Controller
         }
 
         $doctors = $query->latest('DoctorID')->paginate(10)->withQueryString();
+
         return view('admin.doctors.index', compact('doctors'));
     }
 
@@ -50,15 +51,15 @@ class DoctorsController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'first_name'   => 'required|string|max:255',
-            'last_name'    => 'required|string|max:255',
-            'email'        => 'required|email|unique:doctors,email',
-            'phone'        => 'nullable|string|max:50',
-            'department'   => 'required|string|max:255',
-            'status'       => 'nullable|string|in:available,unavailable,onleave',
-            'experience'   => 'nullable|integer|min:0|max:50',
-            'fee'          => 'nullable|numeric|min:0',
-            'bio'          => 'nullable|string',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:doctors,email',
+            'phone' => 'nullable|string|max:50',
+            'department' => 'required|string|max:255',
+            'status' => 'nullable|string|in:available,unavailable,onleave',
+            'experience' => 'nullable|integer|min:0|max:50',
+            'fee' => 'nullable|numeric|min:0',
+            'bio' => 'nullable|string',
         ]);
 
         $createdUser = false;
@@ -75,13 +76,13 @@ class DoctorsController extends Controller
                 }
 
                 $user->update([
-                    'name' => trim($data['first_name'] . ' ' . $data['last_name']),
+                    'name' => trim($data['first_name'].' '.$data['last_name']),
                     'phone' => $data['phone'] ?? $user->phone,
                     'role' => 'doctor',
                 ]);
             } else {
                 $user = User::create([
-                    'name' => trim($data['first_name'] . ' ' . $data['last_name']),
+                    'name' => trim($data['first_name'].' '.$data['last_name']),
                     'email' => $data['email'],
                     'phone' => $data['phone'] ?? null,
                     'password' => Hash::make('password'),
@@ -98,16 +99,16 @@ class DoctorsController extends Controller
             }
 
             Doctor::create([
-                'first_name'          => $data['first_name'],
-                'last_name'           => $data['last_name'],
-                'email'               => $data['email'],
-                'phone'               => $data['phone'] ?? '',
-                'specialization'      => $data['department'],
-                'status'              => strtolower($data['status'] ?? 'onleave'),
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'] ?? '',
+                'specialization' => $data['department'],
+                'status' => strtolower($data['status'] ?? 'onleave'),
                 'years_of_experience' => $data['experience'] ?? 0,
-                'consultation_fee'    => $data['fee'] ?? 0,
-                'schedule_load'       => 0,
-                'biography_note'      => $data['bio'] ?? null,
+                'consultation_fee' => $data['fee'] ?? 0,
+                'schedule_load' => 0,
+                'biography_note' => $data['bio'] ?? null,
             ]);
 
             $defaultFacility = Facility::query()->orderBy('id')->first();
@@ -140,11 +141,11 @@ class DoctorsController extends Controller
                         'status' => 'active',
                     ]);
                 } else {
-                    $staffCodeBase = 'DOC-' . str_pad((string) $user->id, 5, '0', STR_PAD_LEFT);
+                    $staffCodeBase = 'DOC-'.str_pad((string) $user->id, 5, '0', STR_PAD_LEFT);
                     $staffCode = $staffCodeBase;
 
                     while (HealthStaff::query()->where('staff_code', $staffCode)->exists()) {
-                        $staffCode = $staffCodeBase . '-' . Str::upper(Str::random(4));
+                        $staffCode = $staffCodeBase.'-'.Str::upper(Str::random(4));
                     }
 
                     HealthStaff::create([
@@ -189,6 +190,7 @@ class DoctorsController extends Controller
         }
 
         $doctor->delete();
+
         return redirect()->route('admin.doctors.index')->with('success', 'Doctor deleted.');
     }
 
@@ -200,15 +202,15 @@ class DoctorsController extends Controller
     public function update(Request $request, Doctor $doctor)
     {
         $data = $request->validate([
-            'first_name'   => 'required|string|max:255',
-            'last_name'    => 'required|string|max:255',
-            'email'        => 'required|email|unique:doctors,email,' . $doctor->DoctorID . ',DoctorID',
-            'phone'        => 'nullable|string|max:50',
-            'department'   => 'required|string|max:255',
-            'status'       => 'nullable|string|in:available,unavailable,onleave',
-            'experience'   => 'nullable|integer|min:0|max:50',
-            'fee'          => 'nullable|numeric|min:0',
-            'bio'          => 'nullable|string',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:doctors,email,'.$doctor->DoctorID.',DoctorID',
+            'phone' => 'nullable|string|max:50',
+            'department' => 'required|string|max:255',
+            'status' => 'nullable|string|in:available,unavailable,onleave',
+            'experience' => 'nullable|integer|min:0|max:50',
+            'fee' => 'nullable|numeric|min:0',
+            'bio' => 'nullable|string',
         ]);
 
         $createdUser = false;
@@ -226,7 +228,7 @@ class DoctorsController extends Controller
 
             if (! $user) {
                 $user = User::create([
-                    'name' => trim($data['first_name'] . ' ' . $data['last_name']),
+                    'name' => trim($data['first_name'].' '.$data['last_name']),
                     'email' => $data['email'],
                     'phone' => $data['phone'] ?? null,
                     'password' => Hash::make('password'),
@@ -237,7 +239,7 @@ class DoctorsController extends Controller
                 $createdUser = true;
             } else {
                 $user->update([
-                    'name' => trim($data['first_name'] . ' ' . $data['last_name']),
+                    'name' => trim($data['first_name'].' '.$data['last_name']),
                     'email' => $data['email'],
                     'phone' => $data['phone'] ?? $user->phone,
                     'role' => 'doctor',
@@ -250,15 +252,15 @@ class DoctorsController extends Controller
             }
 
             $doctor->update([
-                'first_name'          => $data['first_name'],
-                'last_name'           => $data['last_name'],
-                'email'               => $data['email'],
-                'phone'               => $data['phone'] ?? '',
-                'specialization'      => $data['department'],
-                'status'              => strtolower($data['status'] ?? 'onleave'),
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'] ?? '',
+                'specialization' => $data['department'],
+                'status' => strtolower($data['status'] ?? 'onleave'),
                 'years_of_experience' => $data['experience'] ?? 0,
-                'consultation_fee'    => $data['fee'] ?? 0,
-                'biography_note'      => $data['bio'] ?? null,
+                'consultation_fee' => $data['fee'] ?? 0,
+                'biography_note' => $data['bio'] ?? null,
             ]);
 
             $defaultFacility = Facility::query()->orderBy('id')->first();
@@ -292,11 +294,11 @@ class DoctorsController extends Controller
                         'status' => 'active',
                     ]);
                 } else {
-                    $staffCodeBase = 'DOC-' . str_pad((string) $user->id, 5, '0', STR_PAD_LEFT);
+                    $staffCodeBase = 'DOC-'.str_pad((string) $user->id, 5, '0', STR_PAD_LEFT);
                     $staffCode = $staffCodeBase;
 
                     while (HealthStaff::query()->where('staff_code', $staffCode)->exists()) {
-                        $staffCode = $staffCodeBase . '-' . Str::upper(Str::random(4));
+                        $staffCode = $staffCodeBase.'-'.Str::upper(Str::random(4));
                     }
 
                     HealthStaff::create([

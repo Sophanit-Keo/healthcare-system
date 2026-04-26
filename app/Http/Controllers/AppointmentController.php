@@ -17,9 +17,9 @@ class AppointmentController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('patient_name', 'like', "%{$search}%")
-                  ->orWhere('doctor', 'like', "%{$search}%")
-                  ->orWhere('department', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('doctor', 'like', "%{$search}%")
+                    ->orWhere('department', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
@@ -32,6 +32,7 @@ class AppointmentController extends Controller
         }
 
         $appointments = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.appointments.index', compact('appointments'));
     }
 
@@ -59,14 +60,14 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'patient_name' => 'required|string|max:255',
-            'email'        => 'nullable|email|max:255',
-            'phone'        => 'required|digits_between:9,10',
-            'doctor'       => 'nullable|string|max:255',
-            'department'   => 'required|string|max:255',
-            'date'         => 'required|date',
-            'time'         => 'nullable',
-            'status'       => 'nullable|string|in:pending,confirmed,cancelled,in_progress',
-            'message'      => 'required|string|max:2000',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'required|digits_between:9,10',
+            'doctor' => 'nullable|string|max:255',
+            'department' => 'required|string|max:255',
+            'date' => 'required|date',
+            'time' => 'nullable',
+            'status' => 'nullable|string|in:pending,confirmed,cancelled,in_progress',
+            'message' => 'required|string|max:2000',
         ]);
 
         $validated['status'] = ! empty($validated['status']) ? $validated['status'] : 'pending';
@@ -97,6 +98,7 @@ class AppointmentController extends Controller
     public function destroy(Appointment $appointment)
     {
         $appointment->delete();
+
         return redirect()->route('admin.appointments.index')
             ->with('success', 'Appointment deleted.');
     }

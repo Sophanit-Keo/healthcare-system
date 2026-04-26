@@ -26,4 +26,3 @@ class DoctorMiddleware
         return $next($request);
     }
 }
-

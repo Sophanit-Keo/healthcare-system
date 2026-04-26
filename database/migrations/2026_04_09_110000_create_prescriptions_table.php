@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('frequency')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->string('status')->default('active'); 
+            $table->string('status')->default('active');
             $table->text('notes')->nullable();
             $table->timestamps();
         });
@@ -28,4 +28,3 @@ return new class extends Migration
         Schema::dropIfExists('prescriptions');
     }
 };
-

@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
-
     public function up(): void
     {
         Schema::create('lab_orders', function (Blueprint $table) {
@@ -28,8 +26,6 @@ return new class extends Migration
             $table->index(['patient_id', 'status']);
         });
     }
-
-    
 
     public function down(): void
     {

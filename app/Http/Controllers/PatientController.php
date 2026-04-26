@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LabTest;
+use App\Models\MedicalRecord;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Message;
-use App\Models\MedicalRecord;
-use App\Models\LabTest;
-use App\Models\User;
 
 class PatientController extends Controller
 {
@@ -96,4 +96,3 @@ class PatientController extends Controller
         return view('patient.lab-results', compact('results', 'pending'));
     }
 }
-

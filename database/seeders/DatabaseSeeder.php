@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -9,7 +10,6 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    
     public function run(): void
     {
         User::factory()->create([
@@ -18,4 +18,3 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
-

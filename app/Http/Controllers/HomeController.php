@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Appointment;
 use App\Models\Encounter;
 use App\Models\LabOrder;
 use App\Models\Patient;
 use App\Models\PatientFacilityConsent;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {

@@ -9,7 +9,6 @@ use Illuminate\View\View;
 
 class PatientController extends Controller
 {
-    
     public function index(Request $request): View
     {
         abort_unless($request->user()->can('patients.view'), 403);
@@ -17,7 +16,7 @@ class PatientController extends Controller
         $patients = Patient::query()
             ->with('user')
             ->when($request->filled('q'), function ($q) use ($request) {
-                $term = '%' . $request->string('q')->toString() . '%';
+                $term = '%'.$request->string('q')->toString().'%';
                 $q->whereHas('user', function ($uq) use ($term) {
                     $uq->where('name', 'like', $term)
                         ->orWhere('email', 'like', $term)
@@ -33,19 +32,16 @@ class PatientController extends Controller
         ]);
     }
 
-    
     public function create()
     {
         abort(404);
     }
 
-    
     public function store(Request $request)
     {
         abort(404);
     }
 
-    
     public function show(Request $request, Patient $patient): View
     {
         abort_unless($request->user()->can('patients.view'), 403);
@@ -55,19 +51,16 @@ class PatientController extends Controller
         ]);
     }
 
-    
     public function edit(string $id)
     {
         abort(404);
     }
 
-    
     public function update(Request $request, string $id)
     {
         abort(404);
     }
 
-    
     public function destroy(string $id)
     {
         abort(404);

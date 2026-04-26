@@ -1,9 +1,8 @@
-@extends('layout.main')
+﻿@extends('layout.main')
+@include('patient.partials.ui')
 
 @push('style')
 <style>
-  .page-container { width:100%; max-width:1400px; margin:auto; padding:0 24px; }
-  .page-card { background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.06); padding:28px; margin-bottom:20px; }
   .record-item { display:flex; align-items:center; gap:14px; padding:14px 18px; background:#f7f9fc; border-radius:10px; }
   .record-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
   .empty-state { text-align:center; padding:40px 16px; color:#8898b0; font-size:.9rem; }
@@ -13,23 +12,23 @@
 @endpush
 
 @section('content')
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">📋 My Medical Records</h1>
-    <p style="color:rgba(255,255,255,.7)">View your complete medical history and reports.</p>
+    <h1 class="page-hero-title">&#128203; My Medical Records</h1>
+    <p class="page-hero-subtitle">View your complete medical history and reports.</p>
   </div>
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
         <div class="page-card">
-          <h4 style="margin-bottom:18px;color:#18243a">All Records ({{ $records->count() }})</h4>
+          <h4>All Records ({{ $records->count() }})</h4>
           @if($records->isEmpty())
           <div class="empty-state">
-            <div style="font-size:40px;margin-bottom:8px">📋</div>
+            <div style="font-size:40px;margin-bottom:8px">&#128203;</div>
             No medical records found.
           </div>
           @else
@@ -37,11 +36,26 @@
             @foreach($records as $record)
             <div class="record-item">
               <div class="record-icon" style="background:{{ $record->type === 'lab' ? '#eef2ff' : ($record->type === 'imaging' ? '#fdf2f8' : ($record->type === 'surgery' ? '#fef2f2' : '#fff7ed')) }}">
-                {{ $record->type === 'lab' ? '🔬' : ($record->type === 'imaging' ? '🩻' : ($record->type === 'surgery' ? '🏥' : ($record->type === 'checkup' ? '🩺' : '📄'))) }}
+                @switch($record->type)
+                  @case('lab')
+                    <span aria-hidden="true">&#129514;</span>
+                    @break
+                  @case('imaging')
+                    <span aria-hidden="true">&#128247;</span>
+                    @break
+                  @case('surgery')
+                    <span aria-hidden="true">&#127973;</span>
+                    @break
+                  @case('checkup')
+                    <span aria-hidden="true">&#128137;</span>
+                    @break
+                  @default
+                    <span aria-hidden="true">&#128196;</span>
+                @endswitch
               </div>
               <div style="flex:1;min-width:0">
                 <div style="font-weight:600;font-size:.9rem;color:#18243a">{{ $record->title }}</div>
-                <div style="font-size:.8rem;color:#8898b0">{{ $record->department }} • Dr. {{ $record->doctor_name }}</div>
+                <div style="font-size:.8rem;color:#8898b0">{{ $record->department }} &bull; Dr. {{ $record->doctor_name }}</div>
                 <div style="font-size:.8rem;color:#8898b0">{{ $record->record_date->format('d M Y') }}</div>
                 @if($record->diagnosis)
                 <div style="font-size:.8rem;color:#526078;margin-top:4px"><strong>Diagnosis:</strong> {{ $record->diagnosis }}</div>
@@ -57,8 +71,8 @@
           @endif
         </div>
 
-        <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
+        <div class="mt-2">
+          <a href="{{ route('dashboard') }}" class="link-soft-primary back-link">&larr; Back to Dashboard</a>
         </div>
 
       </div>
@@ -66,6 +80,5 @@
   </div>
 </div>
 @endsection
-
 
 

@@ -22,4 +22,3 @@ class ConsentService
             ->exists();
     }
 }
-

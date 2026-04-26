@@ -1,9 +1,8 @@
-@extends('layout.main')
+﻿@extends('layout.main')
+@include('patient.partials.ui')
 
 @push('style')
 <style>
-  .page-container { width:100%; max-width:1400px; margin:auto; padding:0 24px; }
-  .page-card { background:#fff; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.06); padding:28px; margin-bottom:20px; }
   .msg-item { display:flex; gap:14px; padding:14px 18px; background:#f7f9fc; border-radius:10px; }
   .msg-icon { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; font-weight:600; color:#fff; }
   .chat-form textarea { width:100%; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:.9rem; resize:vertical; min-height:80px; }
@@ -19,21 +18,21 @@
 @section('content')
 @if(session('success'))
 <div id="toast" style="position:fixed;top:30px;right:30px;z-index:9999;min-width:320px;max-width:420px;padding:18px 24px;border-radius:12px;color:#fff;font-weight:500;font-size:.95rem;box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s;opacity:0;background:linear-gradient(135deg,#1a8a6e,#12705a)">
-  <span style="font-size:22px">✅</span><span>{{ session('success') }}</span>
+  <span style="font-size:22px">&#9989;</span><span>{{ session('success') }}</span>
 </div>
 <script>document.addEventListener('DOMContentLoaded',function(){var t=document.getElementById('toast');if(t){setTimeout(function(){t.style.transform='translateX(0)';t.style.opacity='1'},100);setTimeout(function(){t.style.transform='translateX(120%)';t.style.opacity='0'},4000)}});</script>
 @endif
 
-<div class="page-hero overlay-dark" style="background:linear-gradient(135deg,#0d2137 0%,#1a4a36 100%);padding:60px 0 40px">
+<div class="page-hero overlay-dark patient-hero">
   <div class="page-container">
-    <h1 style="color:#fff;margin-bottom:4px">💬 Chat with Doctor</h1>
-    <p style="color:rgba(255,255,255,.7)">Send messages and get medical advice from our doctors.</p>
+    <h1 class="page-hero-title">&#128172; Chat with Doctor</h1>
+    <p class="page-hero-subtitle">Send messages and get medical advice from our doctors.</p>
   </div>
 </div>
 
 <div class="bg-light">
-  <div class="page-section" style="padding-top:0">
-    <div style="margin-top:-2rem;position:relative;z-index:10">
+  <div class="page-section page-section--flush">
+    <div class="page-float">
       <div class="page-container">
 
         
@@ -72,7 +71,7 @@
           <h4 style="margin-bottom:14px;color:#18243a">Message History</h4>
           @if($messages->isEmpty())
           <div class="empty-state">
-            <div style="font-size:40px;margin-bottom:8px">💬</div>
+            <div style="font-size:40px;margin-bottom:8px">&#128172;</div>
             No messages yet. Send one to get started!
           </div>
           @else
@@ -80,7 +79,11 @@
             @foreach($messages as $msg)
             <div class="msg-item">
               <div class="msg-icon" style="background:{{ $msg->sender_id == Auth::id() ? 'linear-gradient(135deg,#1a8a6e,#12705a)' : 'linear-gradient(135deg,#3b82f6,#2563eb)' }}">
-                {{ $msg->sender_id == Auth::id() ? '📤' : '📥' }}
+                @if ($msg->sender_id == Auth::id())
+                  <span aria-hidden="true">&#128228;</span>
+                @else
+                  <span aria-hidden="true">&#128229;</span>
+                @endif
               </div>
               <div style="flex:1;min-width:0">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
@@ -102,8 +105,8 @@
           @endif
         </div>
 
-        <div style="margin-top:10px">
-          <a href="{{ route('dashboard') }}" style="color:#1a8a6e;font-weight:600;font-size:.9rem">← Back to Dashboard</a>
+        <div class="mt-2">
+          <a href="{{ route('dashboard') }}" class="link-soft-primary back-link">&larr; Back to Dashboard</a>
         </div>
 
       </div>
@@ -111,6 +114,5 @@
   </div>
 </div>
 @endsection
-
 
 

@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
-
     public function up(): void
     {
         Schema::create('patient_facility_consents', function (Blueprint $table) {
@@ -23,7 +21,6 @@ return new class extends Migration
             $table->timestamp('revoked_at')->nullable();
             $table->timestamp('expires_at')->nullable();
 
-            
             $table->foreignId('updated_by_user_id')->nullable()->constrained('users')->nullOnDelete();
 
             $table->timestamps();
@@ -32,8 +29,6 @@ return new class extends Migration
             $table->index(['facility_id', 'status']);
         });
     }
-
-    
 
     public function down(): void
     {

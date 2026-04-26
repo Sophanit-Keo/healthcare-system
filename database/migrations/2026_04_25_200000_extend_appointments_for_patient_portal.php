@@ -63,7 +63,7 @@ return new class extends Migration
                 Schema::table('appointments', function (Blueprint $table) {
                     $table->index(['patient_id', 'appointment_date'], 'appointments_patient_id_appointment_date_index');
                 });
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 // Ignore if index already exists (or driver doesn't support it).
             }
         }
@@ -75,7 +75,7 @@ return new class extends Migration
             Schema::table('appointments', function (Blueprint $table) {
                 $table->dropIndex('appointments_patient_id_appointment_date_index');
             });
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // ignore
         }
 
