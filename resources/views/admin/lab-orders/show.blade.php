@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Lab Order #{{ $order->id }}</h2>
+        <div class="flex items-center justify-between"><h2 class="font-semibold text-xl text-gray-800 leading-tight">Lab Order #{{ $order->id }}</h2><a href="{{ route('admin.lab-orders.edit', $order) }}" class="px-4 py-2 rounded bg-indigo-600 text-white">Enter Results</a></div>
     </x-slot>
 
     <div class="py-8">

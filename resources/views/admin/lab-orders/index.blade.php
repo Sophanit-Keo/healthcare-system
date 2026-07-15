@@ -32,6 +32,8 @@
                                 <td class="p-3">{{ $o->ordered_at ?? $o->created_at }}</td>
                                 <td class="p-3 text-right">
                                     <a class="text-indigo-600 hover:text-indigo-700" href="{{ route('admin.lab-orders.show', $o) }}">View</a>
+                                    <a class="ml-3 text-amber-600 hover:text-amber-700" href="{{ route('admin.lab-orders.edit', $o) }}">Results</a>
+                                    <form class="inline ml-3" method="POST" action="{{ route('admin.lab-orders.destroy', $o) }}" onsubmit="return confirm('Delete this lab order?')">@csrf @method('DELETE')<button class="text-red-600" type="submit">Delete</button></form>
                                 </td>
                             </tr>
                         @empty

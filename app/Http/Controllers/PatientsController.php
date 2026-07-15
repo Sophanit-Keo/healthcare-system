@@ -44,6 +44,19 @@ class PatientsController extends Controller
         return view('admin.patients.create');
     }
 
+    public function show(Patient $patient)
+    {
+        $patient->load([
+            'user',
+            'appointments' => fn ($query) => $query->latest('appointment_date')->limit(10),
+            'encounters' => fn ($query) => $query->latest()->limit(10),
+            'facilityConsents.facility',
+            'labOrders.items',
+        ]);
+
+        return view('admin.patients.show', compact('patient'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

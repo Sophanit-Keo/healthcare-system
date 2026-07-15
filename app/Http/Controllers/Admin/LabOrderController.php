@@ -57,6 +57,7 @@ class LabOrderController extends Controller
     {
         abort_unless($request->user()->can('lab_orders.create'), 403);
 
+        $request->merge(['items' => collect($request->input('items', []))->filter(fn ($item) => ! empty(trim((string) ($item['test_name'] ?? ''))))->values()->all()]);
         $data = $request->validate([
             'patient_id' => ['required', 'integer', 'exists:patients,id'],
             'encounter_id' => ['nullable', 'integer', 'exists:encounters,id'],
@@ -115,20 +116,43 @@ class LabOrderController extends Controller
     }
 
     
-    public function edit(string $id)
+    public function edit(Request $request, LabOrder $labOrder): View
     {
-        abort(404);
+        abort_unless($request->user()->can('lab_orders.update'), 403);
+        return view('admin.lab-orders.edit', ['order' => $labOrder->load('items')]);
     }
 
     
-    public function update(Request $request, string $id)
+    public function update(Request $request, LabOrder $labOrder): RedirectResponse
     {
-        abort(404);
+        abort_unless($request->user()->can('lab_orders.update'), 403);
+        $data = $request->validate([
+            'status' => ['required', 'in:ordered,in_progress,completed,cancelled'],
+            'notes' => ['nullable', 'string'],
+            'items' => ['required', 'array'],
+            'items.*.id' => ['required', 'integer', 'exists:lab_order_items,id'],
+            'items.*.status' => ['required', 'in:ordered,collected,resulted,cancelled'],
+            'items.*.result' => ['nullable', 'string'], 'items.*.unit' => ['nullable', 'string', 'max:50'],
+            'items.*.reference_range' => ['nullable', 'string', 'max:100'],
+        ]);
+        DB::transaction(function () use ($labOrder, $data) {
+            $labOrder->update(['status' => $data['status'], 'notes' => $data['notes'] ?? null]);
+            foreach ($data['items'] as $item) {
+                $model = $labOrder->items()->findOrFail($item['id']);
+                $item['collected_at'] = in_array($item['status'], ['collected', 'resulted'], true) ? ($model->collected_at ?? now()) : null;
+                $item['resulted_at'] = $item['status'] === 'resulted' ? ($model->resulted_at ?? now()) : null;
+                unset($item['id']);
+                $model->update($item);
+            }
+        });
+        return redirect()->route('admin.lab-orders.show', $labOrder)->with('status', 'lab-order-updated');
     }
 
     
-    public function destroy(string $id)
+    public function destroy(Request $request, LabOrder $labOrder): RedirectResponse
     {
-        abort(404);
+        abort_unless($request->user()->can('lab_orders.delete'), 403);
+        $labOrder->delete();
+        return redirect()->route('admin.lab-orders.index')->with('status', 'lab-order-deleted');
     }
 }

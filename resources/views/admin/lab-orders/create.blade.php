@@ -14,7 +14,7 @@
                         <select name="patient_id" required class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="">Select</option>
                             @foreach ($patients as $p)
-                                <option value="{{ $p->id }}" @selected(old('patient_id') == $p->id)>{{ $p->user?->name }} ({{ $p->user?->email }})</option>
+                                <option value="{{ $p->id }}" @selected(old('patient_id', request('patient_id')) == $p->id)>{{ $p->user?->name }} ({{ $p->user?->email }})</option>
                             @endforeach
                         </select>
                         @error('patient_id')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
@@ -26,7 +26,7 @@
                             <select name="encounter_id" class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">--</option>
                                 @foreach ($encounters as $e)
-                                    <option value="{{ $e->id }}" @selected(old('encounter_id') == $e->id)>#{{ $e->id }}</option>
+                                    <option value="{{ $e->id }}" @selected(old('encounter_id', request('encounter_id')) == $e->id)>#{{ $e->id }}</option>
                                 @endforeach
                             </select>
                         </div>

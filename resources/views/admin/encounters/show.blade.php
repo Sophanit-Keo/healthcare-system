@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Encounter #{{ $encounter->id }}</h2>
+        <div class="flex items-center justify-between"><h2 class="font-semibold text-xl text-gray-800 leading-tight">Encounter #{{ $encounter->id }}</h2><a href="{{ route('admin.encounters.edit', $encounter) }}" class="px-4 py-2 rounded bg-indigo-600 text-white">Edit</a></div>
     </x-slot>
 
     <div class="py-8">
@@ -85,14 +85,14 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center justify-between">
                     <div class="font-semibold text-gray-900">Lab orders</div>
-                    <a class="text-sm text-indigo-600 hover:text-indigo-700" href="{{ route('admin.lab-orders.create') }}">Create lab order</a>
+                    <a class="text-sm text-indigo-600 hover:text-indigo-700" href="{{ route('admin.lab-orders.create', ['patient_id' => $encounter->patient_id, 'encounter_id' => $encounter->id]) }}">Create lab order</a>
                 </div>
 
                 <div class="mt-4 space-y-3">
                     @forelse ($encounter->labOrders as $order)
                         <div class="border rounded p-4">
                             <div class="flex items-center justify-between">
-                                <div class="font-medium text-gray-900">Order #{{ $order->id }}</div>
+                                <a href="{{ route('admin.lab-orders.show', $order) }}" class="font-medium text-indigo-600">Order #{{ $order->id }}</a>
                                 <div class="text-sm text-gray-600">{{ $order->status }}</div>
                             </div>
                             <ul class="mt-2 list-disc list-inside text-sm text-gray-800">

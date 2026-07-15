@@ -1,0 +1,19 @@
+<x-app-layout>
+    <x-slot name="header"><h2 class="font-semibold text-xl text-gray-800">Edit Encounter #{{ $encounter->id }}</h2></x-slot>
+    <div class="py-8"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8"><div class="bg-white shadow rounded-lg p-6">
+        <form method="POST" action="{{ route('admin.encounters.update', $encounter) }}" class="space-y-4">@csrf @method('PUT')
+            @if($errors->any())<div class="p-3 rounded bg-red-50 text-red-700">{{ $errors->first() }}</div>@endif
+            <div><label class="block text-sm font-medium">Patient</label><select name="patient_id" required class="mt-1 block w-full rounded border-gray-300">@foreach($patients as $patient)<option value="{{ $patient->id }}" @selected(old('patient_id', $encounter->patient_id) == $patient->id)>{{ $patient->user?->name }}</option>@endforeach</select></div>
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div><label class="block text-sm font-medium">Type</label><select name="encounter_type" required class="mt-1 block w-full rounded border-gray-300">@foreach(['outpatient','inpatient','emergency','follow_up'] as $type)<option value="{{ $type }}" @selected(old('encounter_type', $encounter->encounter_type) === $type)>{{ ucfirst(str_replace('_',' ',$type)) }}</option>@endforeach</select></div>
+                <div><label class="block text-sm font-medium">Appointment</label><select name="appointment_id" class="mt-1 block w-full rounded border-gray-300"><option value="">None</option>@foreach($appointments as $appointment)<option value="{{ $appointment->id }}" @selected(old('appointment_id', $encounter->appointment_id) == $appointment->id)>#{{ $appointment->id }}</option>@endforeach</select></div>
+                <div><label class="block text-sm font-medium">Facility</label><select name="facility_id" class="mt-1 block w-full rounded border-gray-300"><option value="">None</option>@foreach($facilities as $facility)<option value="{{ $facility->id }}" @selected(old('facility_id', $encounter->facility_id) == $facility->id)>{{ $facility->name }}</option>@endforeach</select></div>
+                <div><label class="block text-sm font-medium">Department</label><select name="department_id" class="mt-1 block w-full rounded border-gray-300"><option value="">None</option>@foreach($departments as $department)<option value="{{ $department->id }}" @selected(old('department_id', $encounter->department_id) == $department->id)>{{ $department->name }}</option>@endforeach</select></div>
+                <div><label class="block text-sm font-medium">Started</label><input type="datetime-local" name="started_at" value="{{ old('started_at', $encounter->started_at?->format('Y-m-d\TH:i')) }}" class="mt-1 block w-full rounded border-gray-300"></div>
+                <div><label class="block text-sm font-medium">Ended</label><input type="datetime-local" name="ended_at" value="{{ old('ended_at', $encounter->ended_at?->format('Y-m-d\TH:i')) }}" class="mt-1 block w-full rounded border-gray-300"></div>
+            </div>
+            @foreach(['chief_complaint'=>'Chief complaint','diagnosis'=>'Diagnosis','treatment_plan'=>'Treatment plan','notes'=>'Notes'] as $field => $label)<div><label class="block text-sm font-medium">{{ $label }}</label><textarea name="{{ $field }}" rows="3" class="mt-1 block w-full rounded border-gray-300">{{ old($field, $encounter->{$field}) }}</textarea></div>@endforeach
+            <div class="flex gap-3"><button class="px-4 py-2 rounded bg-indigo-600 text-white">Save Changes</button><a href="{{ route('admin.encounters.show', $encounter) }}" class="px-4 py-2 rounded bg-gray-100">Cancel</a></div>
+        </form>
+    </div></div></div>
+</x-app-layout>

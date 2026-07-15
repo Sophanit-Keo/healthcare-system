@@ -1,0 +1,14 @@
+<x-app-layout>
+    <x-slot name="header"><h2 class="font-semibold text-xl text-gray-800">Enter Results — Lab Order #{{ $order->id }}</h2></x-slot>
+    <div class="py-8"><div class="max-w-4xl mx-auto sm:px-6 lg:px-8"><form method="POST" action="{{ route('admin.lab-orders.update', $order) }}" class="space-y-6">@csrf @method('PUT')
+        @if($errors->any())<div class="p-4 rounded bg-red-50 text-red-700">{{ $errors->first() }}</div>@endif
+        <div class="bg-white shadow rounded-lg p-6 grid sm:grid-cols-2 gap-4"><div><label class="block text-sm font-medium">Order status</label><select name="status" class="mt-1 block w-full rounded border-gray-300">@foreach(['ordered','in_progress','completed','cancelled'] as $status)<option value="{{ $status }}" @selected(old('status', $order->status) === $status)>{{ ucfirst(str_replace('_',' ',$status)) }}</option>@endforeach</select></div><div><label class="block text-sm font-medium">Notes</label><textarea name="notes" class="mt-1 block w-full rounded border-gray-300">{{ old('notes', $order->notes) }}</textarea></div></div>
+        @foreach($order->items as $index => $item)
+            <div class="bg-white shadow rounded-lg p-6"><input type="hidden" name="items[{{ $index }}][id]" value="{{ $item->id }}"><h3 class="font-semibold text-lg">{{ $item->test_name }} @if($item->test_code)<span class="text-sm text-gray-500">({{ $item->test_code }})</span>@endif</h3>
+                <div class="mt-4 grid sm:grid-cols-3 gap-4"><div><label class="block text-sm font-medium">Status</label><select name="items[{{ $index }}][status]" class="mt-1 block w-full rounded border-gray-300">@foreach(['ordered','collected','resulted','cancelled'] as $status)<option value="{{ $status }}" @selected(old("items.$index.status", $item->status) === $status)>{{ ucfirst($status) }}</option>@endforeach</select></div><div><label class="block text-sm font-medium">Unit</label><input name="items[{{ $index }}][unit]" value="{{ old("items.$index.unit", $item->unit) }}" class="mt-1 block w-full rounded border-gray-300"></div><div><label class="block text-sm font-medium">Reference range</label><input name="items[{{ $index }}][reference_range]" value="{{ old("items.$index.reference_range", $item->reference_range) }}" class="mt-1 block w-full rounded border-gray-300"></div></div>
+                <div class="mt-4"><label class="block text-sm font-medium">Result</label><textarea name="items[{{ $index }}][result]" rows="3" class="mt-1 block w-full rounded border-gray-300">{{ old("items.$index.result", $item->result) }}</textarea></div>
+            </div>
+        @endforeach
+        <div class="flex gap-3"><button class="px-4 py-2 rounded bg-indigo-600 text-white">Save Results</button><a href="{{ route('admin.lab-orders.show', $order) }}" class="px-4 py-2 rounded bg-gray-100">Cancel</a></div>
+    </form></div></div>
+</x-app-layout>

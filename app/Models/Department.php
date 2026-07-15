@@ -25,4 +25,9 @@ class Department extends Model
     {
         return $this->hasMany(HealthStaff::class);
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

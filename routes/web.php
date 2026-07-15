@@ -8,6 +8,8 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DoctorsController;
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
+use App\Http\Controllers\Admin\EncounterController as AdminEncounterController;
+use App\Http\Controllers\Admin\LabOrderController as AdminLabOrderController;
 use App\Http\Controllers\Patient\AppointmentController as PatientAppointmentController;
 use App\Http\Controllers\Patient\ConsentController as PatientConsentController;
 use App\Http\Controllers\Patient\EncounterController as PatientEncounterController;
@@ -59,13 +61,12 @@ Route::middleware(['auth', 'patient'])
     });
 
 Route::middleware('auth', 'admin')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [HomeController::class, 'adminDashboard'])->name('admin.dashboard');
 
     Route::get('patients', [PatientsController::class, 'index'])->name('admin.patients.index');
     Route::get('patients/create', [PatientsController::class, 'create'])->name('admin.patients.create');
     Route::post('patients', [PatientsController::class, 'store'])->name('admin.patients.store');
+    Route::get('patients/{patient}', [PatientsController::class, 'show'])->name('admin.patients.show');
     Route::get('patients/{patient}/edit', [PatientsController::class, 'edit'])->name('admin.patients.edit');
     Route::put('patients/{patient}', [PatientsController::class, 'update'])->name('admin.patients.update');
     Route::delete('patients/{patient}', [PatientsController::class, 'destroy'])->name('admin.patients.destroy');
@@ -74,7 +75,12 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/appointments/create', [AdminAppointmentController::class, 'create'])->name('admin.appointments.create');
     Route::post('admin/appointments', [AdminAppointmentController::class, 'store'])->name('admin.appointments.store');
     Route::get('admin/appointments/{appointment}', [AdminAppointmentController::class, 'show'])->name('admin.appointments.show');
+    Route::get('admin/appointments/{appointment}/edit', [AdminAppointmentController::class, 'edit'])->name('admin.appointments.edit');
+    Route::put('admin/appointments/{appointment}', [AdminAppointmentController::class, 'update'])->name('admin.appointments.update');
     Route::delete('admin/appointments/{appointment}', [AdminAppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
+
+    Route::resource('admin/encounters', AdminEncounterController::class)->names('admin.encounters');
+    Route::resource('admin/lab-orders', AdminLabOrderController::class)->names('admin.lab-orders');
 
     Route::get('admin/doctors', [DoctorsController::class, 'index'])->name('admin.doctors.index');
     Route::get('admin/doctors/create', [DoctorsController::class, 'create'])->name('admin.doctors.create');
