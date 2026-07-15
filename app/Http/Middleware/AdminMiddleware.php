@@ -16,8 +16,9 @@ class AdminMiddleware
             abort(403);
         }
 
-        $isStaffByColumn = in_array($user->role, ['admin', 'doctor'], true);
-        $isStaffBySpatie = method_exists($user, 'hasAnyRole') && $user->hasAnyRole(['admin', 'doctor']);
+        $staffRoles = ['admin', 'doctor'];
+        $isStaffByColumn = in_array($user->role, $staffRoles, true);
+        $isStaffBySpatie = method_exists($user, 'hasAnyRole') && $user->hasAnyRole($staffRoles);
 
         if (! $isStaffByColumn && ! $isStaffBySpatie) {
             abort(403);

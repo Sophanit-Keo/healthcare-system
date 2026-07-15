@@ -46,4 +46,14 @@ class Encounter extends Model
     {
         return $this->hasMany(LabOrder::class);
     }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

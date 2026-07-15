@@ -10,10 +10,10 @@
         <p>Schedule, confirm and track all patient appointments.</p>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn btn-outline">
+        <a href="{{ route('admin.appointments.index', ['date' => now()->toDateString()]) }}" class="btn btn-outline">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Calendar View
-        </button>
+          Today
+        </a>
              <a href="{{ route('admin.appointments.create') }}" class="btn btn-primary">
                   <div class="nav-icon">
                       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
@@ -109,6 +109,12 @@
             </td>
             <td><span class="badge {{ $statusBadge }}">{{ ucfirst(str_replace('_', ' ', $appt->status ?? 'scheduled')) }}</span></td>
             <td>
+              <a href="{{ route('admin.appointments.show', $appt) }}" class="action-btn" title="View">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </a>
+              <a href="{{ route('admin.appointments.edit', $appt) }}" class="action-btn" title="Edit">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.4-9.4a2 2 0 112.8 2.8L12 14l-4 1 1-4 6.6-6.4z"/></svg>
+              </a>
               <form method="POST" action="{{ route('admin.appointments.destroy', $appt->id) }}" onsubmit="return confirm('Delete this appointment?')" style="display:inline">
                 @csrf @method('DELETE')
                 <button type="submit" class="action-btn danger">

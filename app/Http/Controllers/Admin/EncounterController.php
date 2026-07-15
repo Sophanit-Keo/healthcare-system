@@ -100,20 +100,55 @@ class EncounterController extends Controller
     }
 
     
-    public function edit(string $id)
+    public function edit(Request $request, Encounter $encounter): View
     {
-        abort(404);
+        abort_unless($request->user()->can('encounters.update'), 403);
+        return view('admin.encounters.edit', [
+            'encounter' => $encounter,
+            'patients' => Patient::with('user')->latest()->limit(200)->get(),
+            'appointments' => Appointment::latest()->limit(200)->get(),
+            'facilities' => Facility::orderBy('name')->get(),
+            'departments' => Department::orderBy('name')->get(),
+        ]);
     }
 
     
-    public function update(Request $request, string $id)
+    public function update(Request $request, Encounter $encounter): RedirectResponse
     {
-        abort(404);
+        abort_unless($request->user()->can('encounters.update'), 403);
+        $data = $this->validatedData($request);
+        $this->validateAccess($request, $data);
+        $encounter->update($data);
+        return redirect()->route('admin.encounters.show', $encounter)->with('status', 'encounter-updated');
     }
 
     
-    public function destroy(string $id)
+    public function destroy(Request $request, Encounter $encounter): RedirectResponse
     {
-        abort(404);
+        abort_unless($request->user()->can('encounters.delete'), 403);
+        $encounter->delete();
+        return redirect()->route('admin.encounters.index')->with('status', 'encounter-deleted');
+    }
+
+    private function validatedData(Request $request): array
+    {
+        return $request->validate([
+            'appointment_id' => ['nullable', 'integer', 'exists:appointments,id'],
+            'patient_id' => ['required', 'integer', 'exists:patients,id'],
+            'facility_id' => ['nullable', 'integer', 'exists:facilities,id'],
+            'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'encounter_type' => ['required', 'in:outpatient,inpatient,emergency,follow_up'],
+            'started_at' => ['nullable', 'date'], 'ended_at' => ['nullable', 'date', 'after_or_equal:started_at'],
+            'chief_complaint' => ['nullable', 'string'], 'diagnosis' => ['nullable', 'string'],
+            'treatment_plan' => ['nullable', 'string'], 'notes' => ['nullable', 'string'],
+        ]);
+    }
+
+    private function validateAccess(Request $request, array $data): void
+    {
+        $this->staffScopeService->enforceFacilityScope($request->user(), $data['facility_id'] ?? null);
+        if (! empty($data['facility_id']) && ! $this->consentService->hasActiveFacilityConsent(Patient::findOrFail($data['patient_id']), (int) $data['facility_id'])) {
+            throw ValidationException::withMessages(['facility_id' => ['Patient consent is not granted for this facility.']]);
+        }
     }
 }

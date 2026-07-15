@@ -32,6 +32,8 @@
                                 <td class="p-3">{{ $e->ended_at ?? '-' }}</td>
                                 <td class="p-3 text-right">
                                     <a class="text-indigo-600 hover:text-indigo-700" href="{{ route('admin.encounters.show', $e) }}">View</a>
+                                    <a class="ml-3 text-amber-600 hover:text-amber-700" href="{{ route('admin.encounters.edit', $e) }}">Edit</a>
+                                    <form class="inline ml-3" method="POST" action="{{ route('admin.encounters.destroy', $e) }}" onsubmit="return confirm('Delete this encounter?')">@csrf @method('DELETE')<button class="text-red-600" type="submit">Delete</button></form>
                                 </td>
                             </tr>
                         @empty

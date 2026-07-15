@@ -43,4 +43,9 @@ class Patient extends Model
     {
         return $this->hasMany(PatientFacilityConsent::class);
     }
+
+    public function labOrders()
+    {
+        return $this->hasMany(LabOrder::class);
+    }
 }

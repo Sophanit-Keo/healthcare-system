@@ -156,15 +156,45 @@ class AppointmentController extends Controller
     }
 
     
-    public function edit(string $id)
+    public function edit(Appointment $appointment): View
     {
-        abort(404);
+        return view('admin.appointments.edit', [
+            'appointment' => $appointment,
+            'patients' => Patient::with('user')->latest()->limit(200)->get(),
+            'doctors' => HealthStaff::where('role', 'doctor')->orderBy('first_name')->get(),
+            'facilities' => Facility::orderBy('name')->get(),
+            'departments' => Department::orderBy('name')->get(),
+        ]);
     }
 
     
-    public function update(Request $request, string $id)
+    public function update(Request $request, Appointment $appointment): RedirectResponse
     {
-        abort(404);
+        $data = $request->validate([
+            'patient_id' => ['required', 'integer', 'exists:patients,id'],
+            'facility_id' => ['nullable', 'integer', 'exists:facilities,id'],
+            'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'health_staff_id' => ['nullable', 'integer', 'exists:health_staff,id'],
+            'appointment_date' => ['required', 'date'],
+            'appointment_time' => ['required', 'date_format:H:i'],
+            'status' => ['required', 'in:scheduled,completed,cancelled,no_show'],
+            'reason' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $patient = Patient::with('user')->findOrFail($data['patient_id']);
+        $data['patient_name'] = $patient->user?->name ?? 'Patient #'.$patient->id;
+        $data['email'] = $patient->user?->email;
+        $data['phone'] = $patient->phone;
+        $data['user_id'] = $patient->user_id;
+        $data['department'] = ! empty($data['department_id']) ? Department::find($data['department_id'])?->name : 'General';
+        $data['doctor'] = ! empty($data['health_staff_id']) ? trim((string) HealthStaff::find($data['health_staff_id'])?->first_name.' '.(string) HealthStaff::find($data['health_staff_id'])?->last_name) : null;
+        $data['date'] = $data['appointment_date'];
+        $data['time'] = $data['appointment_time'];
+        $data['message'] = $data['notes'] ?? $data['reason'] ?? null;
+        $appointment->update($data);
+
+        return redirect()->route('admin.appointments.show', $appointment)->with('success', 'Appointment updated successfully.');
     }
 
     

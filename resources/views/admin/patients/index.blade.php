@@ -91,21 +91,29 @@
 
           <td>
             <div style="display:flex; gap:8px;">
-
-              
+              <a href="{{ route('admin.patients.show', $patient) }}" class="action-btn" title="View">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.5 12C3.7 8 7.5 5 12 5s8.3 3 9.5 7c-1.2 4-5 7-9.5 7s-8.3-3-9.5-7z"/></svg>
+              </a>
               <a href="{{ route('admin.patients.edit', $patient->id) }}" class="action-btn">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </a>
+              <form method="POST" action="{{ route('admin.patients.destroy', $patient) }}" onsubmit="return confirm('Delete this patient and their linked account?')">
+                @csrf @method('DELETE')
+                <button class="action-btn danger" type="submit" title="Delete"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-1 13H6L5 7m4 0V4h6v3M4 7h16"/></svg></button>
+              </form>
             </div>
           </td>
         </tr>
         @endforeach
+        @if($patients->isEmpty())
+          <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">No patients found.</td></tr>
+        @endif
       </tbody>
     </table>
     <div class="pagination">
-      <span class="pagination-info">Showing {{ $patients->firstItem() }}&ndash;{{ $patients->lastItem() }} of {{ $patients->total() }} patients</span>
+      <span class="pagination-info">Showing {{ $patients->firstItem() ?? 0 }}&ndash;{{ $patients->lastItem() ?? 0 }} of {{ $patients->total() }} patients</span>
       <div class="pagination-btns">
         @if($patients->onFirstPage())
           <button class="pg-btn" disabled>&lsaquo;</button>
